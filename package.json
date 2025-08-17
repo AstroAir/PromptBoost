@@ -1,0 +1,70 @@
+{
+  "name": "promptboost-extension",
+  "version": "1.0.0",
+  "description": "AI Text Optimizer Browser Extension with comprehensive testing suite",
+  "main": "background.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:integration": "jest --config=tests/setup/jest.integration.config.js",
+    "test:unit": "jest --config=tests/setup/jest.unit.config.js",
+    "lint": "eslint *.js popup/*.js options/*.js tests/**/*.js",
+    "lint:fix": "eslint *.js popup/*.js options/*.js tests/**/*.js --fix"
+  },
+  "keywords": [
+    "chrome-extension",
+    "ai",
+    "text-optimization",
+    "llm",
+    "openai",
+    "anthropic"
+  ],
+  "author": "PromptBoost Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chrome": "^0.0.268",
+    "eslint": "^8.57.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jest-chrome": "^0.8.0",
+    "puppeteer": "^21.11.0",
+    "puppeteer-core": "^21.11.0",
+    "@babel/core": "^7.24.0",
+    "@babel/preset-env": "^7.24.0",
+    "babel-jest": "^29.7.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": ["<rootDir>/tests/setup/test-setup.js"],
+    "testMatch": [
+      "<rootDir>/tests/unit/**/*.test.js",
+      "<rootDir>/tests/integration/**/*.test.js"
+    ],
+    "collectCoverageFrom": [
+      "*.js",
+      "popup/*.js",
+      "options/*.js",
+      "!tests/**",
+      "!node_modules/**"
+    ],
+    "coverageDirectory": "tests/coverage",
+    "coverageReporters": ["text", "lcov", "html"],
+    "moduleNameMapping": {
+      "^@/(.*)$": "<rootDir>/$1",
+      "^@tests/(.*)$": "<rootDir>/tests/$1"
+    }
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ]
+    ]
+  }
+}

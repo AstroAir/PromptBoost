@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PromptBoost</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="popup-container">
+      <header class="popup-header">
+        <h1>PromptBoost</h1>
+        <div class="status-indicator" id="statusIndicator">
+          <span class="status-dot" id="statusDot"></span>
+          <span class="status-text" id="statusText">Loading...</span>
+        </div>
+      </header>
+
+      <main class="popup-main">
+        <!-- Quick Toggle -->
+        <div class="control-section">
+          <div class="toggle-control">
+            <label class="toggle-label">
+              <input type="checkbox" id="extensionToggle" />
+              <span class="toggle-slider"></span>
+              <span class="toggle-text">Enable Extension</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Current Settings Summary -->
+        <div class="info-section">
+          <h3>Current Settings</h3>
+          <div class="setting-row">
+            <span class="setting-label">Provider:</span>
+            <span class="setting-value" id="currentProvider">-</span>
+          </div>
+          <div class="setting-row">
+            <span class="setting-label">Model:</span>
+            <span class="setting-value" id="currentModel">-</span>
+          </div>
+          <div class="setting-row">
+            <span class="setting-label">API Key:</span>
+            <span class="setting-value" id="apiKeyStatus">Not configured</span>
+          </div>
+          <div class="setting-row">
+            <span class="setting-label">Trigger:</span>
+            <span class="setting-value">Triple spacebar</span>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="actions-section">
+          <button id="openOptions" class="btn-primary">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"></path>
+            </svg>
+            Settings
+          </button>
+
+          <button id="testConnection" class="btn-secondary">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22,4 12,14.01 9,11.01"></polyline>
+            </svg>
+            Test API
+          </button>
+        </div>
+
+        <!-- Usage Instructions -->
+        <div class="help-section">
+          <h3>How to Use</h3>
+          <ol class="help-list">
+            <li>Select text on any webpage</li>
+            <li>Press spacebar 3 times quickly</li>
+            <li>Wait for AI optimization</li>
+            <li>Text will be automatically replaced</li>
+          </ol>
+
+          <div class="shortcut-info">
+            <strong>Keyboard shortcut:</strong> Ctrl+Shift+Space
+          </div>
+        </div>
+      </main>
+
+      <footer class="popup-footer">
+        <div class="version-info">v1.0.0</div>
+        <div class="links">
+          <a href="#" id="helpLink">Help</a>
+          <a href="#" id="feedbackLink">Feedback</a>
+        </div>
+      </footer>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

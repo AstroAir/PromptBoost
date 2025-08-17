@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PromptBoost Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+        .test-section h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        .editable {
+            border: 1px solid #ccc;
+            padding: 10px;
+            min-height: 60px;
+            background: white;
+            border-radius: 4px;
+        }
+        .instructions {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        .sample-text {
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h1>PromptBoost Extension Test Page</h1>
+    
+    <div class="instructions">
+        <h3>How to Test PromptBoost</h3>
+        <ol>
+            <li>Make sure the PromptBoost extension is installed and configured</li>
+            <li>Select any text in the fields below</li>
+            <li>Press spacebar 3 times quickly (or use Ctrl+Shift+Space)</li>
+            <li>Watch as the text gets optimized by AI!</li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h3>Test 1: Text Input Field</h3>
+        <p>Select and optimize text in this input field:</p>
+        <input type="text" value="this is some text that could be improved and made more professional" placeholder="Type or select text here...">
+    </div>
+
+    <div class="test-section">
+        <h3>Test 2: Textarea</h3>
+        <p>Select and optimize text in this textarea:</p>
+        <textarea placeholder="Type or paste text here to test...">The quick brown fox jumps over the lazy dog. This sentence needs to be more engaging and descriptive.</textarea>
+    </div>
+
+    <div class="test-section">
+        <h3>Test 3: Content Editable Div</h3>
+        <p>Select and optimize text in this editable area:</p>
+        <div class="editable" contenteditable="true">
+            Click here and type some text, or select this existing text to optimize it with AI. This is a content-editable div that should work with PromptBoost.
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h3>Test 4: Regular Text Selection</h3>
+        <p>Try selecting and optimizing any text on this page, including this paragraph. The extension should work with regular text selections as well as input fields. You can select this text and use PromptBoost to enhance it.</p>
+        
+        <div class="sample-text">
+            Sample text for testing: "I am writing a email to my boss about the project status and need help making it sound more professional and clear."
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h3>Test 5: Multiple Paragraphs</h3>
+        <p>Select this longer text to test with multiple sentences:</p>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+        </p>
+        <p>
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+    </div>
+
+    <div class="test-section">
+        <h3>Testing Checklist</h3>
+        <ul>
+            <li>✓ Triple spacebar detection works</li>
+            <li>✓ Keyboard shortcut (Ctrl+Shift+Space) works</li>
+            <li>✓ Loading indicator appears</li>
+            <li>✓ Text gets replaced with optimized version</li>
+            <li>✓ Undo notification appears</li>
+            <li>✓ Undo functionality works (Ctrl+Z or click button)</li>
+            <li>✓ Works in input fields</li>
+            <li>✓ Works in textareas</li>
+            <li>✓ Works in content-editable divs</li>
+            <li>✓ Works with regular text selections</li>
+            <li>✓ Error handling works (try without API key)</li>
+        </ul>
+    </div>
+
+    <script>
+        // Add some interactivity for testing
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('PromptBoost test page loaded');
+            
+            // Log when text is selected
+            document.addEventListener('selectionchange', function() {
+                const selection = window.getSelection();
+                if (selection.toString().length > 0) {
+                    console.log('Text selected:', selection.toString().substring(0, 50) + '...');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
