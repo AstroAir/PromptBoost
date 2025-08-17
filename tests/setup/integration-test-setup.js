@@ -18,7 +18,7 @@ global.integrationTestUtils = {
    */
   async setupBrowser() {
     const extensionPath = path.resolve(__dirname, '../..');
-    
+
     this.browser = await puppeteer.launch({
       headless: false, // Extensions require non-headless mode
       args: [
@@ -34,17 +34,17 @@ global.integrationTestUtils = {
 
     // Get extension ID
     const targets = await this.browser.targets();
-    const extensionTarget = targets.find(target => 
+    const extensionTarget = targets.find(target =>
       target.type() === 'background_page' || target.type() === 'service_worker'
     );
-    
+
     if (extensionTarget) {
       this.extensionId = extensionTarget.url().split('/')[2];
     }
 
     // Create a new page
     this.page = await this.browser.newPage();
-    
+
     // Set viewport
     await this.page.setViewport({ width: 1280, height: 720 });
   },

@@ -92,13 +92,13 @@ class TemplateManager {
 
     try {
       this.logger.startTiming('initialize');
-      
+
       await this.loadTemplatesFromStorage();
       await this.migrateTemplatesIfNeeded();
-      
+
       this.isInitialized = true;
       this.emit('initialized');
-      
+
       this.logger.endTiming('initialize');
       this.logger.info('TemplateManager initialized successfully');
     } catch (error) {
@@ -218,7 +218,7 @@ class TemplateManager {
   async saveTemplatesToStorage() {
     try {
       const customTemplates = {};
-      
+
       this.templates.forEach(template => {
         if (template.isCustom) {
           customTemplates[template.id] = template;
@@ -318,7 +318,7 @@ class TemplateManager {
       // Create new version if template content changed
       let newVersion = existingTemplate.version;
       const versions = [...(existingTemplate.versions || [])];
-      
+
       if (updates.template && updates.template !== existingTemplate.template) {
         newVersion = existingTemplate.version + 1;
         versions.push({
@@ -414,7 +414,7 @@ class TemplateManager {
 
     if (filters.search) {
       const searchTerm = filters.search.toLowerCase();
-      templates = templates.filter(t => 
+      templates = templates.filter(t =>
         t.name.toLowerCase().includes(searchTerm) ||
         t.description.toLowerCase().includes(searchTerm) ||
         t.template.toLowerCase().includes(searchTerm)
@@ -425,11 +425,11 @@ class TemplateManager {
     templates.sort((a, b) => {
       const usageA = a.metadata?.usage || 0;
       const usageB = b.metadata?.usage || 0;
-      
+
       if (usageA !== usageB) {
         return usageB - usageA; // Most used first
       }
-      
+
       return a.name.localeCompare(b.name);
     });
 

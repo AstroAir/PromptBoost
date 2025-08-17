@@ -42,10 +42,10 @@ class TemplateEditor {
       placeholder: 'Enter your prompt template here...\n\nUse {text} as a placeholder for the selected text.\nExample: Please improve the following text:\n\n{text}',
       ...config.options
     };
-    
-    this.onChange = config.onChange || (() => {});
-    this.onValidate = config.onValidate || (() => {});
-    
+
+    this.onChange = config.onChange || (() => { });
+    this.onValidate = config.onValidate || (() => { });
+
     this.editor = null;
     this.validationErrors = [];
     this.previewData = {
@@ -168,27 +168,27 @@ class TemplateEditor {
    */
   initializeCodeMirror() {
     const editorContent = this.container.querySelector('#editorContent');
-    
+
     // Define custom mode for prompt templates
     this.definePromptTemplateMode();
-    
+
     this.editor = CodeMirror(editorContent, this.options);
-    
+
     // Setup change handler
     this.editor.on('change', (instance, changeObj) => {
       this.handleContentChange();
     });
-    
+
     // Setup cursor activity handler
     this.editor.on('cursorActivity', (instance) => {
       this.updateEditorStatus();
     });
-    
+
     // Setup focus/blur handlers
     this.editor.on('focus', () => {
       this.container.querySelector('.editor-panel').classList.add('focused');
     });
-    
+
     this.editor.on('blur', () => {
       this.container.querySelector('.editor-panel').classList.remove('focused');
     });
@@ -201,24 +201,24 @@ class TemplateEditor {
    * @since 2.0.0
    */
   definePromptTemplateMode() {
-    CodeMirror.defineMode('prompttemplate', function(config, parserConfig) {
+    CodeMirror.defineMode('prompttemplate', function (config, parserConfig) {
       return {
-        token: function(stream, state) {
+        token: function (stream, state) {
           // Highlight template variables like {text}, {variable}
           if (stream.match(/\{[^}]+\}/)) {
             return 'variable';
           }
-          
+
           // Highlight special instructions
           if (stream.match(/^(Please|Improve|Rewrite|Summarize|Translate|Format)/i)) {
             return 'keyword';
           }
-          
+
           // Highlight quoted text
           if (stream.match(/^"[^"]*"/)) {
             return 'string';
           }
-          
+
           // Default text
           stream.next();
           return null;
@@ -237,7 +237,7 @@ class TemplateEditor {
     // Define lint function for template validation
     CodeMirror.registerHelper('lint', 'prompttemplate', (text) => {
       const errors = [];
-      
+
       // Check for required {text} placeholder
       if (!text.includes('{text}')) {
         errors.push({
@@ -247,7 +247,7 @@ class TemplateEditor {
           to: CodeMirror.Pos(0, 0)
         });
       }
-      
+
       // Check for unmatched braces
       const openBraces = (text.match(/\{/g) || []).length;
       const closeBraces = (text.match(/\}/g) || []).length;
@@ -259,7 +259,7 @@ class TemplateEditor {
           to: CodeMirror.Pos(0, 0)
         });
       }
-      
+
       // Check template length
       if (text.length > 5000) {
         errors.push({
@@ -269,7 +269,7 @@ class TemplateEditor {
           to: CodeMirror.Pos(0, 0)
         });
       }
-      
+
       // Check for empty template
       if (text.trim().length === 0) {
         errors.push({
@@ -279,7 +279,7 @@ class TemplateEditor {
           to: CodeMirror.Pos(0, 0)
         });
       }
-      
+
       return errors;
     });
   }
@@ -302,37 +302,37 @@ class TemplateEditor {
    */
   setupEventListeners() {
     const container = this.container;
-    
+
     // Format template
     container.querySelector('#formatTemplate')?.addEventListener('click', () => {
       this.formatTemplate();
     });
-    
+
     // Insert variable
     container.querySelector('#insertVariable')?.addEventListener('click', () => {
       this.showVariableInserter();
     });
-    
+
     // Validate template
     container.querySelector('#validateTemplate')?.addEventListener('click', () => {
       this.validateTemplate();
     });
-    
+
     // Toggle preview
     container.querySelector('#togglePreview')?.addEventListener('click', () => {
       this.togglePreview();
     });
-    
+
     // Test template
     container.querySelector('#testTemplate')?.addEventListener('click', () => {
       this.testTemplate();
     });
-    
+
     // Update preview
     container.querySelector('#updatePreview')?.addEventListener('click', () => {
       this.updatePreview();
     });
-    
+
     // Preview data change
     container.querySelector('#previewData')?.addEventListener('input', (e) => {
       this.previewData.text = e.target.value;
@@ -348,18 +348,18 @@ class TemplateEditor {
    */
   handleContentChange() {
     const content = this.editor.getValue();
-    
+
     // Update character count
     this.updateCharacterCount(content.length);
-    
+
     // Update preview if visible
     if (this.isPreviewVisible()) {
       this.updatePreview();
     }
-    
+
     // Trigger change callback
     this.onChange(content);
-    
+
     // Auto-validate
     setTimeout(() => this.validateTemplate(), 500);
   }

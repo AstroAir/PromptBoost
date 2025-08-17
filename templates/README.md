@@ -3,6 +3,7 @@
 This directory contains template-related modules for the PromptBoost extension.
 
 For detailed template documentation, see:
+
 - **[Template Management Guide](../docs/guides/templates.md)** - Complete template guide
 - **[Template Examples](../docs/examples/templates.md)** - Practical template examples
 - **[Template Schema Reference](../docs/reference/templates.md)** - Template structure reference
@@ -10,7 +11,9 @@ For detailed template documentation, see:
 ## Modules
 
 ### TemplateEditor.js
+
 Enhanced template editor with CodeMirror integration that provides:
+
 - Syntax highlighting for prompt templates
 - Real-time validation and error checking
 - Live preview functionality
@@ -18,7 +21,9 @@ Enhanced template editor with CodeMirror integration that provides:
 - Template formatting and beautification
 
 ### TemplateValidator.js
+
 Comprehensive template validation system that provides:
+
 - Syntax validation for template structure
 - Placeholder validation (e.g., {text})
 - Best practices checking
@@ -26,7 +31,9 @@ Comprehensive template validation system that provides:
 - Performance analysis
 
 ### TemplateVersioning.js
+
 Template version control system that provides:
+
 - Version history tracking
 - Rollback capabilities
 - Change comparison and diff generation
@@ -34,7 +41,9 @@ Template version control system that provides:
 - Automatic cleanup of old versions
 
 ### TemplateTester.js
+
 Comprehensive testing framework that provides:
+
 - Validation testing
 - Structure and format testing
 - Performance testing
@@ -122,6 +131,7 @@ Templates follow a standardized structure:
 ## Best Practices
 
 ### Template Writing
+
 - Always include the `{text}` placeholder
 - Provide clear, specific instructions
 - Use proper grammar and punctuation
@@ -129,12 +139,14 @@ Templates follow a standardized structure:
 - Test templates with various text types
 
 ### Version Control
+
 - Use meaningful changelog messages
 - Create versions for significant changes
 - Review version history before major updates
 - Use rollback feature when needed
 
 ### Testing
+
 - Run validation tests before deployment
 - Test with different text samples
 - Monitor performance metrics
@@ -143,6 +155,7 @@ Templates follow a standardized structure:
 ## Integration
 
 Templates integrate with:
+
 - **TemplateManager**: Centralized template management
 - **ConfigurationManager**: Template configuration settings
 - **Provider System**: AI model integration for testing
@@ -152,6 +165,7 @@ Templates integrate with:
 ## Error Handling
 
 All template modules use the centralized ErrorHandler for consistent error management:
+
 - Validation errors are categorized and user-friendly
 - Performance issues are logged and monitored
 - API errors are handled gracefully with fallbacks
@@ -160,6 +174,7 @@ All template modules use the centralized ErrorHandler for consistent error manag
 ## Performance
 
 Template system is optimized for:
+
 - Fast template processing and validation
 - Efficient version storage and retrieval
 - Minimal memory usage for large templates

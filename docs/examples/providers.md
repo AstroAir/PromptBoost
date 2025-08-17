@@ -7,6 +7,7 @@ This guide provides practical examples of integrating different AI providers wit
 ### OpenAI Integration
 
 #### Basic Configuration
+
 ```javascript
 {
   "provider": "openai",
@@ -21,6 +22,7 @@ This guide provides practical examples of integrating different AI providers wit
 ```
 
 #### Advanced OpenAI Configuration
+
 ```javascript
 {
   "provider": "openai",
@@ -38,6 +40,7 @@ This guide provides practical examples of integrating different AI providers wit
 ```
 
 #### Model Selection Guide
+
 ```javascript
 // Speed vs Quality tradeoff
 const modelRecommendations = {
@@ -65,6 +68,7 @@ const modelRecommendations = {
 ### Anthropic Claude Integration
 
 #### Basic Configuration
+
 ```javascript
 {
   "provider": "anthropic",
@@ -79,6 +83,7 @@ const modelRecommendations = {
 ```
 
 #### Claude Model Comparison
+
 ```javascript
 const claudeModels = {
   "claude-3-haiku-20240307": {
@@ -102,6 +107,7 @@ const claudeModels = {
 ### Google Gemini Integration
 
 #### Basic Configuration
+
 ```javascript
 {
   "provider": "gemini",
@@ -116,6 +122,7 @@ const claudeModels = {
 ```
 
 #### Gemini Advantages
+
 ```javascript
 const geminiFeatures = {
   "freeTier": {
@@ -138,6 +145,7 @@ const geminiFeatures = {
 ### Local Model Integration (Ollama)
 
 #### Setup Ollama
+
 ```bash
 # Install Ollama
 curl -fsSL https://ollama.ai/install.sh | sh
@@ -150,6 +158,7 @@ ollama serve
 ```
 
 #### PromptBoost Configuration
+
 ```javascript
 {
   "provider": "custom",
@@ -165,6 +174,7 @@ ollama serve
 ```
 
 #### Ollama Model Examples
+
 ```javascript
 const ollamaModels = {
   "llama2:7b": {
@@ -193,11 +203,13 @@ const ollamaModels = {
 ### LM Studio Integration
 
 #### LM Studio Setup
+
 1. Download and install LM Studio
 2. Download a model (e.g., Llama 2 7B)
 3. Start local server on port 1234
 
 #### PromptBoost Configuration
+
 ```javascript
 {
   "provider": "custom",
@@ -215,6 +227,7 @@ const ollamaModels = {
 ### OpenRouter Integration
 
 #### Configuration
+
 ```javascript
 {
   "provider": "custom",
@@ -229,6 +242,7 @@ const ollamaModels = {
 ```
 
 #### OpenRouter Model Selection
+
 ```javascript
 const openRouterModels = {
   "anthropic/claude-3-sonnet": {
@@ -412,6 +426,7 @@ customProviders.forEach(provider => {
 ### OpenAI Optimizations
 
 #### Cost Optimization
+
 ```javascript
 const openaiCostOptimization = {
   // Use cheaper model for simple tasks
@@ -437,6 +452,7 @@ const openaiCostOptimization = {
 ```
 
 #### Performance Optimization
+
 ```javascript
 const openaiPerformanceConfig = {
   // Faster model for real-time use
@@ -459,6 +475,7 @@ const openaiPerformanceConfig = {
 ### Anthropic Optimizations
 
 #### Quality-Focused Configuration
+
 ```javascript
 const anthropicQualityConfig = {
   model: "claude-3-opus-20240229",
@@ -475,6 +492,7 @@ const anthropicQualityConfig = {
 ```
 
 #### Balanced Configuration
+
 ```javascript
 const anthropicBalancedConfig = {
   model: "claude-3-sonnet-20240229",
@@ -490,6 +508,7 @@ const anthropicBalancedConfig = {
 ### Local Model Optimizations
 
 #### Hardware-Specific Settings
+
 ```javascript
 const localModelConfig = {
   // For powerful hardware (16GB+ RAM, GPU)
@@ -687,6 +706,7 @@ const healthMonitoring = {
    - Monitor usage for anomalies
 
 For more information, see:
+
 - [Configuration Guide](../guides/configuration.md)
 - [API Reference](../api/providers.md)
 - [Development Examples](development.md)

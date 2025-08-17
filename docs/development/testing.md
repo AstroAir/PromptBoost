@@ -5,6 +5,7 @@ This document provides comprehensive information about testing the PromptBoost b
 ## Overview
 
 PromptBoost uses a multi-layered testing approach:
+
 - **Unit Tests**: Test individual components in isolation
 - **Integration Tests**: Test end-to-end functionality with browser automation
 - **Manual Tests**: Human verification of user workflows
@@ -44,6 +45,7 @@ npm run lint
 ## Test Structure
 
 ### Directory Organization
+
 ```
 tests/
 ├── unit/                    # Unit tests
@@ -73,6 +75,7 @@ Unit tests focus on testing individual components in isolation with comprehensiv
 ### Background Script Tests (`background.test.js`)
 
 Tests for the `PromptBoostBackground` class:
+
 - Message handling between components
 - LLM API calls (OpenAI, Anthropic, Custom)
 - Template management
@@ -82,6 +85,7 @@ Tests for the `PromptBoostBackground` class:
 ### Content Script Tests (`content.test.js`)
 
 Tests for the `PromptBoostContent` class:
+
 - Triple spacebar detection
 - Text selection and replacement
 - Undo functionality
@@ -92,6 +96,7 @@ Tests for the `PromptBoostContent` class:
 ### Popup Tests (`popup.test.js`)
 
 Tests for the `PromptBoostPopup` class:
+
 - Extension toggle functionality
 - Status display and updates
 - API connection testing
@@ -101,6 +106,7 @@ Tests for the `PromptBoostPopup` class:
 ### Options Tests (`options.test.js`)
 
 Tests for the `PromptBoostOptions` class:
+
 - Settings management and persistence
 - Provider configuration
 - Template CRUD operations
@@ -114,6 +120,7 @@ Integration tests use Puppeteer to test the extension in a real browser environm
 ### Extension Flow Tests (`extension-flow.test.js`)
 
 End-to-end tests covering:
+
 - Extension installation and initialization
 - Complete text optimization workflow
 - Template selection and usage
@@ -163,6 +170,7 @@ describe('Text Optimization Flow', () => {
 ### Chrome API Mocks (`chrome-api.js`)
 
 Comprehensive mocks for Chrome extension APIs:
+
 - `chrome.storage.sync` - Settings persistence
 - `chrome.runtime.sendMessage` - Message passing
 - `chrome.tabs.sendMessage` - Tab communication
@@ -171,6 +179,7 @@ Comprehensive mocks for Chrome extension APIs:
 ### DOM Helpers (`dom-helpers.js`)
 
 Utilities for DOM testing:
+
 - Mock input elements with selection capabilities
 - Text selection simulation
 - Event creation and dispatching
@@ -179,6 +188,7 @@ Utilities for DOM testing:
 ### Test Data (`test-data.js`)
 
 Sample data for consistent testing:
+
 - Text samples of various lengths and types
 - Settings configurations for different providers
 - Template definitions
@@ -195,6 +205,7 @@ The test suite maintains high coverage standards:
 - **Statements**: 80% minimum
 
 Coverage reports are generated in the `tests/coverage/` directory with multiple formats:
+
 - HTML report for detailed analysis
 - LCOV format for CI/CD integration
 - JSON format for programmatic access
@@ -220,6 +231,7 @@ Coverage reports are generated in the `tests/coverage/` directory with multiple 
 ### Test Examples
 
 #### Unit Test Example
+
 ```javascript
 describe('PromptBoostBackground', () => {
   let background;
@@ -251,6 +263,7 @@ describe('PromptBoostBackground', () => {
 ```
 
 #### Integration Test Example
+
 ```javascript
 describe('Extension Integration', () => {
   test('should complete full optimization workflow', async () => {
@@ -288,6 +301,7 @@ describe('Extension Integration', () => {
 ### Test Page (`test.html`)
 
 Use the included test page for manual verification:
+
 - Load `test.html` in browser
 - Test various text inputs and scenarios
 - Verify UI interactions and feedback
@@ -296,6 +310,7 @@ Use the included test page for manual verification:
 ### Real-World Testing
 
 Test on actual websites:
+
 - Gmail, Google Docs, Twitter, etc.
 - Various input types (textarea, contenteditable, etc.)
 - Different text lengths and formats
@@ -304,6 +319,7 @@ Test on actual websites:
 ## Performance Testing
 
 ### Metrics to Monitor
+
 - Extension load time
 - API response times
 - Memory usage
@@ -311,6 +327,7 @@ Test on actual websites:
 - Network requests
 
 ### Performance Tests
+
 ```javascript
 test('should optimize text within performance threshold', async () => {
   const startTime = performance.now();
@@ -329,6 +346,7 @@ test('should optimize text within performance threshold', async () => {
 ### GitHub Actions
 
 The project uses GitHub Actions for automated testing:
+
 - Run tests on multiple Node.js versions
 - Test on different operating systems
 - Generate and upload coverage reports
@@ -337,6 +355,7 @@ The project uses GitHub Actions for automated testing:
 ### Pre-commit Hooks
 
 Set up pre-commit hooks to ensure code quality:
+
 ```bash
 # Install husky for git hooks
 npm install --save-dev husky
@@ -348,12 +367,14 @@ npx husky add .husky/pre-commit "npm test"
 ## Debugging Tests
 
 ### Common Issues
+
 1. **Chrome API mocks not working**: Ensure mocks are properly imported
 2. **Async test failures**: Use proper async/await or return promises
 3. **DOM manipulation issues**: Ensure proper setup and cleanup
 4. **Flaky integration tests**: Add proper waits and assertions
 
 ### Debugging Tools
+
 ```bash
 # Run tests with debugging
 npm test -- --verbose
@@ -371,30 +392,35 @@ node --inspect-brk node_modules/.bin/jest
 ## Best Practices
 
 ### Test Organization
+
 - Group related tests in describe blocks
 - Use descriptive test names
 - Keep tests focused and atomic
 - Avoid test interdependencies
 
 ### Mock Management
+
 - Reset mocks between tests
 - Use specific mocks for specific scenarios
 - Avoid over-mocking (test real behavior when possible)
 - Document complex mock setups
 
 ### Assertion Quality
+
 - Use specific assertions
 - Test both positive and negative cases
 - Verify side effects and state changes
 - Use custom matchers when helpful
 
 ### Maintenance
+
 - Update tests when code changes
 - Remove obsolete tests
 - Refactor test code for clarity
 - Monitor test performance
 
 For more information, see:
+
 - [Development Setup](setup.md)
 - [Contributing Guidelines](contributing.md)
 - [Architecture Documentation](../architecture/overview.md)

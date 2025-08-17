@@ -29,16 +29,19 @@ class CustomProvider extends Provider {
 Authenticates with the provider's API.
 
 **Parameters:**
+
 - `credentials` (Object): Authentication credentials
   - `apiKey` (string): API key
   - `endpoint` (string, optional): Custom endpoint URL
   - `organization` (string, optional): Organization ID
 
 **Returns:** Promise<Object> - Authentication result
+
 - `success` (boolean): Whether authentication succeeded
 - `error` (string, optional): Error message if failed
 
 **Example:**
+
 ```javascript
 async authenticate(credentials) {
   try {
@@ -62,6 +65,7 @@ async authenticate(credentials) {
 Makes API calls to generate text.
 
 **Parameters:**
+
 - `prompt` (string): The formatted prompt to send
 - `options` (Object, optional): Generation options
   - `maxTokens` (number): Maximum tokens to generate
@@ -73,6 +77,7 @@ Makes API calls to generate text.
 **Returns:** Promise<string> - Generated text response
 
 **Example:**
+
 ```javascript
 async callAPI(prompt, options = {}) {
   const requestBody = {
@@ -105,13 +110,16 @@ async callAPI(prompt, options = {}) {
 Validates provider configuration.
 
 **Parameters:**
+
 - `config` (Object): Configuration to validate
 
 **Returns:** Object - Validation result
+
 - `isValid` (boolean): Whether configuration is valid
 - `errors` (Array<string>): List of validation errors
 
 **Example:**
+
 ```javascript
 validateConfig(config) {
   const errors = [];
@@ -142,6 +150,7 @@ Returns the default model for this provider.
 Returns list of available models.
 
 **Returns:** Array<Object> - Available models
+
 - `id` (string): Model identifier
 - `name` (string): Display name
 - `description` (string): Model description
@@ -170,6 +179,7 @@ const registry = ProviderRegistry.getInstance();
 Registers a new provider.
 
 **Parameters:**
+
 - `id` (string): Provider identifier
 - `providerClass` (Class): Provider class constructor
 - `metadata` (Object): Provider metadata
@@ -179,6 +189,7 @@ Registers a new provider.
   - `icon` (string, optional): Icon URL
 
 **Example:**
+
 ```javascript
 registry.register('custom', CustomProvider, {
   displayName: 'Custom AI',
@@ -192,6 +203,7 @@ registry.register('custom', CustomProvider, {
 Gets a provider instance.
 
 **Parameters:**
+
 - `id` (string): Provider identifier
 - `config` (Object): Provider configuration
 
@@ -208,6 +220,7 @@ Gets all registered providers.
 Checks if a provider is available.
 
 **Parameters:**
+
 - `id` (string): Provider identifier
 
 **Returns:** boolean - Whether provider is available
@@ -219,6 +232,7 @@ Checks if a provider is available.
 **ID:** `openai`
 **Models:** GPT-4, GPT-4 Turbo, GPT-3.5 Turbo
 **Configuration:**
+
 ```javascript
 {
   provider: 'openai',
@@ -234,6 +248,7 @@ Checks if a provider is available.
 **ID:** `anthropic`
 **Models:** Claude 3 Opus, Claude 3 Sonnet, Claude 3 Haiku
 **Configuration:**
+
 ```javascript
 {
   provider: 'anthropic',
@@ -248,6 +263,7 @@ Checks if a provider is available.
 **ID:** `gemini`
 **Models:** Gemini Pro, Gemini Pro Vision
 **Configuration:**
+
 ```javascript
 {
   provider: 'gemini',
@@ -262,6 +278,7 @@ Checks if a provider is available.
 **ID:** `cohere`
 **Models:** Command, Command Light, Command Nightly
 **Configuration:**
+
 ```javascript
 {
   provider: 'cohere',
@@ -276,6 +293,7 @@ Checks if a provider is available.
 **ID:** `huggingface`
 **Models:** Various open source models
 **Configuration:**
+
 ```javascript
 {
   provider: 'huggingface',
@@ -290,6 +308,7 @@ Checks if a provider is available.
 **ID:** `openrouter`
 **Models:** Unified access to multiple providers
 **Configuration:**
+
 ```javascript
 {
   provider: 'openrouter',
@@ -304,6 +323,7 @@ Checks if a provider is available.
 **ID:** `local`
 **Models:** Local models via Ollama, LM Studio, etc.
 **Configuration:**
+
 ```javascript
 {
   provider: 'local',
@@ -508,6 +528,7 @@ console.log('Optimized text:', result);
 ```
 
 For more information, see:
+
 - [Provider Integration Examples](../examples/providers.md)
 - [Configuration Guide](../guides/configuration.md)
 - [Development Guide](../development/setup.md)

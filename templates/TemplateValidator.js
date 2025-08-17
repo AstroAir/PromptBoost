@@ -699,7 +699,7 @@ class TemplateValidator {
   isProductionReady(template) {
     const results = this.validate(template);
     const hasHighSeverityIssues = results.errors.some(e => e.severity === 'high') ||
-                                  results.warnings.some(w => w.severity === 'high');
+      results.warnings.some(w => w.severity === 'high');
 
     return results.isValid && !hasHighSeverityIssues && results.score >= 70;
   }

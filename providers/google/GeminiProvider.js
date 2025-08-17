@@ -158,7 +158,7 @@ class GeminiProvider extends Provider {
       }
 
       const data = await response.json();
-      
+
       // Filter and format models
       const liveModels = data.models
         .filter(model => model.supportedGenerationMethods?.includes('generateContent'))
@@ -244,7 +244,7 @@ class GeminiProvider extends Provider {
       };
 
       const endpoint = `${this.baseURL}/models/${model}:generateContent?key=${this.apiKey}`;
-      
+
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
@@ -338,7 +338,7 @@ class GeminiProvider extends Provider {
    */
   getUsageStats(inputTokens, outputTokens, model) {
     const modelInfo = this.models.find(m => m.id === model) || this.models[0];
-    
+
     const inputCost = (inputTokens / 1000) * modelInfo.inputCost;
     const outputCost = (outputTokens / 1000) * modelInfo.outputCost;
     const totalCost = inputCost + outputCost;

@@ -36,7 +36,7 @@ class OpenRouterProvider extends Provider {
     this.apiKey = config.apiKey || null;
     this.appName = config.appName || 'PromptBoost';
     this.appUrl = config.appUrl || chrome.runtime.getURL('');
-    
+
     // Default models (popular ones)
     this.defaultModel = 'openai/gpt-3.5-turbo';
     this.availableModels = [
@@ -255,13 +255,13 @@ class OpenRouterProvider extends Provider {
     }
 
     const data = await response.json();
-    
+
     // Update rate limit info
     this.updateRateLimitFromHeaders(response.headers);
-    
+
     // Validate response
     ApiHelper.validateResponse(data, 'openrouter');
-    
+
     return ApiHelper.extractResponseText(data, 'openrouter');
   }
 

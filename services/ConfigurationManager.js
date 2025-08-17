@@ -102,13 +102,13 @@ class ConfigurationManager {
 
     try {
       this.logger.startTiming('initialize');
-      
+
       await this.loadConfiguration();
       await this.migrateConfigurationIfNeeded();
-      
+
       this.isInitialized = true;
       this.emit('initialized');
-      
+
       this.logger.endTiming('initialize');
       this.logger.info('ConfigurationManager initialized successfully');
     } catch (error) {
@@ -194,7 +194,7 @@ class ConfigurationManager {
         ...this.perPageConfigs.get(domain)
       };
     }
-    
+
     return { ...this.currentConfig };
   }
 
@@ -222,7 +222,7 @@ class ConfigurationManager {
           ...validation.sanitized,
           updatedAt: Date.now()
         };
-        
+
         this.perPageConfigs.set(domain, updatedPageConfig);
         this.logger.info(`Updated per-page configuration for domain: ${domain}`);
       } else {
@@ -303,7 +303,7 @@ class ConfigurationManager {
       const providerValidation = ConfigValidator.validateProviderConfig(providerConfig);
       result.errors.push(...providerValidation.errors);
       result.warnings.push(...providerValidation.warnings);
-      
+
       if (!providerValidation.isValid) {
         result.isValid = false;
       } else {
@@ -317,7 +317,7 @@ class ConfigurationManager {
         name: 'Custom Template',
         template: config.promptTemplate
       });
-      
+
       if (!templateValidation.isValid) {
         result.errors.push(...templateValidation.errors);
         result.isValid = false;
@@ -341,7 +341,7 @@ class ConfigurationManager {
       if (config[key] !== undefined || (config.advanced && config.advanced[key] !== undefined)) {
         const value = config[key] !== undefined ? config[key] : config.advanced[key];
         const numValue = Number(value);
-        
+
         if (isNaN(numValue)) {
           result.errors.push(`${key} must be a number`);
           result.isValid = false;
@@ -400,10 +400,10 @@ class ConfigurationManager {
         }
 
         // Move some settings to advanced section
-        const advancedSettings = ['enableLogging', 'autoSaveHistory', 'maxHistoryItems', 
-                                'requestTimeout', 'retryAttempts', 'showNotifications', 
-                                'notificationDuration'];
-        
+        const advancedSettings = ['enableLogging', 'autoSaveHistory', 'maxHistoryItems',
+          'requestTimeout', 'retryAttempts', 'showNotifications',
+          'notificationDuration'];
+
         advancedSettings.forEach(setting => {
           if (this.currentConfig[setting] !== undefined) {
             this.currentConfig.advanced[setting] = this.currentConfig[setting];
@@ -441,7 +441,7 @@ class ConfigurationManager {
       if (this.perPageConfigs.has(domain)) {
         this.perPageConfigs.delete(domain);
         await this.saveConfiguration();
-        
+
         this.emit('perPageConfigurationDeleted', { domain });
         this.logger.info(`Deleted per-page configuration for domain: ${domain}`);
         return true;

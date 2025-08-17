@@ -35,12 +35,14 @@ This project adheres to a code of conduct that we expect all contributors to fol
 ### Development Setup
 
 1. **Fork and Clone**
+
    ```bash
    git clone https://github.com/your-username/promptboost.git
    cd promptboost
    ```
 
 2. **Install Dependencies**
+
    ```bash
    npm install
    ```
@@ -51,6 +53,7 @@ This project adheres to a code of conduct that we expect all contributors to fol
    - Click "Load unpacked" and select the project directory
 
 4. **Run Tests**
+
    ```bash
    npm test
    ```
@@ -78,6 +81,7 @@ We welcome various types of contributions:
 ### Branch Naming Convention
 
 Use descriptive branch names with prefixes:
+
 - `feature/description` - New features
 - `bugfix/description` - Bug fixes
 - `docs/description` - Documentation updates
@@ -85,6 +89,7 @@ Use descriptive branch names with prefixes:
 - `refactor/description` - Code refactoring
 
 Examples:
+
 - `feature/anthropic-claude-support`
 - `bugfix/spacebar-detection-timing`
 - `docs/api-documentation-update`
@@ -92,12 +97,14 @@ Examples:
 ## Pull Request Process
 
 ### 1. Preparation
+
 - Ensure your branch is up to date with main
 - Run all tests and ensure they pass
 - Update documentation if needed
 - Add tests for new functionality
 
 ### 2. Creating the Pull Request
+
 - Use a clear, descriptive title
 - Fill out the PR template completely
 - Link related issues using keywords (fixes #123)
@@ -105,12 +112,14 @@ Examples:
 - Request review from maintainers
 
 ### 3. Review Process
+
 - Address all review feedback
 - Keep discussions constructive and focused
 - Update your branch if requested
 - Ensure CI checks pass
 
 ### 4. Merging
+
 - Squash commits if requested
 - Ensure commit messages follow conventions
 - Delete feature branch after merge
@@ -118,12 +127,14 @@ Examples:
 ## Testing Requirements
 
 ### Test Coverage
+
 - Maintain minimum 80% test coverage
 - Add unit tests for new functions/classes
 - Add integration tests for new features
 - Update existing tests when modifying code
 
 ### Test Types
+
 ```bash
 # Run all tests
 npm test
@@ -142,6 +153,7 @@ npm run test:watch
 ```
 
 ### Writing Tests
+
 - Follow existing test patterns
 - Use descriptive test names
 - Test both success and error cases
@@ -151,6 +163,7 @@ npm run test:watch
 ## Code Style Guidelines
 
 ### JavaScript Standards
+
 - Use ES6+ features consistently
 - Follow ESLint configuration
 - Use meaningful variable and function names
@@ -158,12 +171,14 @@ npm run test:watch
 - Add JSDoc comments for public APIs
 
 ### File Organization
+
 - Group related functionality
 - Use consistent naming conventions
 - Keep files under 500 lines
 - Implement proper imports/exports
 
 ### Commit Message Format
+
 ```
 type(scope): description
 
@@ -173,6 +188,7 @@ type(scope): description
 ```
 
 Types:
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation changes
@@ -182,6 +198,7 @@ Types:
 - `chore`: Maintenance tasks
 
 Examples:
+
 - `feat(providers): add Anthropic Claude support`
 - `fix(content): resolve spacebar detection timing issue`
 - `docs(api): update provider interface documentation`
@@ -189,6 +206,7 @@ Examples:
 ## Documentation Standards
 
 ### JSDoc Comments
+
 - Document all public methods and classes
 - Include parameter types and descriptions
 - Specify return types and values
@@ -196,12 +214,14 @@ Examples:
 - Use `@since` tags for version tracking
 
 ### README Updates
+
 - Update relevant README files for new features
 - Include usage examples and screenshots
 - Document configuration options
 - Update troubleshooting sections
 
 ### Code Comments
+
 - Explain complex logic and algorithms
 - Document workarounds and browser-specific code
 - Use TODO comments for future improvements
@@ -210,6 +230,7 @@ Examples:
 ## Specific Contribution Areas
 
 ### Adding New LLM Providers
+
 1. Create provider class extending base Provider
 2. Implement required interface methods
 3. Add provider to registry
@@ -218,6 +239,7 @@ Examples:
 6. Update documentation
 
 ### Template System Enhancements
+
 1. Extend TemplateManager functionality
 2. Add validation rules
 3. Update template editor UI
@@ -225,6 +247,7 @@ Examples:
 5. Document new features
 
 ### UI/UX Improvements
+
 1. Follow existing design patterns
 2. Ensure responsive design
 3. Test across different browsers
@@ -232,6 +255,7 @@ Examples:
 5. Update CSS documentation
 
 ### Performance Optimizations
+
 1. Profile performance impact
 2. Add benchmarks for improvements
 3. Document optimization techniques
@@ -241,18 +265,22 @@ Examples:
 ## Getting Help
 
 ### Communication Channels
+
 - **GitHub Issues**: Bug reports and feature requests
 - **GitHub Discussions**: General questions and ideas
 - **Pull Request Comments**: Code-specific discussions
 
 ### Resources
+
 - [Development Setup](setup.md)
 - [Testing Guide](testing.md)
 - [Architecture Documentation](../architecture/overview.md)
 - [API Reference](../api/)
 
 ### Mentorship
+
 New contributors are welcome! Don't hesitate to:
+
 - Ask questions in issues or discussions
 - Request code reviews and feedback
 - Seek guidance on implementation approaches

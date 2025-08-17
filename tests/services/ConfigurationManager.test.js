@@ -75,14 +75,14 @@ describe('ConfigurationManager', () => {
     test('should return same instance on multiple calls', () => {
       const instance1 = ConfigurationManager.getInstance();
       const instance2 = ConfigurationManager.getInstance();
-      
+
       expect(instance1).toBe(instance2);
     });
 
     test('should initialize only once', async () => {
       await configManager.initialize();
       await configManager.initialize(); // Second call
-      
+
       expect(configManager.isInitialized).toBe(true);
     });
   });
@@ -90,7 +90,7 @@ describe('ConfigurationManager', () => {
   describe('Initialization', () => {
     test('should initialize successfully', async () => {
       await configManager.initialize();
-      
+
       expect(configManager.isInitialized).toBe(true);
       expect(chrome.storage.sync.get).toHaveBeenCalledWith([
         'settings',
@@ -101,9 +101,9 @@ describe('ConfigurationManager', () => {
 
     test('should use default configuration on storage error', async () => {
       chrome.storage.sync.get.mockRejectedValue(new Error('Storage error'));
-      
+
       await configManager.initialize();
-      
+
       const config = configManager.getConfiguration();
       expect(config.enabled).toBe(true); // Default value
       expect(config.provider).toBe('openai'); // Default value
@@ -119,7 +119,7 @@ describe('ConfigurationManager', () => {
       });
 
       await configManager.initialize();
-      
+
       const config = configManager.getConfiguration();
       expect(config.provider).toBe('anthropic'); // From storage
       expect(config.enabled).toBe(true); // From defaults
@@ -135,7 +135,7 @@ describe('ConfigurationManager', () => {
     describe('getConfiguration', () => {
       test('should return global configuration', () => {
         const config = configManager.getConfiguration();
-        
+
         expect(config).toBeDefined();
         expect(config.enabled).toBe(true);
         expect(config.provider).toBe('openai');
@@ -149,7 +149,7 @@ describe('ConfigurationManager', () => {
         });
 
         const config = configManager.getConfiguration('example.com');
-        
+
         expect(config.provider).toBe('anthropic'); // From per-page
         expect(config.model).toBe('claude-3-sonnet'); // From per-page
         expect(config.enabled).toBe(true); // From global
@@ -157,7 +157,7 @@ describe('ConfigurationManager', () => {
 
       test('should return global config for unknown domain', () => {
         const config = configManager.getConfiguration('unknown.com');
-        
+
         expect(config.provider).toBe('openai'); // From global
       });
     });
@@ -221,7 +221,7 @@ describe('ConfigurationManager', () => {
       test('should reset global configuration to defaults', async () => {
         // First update config
         await configManager.updateConfiguration({ provider: 'anthropic' });
-        
+
         // Then reset
         const result = await configManager.resetConfiguration();
 
@@ -232,7 +232,7 @@ describe('ConfigurationManager', () => {
       test('should reset per-page configuration', async () => {
         // Set per-page config
         await configManager.updateConfiguration({ provider: 'anthropic' }, 'example.com');
-        
+
         // Reset per-page config
         const result = await configManager.resetConfiguration('example.com');
 
@@ -363,7 +363,7 @@ describe('ConfigurationManager', () => {
     });
 
     test('should export configuration', () => {
-      configManager.perPageConfigs.set('example.com', { 
+      configManager.perPageConfigs.set('example.com', {
         provider: 'anthropic',
         apiKey: 'sk-ant-secret'
       });
@@ -374,7 +374,7 @@ describe('ConfigurationManager', () => {
       expect(exported.timestamp).toBeDefined();
       expect(exported.globalConfig).toBeDefined();
       expect(exported.perPageConfigs['example.com']).toBeDefined();
-      
+
       // Check that sensitive data is redacted
       expect(exported.globalConfig.apiKey).toBe('[REDACTED]');
       expect(exported.perPageConfigs['example.com'].apiKey).toBe('[REDACTED]');
@@ -402,7 +402,7 @@ describe('ConfigurationManager', () => {
       expect(config.advanced.enableLogging).toBe(true);
       expect(config.advanced.maxHistoryItems).toBe(50);
       expect(config.advanced.requestTimeout).toBe(60);
-      
+
       // Check that main settings remain
       expect(config.enabled).toBe(true);
       expect(config.provider).toBe('openai');

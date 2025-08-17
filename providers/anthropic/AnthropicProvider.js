@@ -35,7 +35,7 @@ class AnthropicProvider extends Provider {
     this.baseURL = config.baseURL || 'https://api.anthropic.com/v1';
     this.apiKey = config.apiKey || null;
     this.anthropicVersion = config.anthropicVersion || '2023-06-01';
-    
+
     // Default models
     this.defaultModel = 'claude-3-sonnet-20240229';
     this.availableModels = [
@@ -253,13 +253,13 @@ class AnthropicProvider extends Provider {
     }
 
     const data = await response.json();
-    
+
     // Update rate limit info
     this.updateRateLimitFromHeaders(response.headers);
-    
+
     // Validate response
     ApiHelper.validateResponse(data, 'anthropic');
-    
+
     return ApiHelper.extractResponseText(data, 'anthropic');
   }
 
@@ -303,7 +303,7 @@ class AnthropicProvider extends Provider {
 
             try {
               const parsed = JSON.parse(data);
-              
+
               if (parsed.type === 'content_block_delta') {
                 const content = parsed.delta?.text;
                 if (content) {

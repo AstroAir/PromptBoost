@@ -26,6 +26,7 @@ await templateManager.initialize();
 Creates a new template with validation and versioning.
 
 **Parameters:**
+
 - `templateData` (Object): Template data
   - `name` (string): Template name
   - `description` (string): Template description
@@ -36,6 +37,7 @@ Creates a new template with validation and versioning.
 **Returns:** Promise<Object> - Created template with ID and metadata
 
 **Example:**
+
 ```javascript
 const template = await templateManager.createTemplate({
   name: 'Professional Email',
@@ -51,6 +53,7 @@ const template = await templateManager.createTemplate({
 Retrieves a template by ID.
 
 **Parameters:**
+
 - `templateId` (string): Template ID
 
 **Returns:** Object|null - Template object or null if not found
@@ -60,6 +63,7 @@ Retrieves a template by ID.
 Gets all templates with optional filtering.
 
 **Parameters:**
+
 - `filters` (Object, optional): Filter criteria
   - `category` (string): Filter by category
   - `isCustom` (boolean): Filter by custom/default
@@ -68,6 +72,7 @@ Gets all templates with optional filtering.
 **Returns:** Array<Object> - Array of template objects
 
 **Example:**
+
 ```javascript
 // Get all templates
 const allTemplates = templateManager.getAllTemplates();
@@ -84,6 +89,7 @@ const searchResults = templateManager.getAllTemplates({ search: 'professional' }
 Updates an existing template with versioning.
 
 **Parameters:**
+
 - `templateId` (string): Template ID
 - `updates` (Object): Fields to update
 
@@ -94,6 +100,7 @@ Updates an existing template with versioning.
 Deletes a template (custom templates only).
 
 **Parameters:**
+
 - `templateId` (string): Template ID
 
 **Returns:** Promise<boolean> - Success status
@@ -103,6 +110,7 @@ Deletes a template (custom templates only).
 Runs automated tests on a template.
 
 **Parameters:**
+
 - `templateId` (string): Template ID
 - `options` (Object): Test options
   - `testTypes` (Array<string>): Types of tests to run
@@ -112,6 +120,7 @@ Runs automated tests on a template.
 **Returns:** Promise<Object> - Test results
 
 **Example:**
+
 ```javascript
 const results = await templateManager.testTemplate('professional-tone', {
   testTypes: ['validation', 'structure', 'performance'],
@@ -127,6 +136,7 @@ const results = await templateManager.testTemplate('professional-tone', {
 Creates a new version of a template.
 
 **Parameters:**
+
 - `templateId` (string): Template ID
 - `content` (string): New template content
 - `changelog` (string): Description of changes
@@ -138,6 +148,7 @@ Creates a new version of a template.
 Gets all versions of a template.
 
 **Parameters:**
+
 - `templateId` (string): Template ID
 
 **Returns:** Array<Object> - Array of version objects
@@ -147,6 +158,7 @@ Gets all versions of a template.
 Rolls back a template to a previous version.
 
 **Parameters:**
+
 - `templateId` (string): Template ID
 - `versionId` (string): Version ID to rollback to
 
@@ -159,12 +171,14 @@ Rolls back a template to a previous version.
 Records usage metrics for a template.
 
 **Parameters:**
+
 - `templateId` (string): Template ID
 - `metrics` (Object): Usage metrics
   - `responseTime` (number): API response time in ms
   - `success` (boolean): Whether the operation succeeded
 
 **Example:**
+
 ```javascript
 await templateManager.recordTemplateUsage('professional-tone', {
   responseTime: 1500,
@@ -177,6 +191,7 @@ await templateManager.recordTemplateUsage('professional-tone', {
 Gets analytics data for a template.
 
 **Parameters:**
+
 - `templateId` (string): Template ID
 
 **Returns:** Object - Analytics data including usage stats and performance metrics
@@ -188,6 +203,7 @@ Gets analytics data for a template.
 Exports templates to JSON format.
 
 **Parameters:**
+
 - `templateIds` (Array<string>, optional): Specific template IDs to export
 
 **Returns:** Object - Export data
@@ -197,6 +213,7 @@ Exports templates to JSON format.
 Imports templates from JSON data.
 
 **Parameters:**
+
 - `importData` (Object): Import data
 - `options` (Object): Import options
   - `overwrite` (boolean): Whether to overwrite existing templates
@@ -214,6 +231,7 @@ The TemplateManager emits events for state changes:
 - `templateTested`: When a template test completes
 
 **Example:**
+
 ```javascript
 templateManager.on('templateCreated', (template) => {
   console.log('New template created:', template.name);
@@ -244,11 +262,13 @@ await configManager.initialize();
 Gets configuration for a specific domain or global configuration.
 
 **Parameters:**
+
 - `domain` (string, optional): Domain name for per-page config
 
 **Returns:** Object - Configuration object
 
 **Example:**
+
 ```javascript
 // Get global configuration
 const globalConfig = configManager.getConfiguration();
@@ -262,10 +282,12 @@ const domainConfig = configManager.getConfiguration('gmail.com');
 Sets configuration for a domain or globally.
 
 **Parameters:**
+
 - `domain` (string|Object): Domain name or config object for global
 - `config` (Object, optional): Configuration object
 
 **Example:**
+
 ```javascript
 // Set global configuration
 configManager.setConfiguration({
@@ -291,6 +313,7 @@ Saves current configuration to storage.
 Resets configuration to defaults.
 
 **Parameters:**
+
 - `domain` (string, optional): Domain to reset, or global if not provided
 
 #### validateConfiguration(config)
@@ -298,6 +321,7 @@ Resets configuration to defaults.
 Validates a configuration object.
 
 **Parameters:**
+
 - `config` (Object): Configuration to validate
 
 **Returns:** Object - Validation result with errors and warnings
@@ -309,6 +333,7 @@ Validates a configuration object.
 Gets configuration specific to a domain.
 
 **Parameters:**
+
 - `domain` (string): Domain name
 
 **Returns:** Object|null - Domain configuration or null
@@ -318,6 +343,7 @@ Gets configuration specific to a domain.
 Sets configuration for a specific domain.
 
 **Parameters:**
+
 - `domain` (string): Domain name
 - `config` (Object): Configuration object
 
@@ -326,6 +352,7 @@ Sets configuration for a specific domain.
 Removes per-page configuration for a domain.
 
 **Parameters:**
+
 - `domain` (string): Domain name
 
 #### getAllPerPageConfigurations()
@@ -361,6 +388,7 @@ Exports all configuration data.
 Imports configuration data.
 
 **Parameters:**
+
 - `importData` (Object): Import data
 - `options` (Object): Import options
   - `overwrite` (boolean): Whether to overwrite existing config
@@ -515,6 +543,7 @@ const backup = configManager.exportConfiguration();
 ```
 
 For more information, see:
+
 - [Background Script API](background.md)
 - [Template Management Guide](../guides/templates.md)
 - [Configuration Guide](../guides/configuration.md)

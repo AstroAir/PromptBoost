@@ -380,7 +380,7 @@ describe('OpenAIProvider', () => {
 
     test('should return available models', () => {
       const models = provider.getAvailableModels();
-      
+
       expect(Array.isArray(models)).toBe(true);
       expect(models).toContain('gpt-4');
       expect(models).toContain('gpt-3.5-turbo');
@@ -479,7 +479,7 @@ describe('OpenAIProvider', () => {
 
       const lastCall = fetch.mock.calls[fetch.mock.calls.length - 1];
       const headers = lastCall[1].headers;
-      
+
       expect(headers).not.toHaveProperty('OpenAI-Organization');
     });
   });

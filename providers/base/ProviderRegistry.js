@@ -120,16 +120,16 @@ class ProviderRegistry {
     try {
       const providerInfo = this.providers.get(name);
       const ProviderClass = providerInfo.class;
-      
+
       const instance = new ProviderClass({
         name,
         ...providerInfo.metadata,
         ...config
       });
-      
+
       instance._config = config; // Store config for comparison
       this.instances.set(name, instance);
-      
+
       return instance;
     } catch (error) {
       console.error(`Failed to create provider instance for '${name}':`, error);
@@ -278,7 +278,7 @@ class ProviderRegistry {
    */
   async testAllProviders(configs = {}) {
     const results = {};
-    
+
     for (const providerName of this.getProviderNames()) {
       try {
         const provider = this.getProvider(providerName, configs[providerName] || {});

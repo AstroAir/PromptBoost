@@ -13,11 +13,13 @@
 ### Step 1: Get the Extension Files
 
 **Option A: Download ZIP**
+
 1. Click the green "Code" button on GitHub
 2. Select "Download ZIP"
 3. Extract the ZIP file to a folder on your computer
 
 **Option B: Clone with Git**
+
 ```bash
 git clone https://github.com/your-repo/promptboost.git
 cd promptboost
@@ -90,6 +92,7 @@ cd promptboost
 ### Custom API Setup
 
 For self-hosted or other providers:
+
 1. Select "Custom" as provider
 2. Enter your API endpoint URL
 3. Configure authentication (API key or bearer token)
@@ -125,11 +128,13 @@ For self-hosted or other providers:
 ## Browser Compatibility
 
 ### Fully Supported
+
 - ✅ Google Chrome (88+)
 - ✅ Microsoft Edge (88+)
 - ✅ Chromium-based browsers
 
 ### Requires Modification
+
 - ⚠️ Firefox: Needs manifest.json conversion to Manifest V2
 - ⚠️ Safari: Requires significant changes for Safari Web Extensions
 
@@ -158,6 +163,7 @@ Your settings and API keys will be automatically deleted.
 ## Next Steps
 
 After installation:
+
 1. **Read the [User Manual](user-manual.md)** for detailed usage instructions
 2. **Explore [Template Management](templates.md)** to customize prompts
 3. **Check [Configuration Guide](configuration.md)** for advanced settings
@@ -166,6 +172,7 @@ After installation:
 ## Updates
 
 To update PromptBoost:
+
 1. Download the latest version
 2. Replace the old folder with the new one
 3. Go to `chrome://extensions/`

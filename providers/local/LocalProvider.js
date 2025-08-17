@@ -437,10 +437,10 @@ class LocalProvider extends Provider {
     try {
       const tempProvider = new LocalProvider(config);
       await tempProvider.authenticate(config);
-      
+
       const models = await tempProvider.getModels();
       const serverInfo = await tempProvider.getServerInfo();
-      
+
       return {
         success: true,
         serverInfo,

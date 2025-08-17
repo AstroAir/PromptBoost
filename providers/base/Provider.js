@@ -133,7 +133,7 @@ class Provider {
       }
 
       await this.authenticate(config);
-      
+
       // Test with a simple prompt
       const testPrompt = 'Hello, this is a test message.';
       const result = await this.callAPI(testPrompt, {
@@ -190,7 +190,7 @@ class Provider {
    */
   checkRateLimit(tokensUsed = 0) {
     const now = Date.now();
-    
+
     // Reset counters if time window has passed
     if (now >= this.rateLimits.resetTime) {
       this.rateLimits.currentRequests = 0;
@@ -200,14 +200,14 @@ class Provider {
 
     // Check if adding this request would exceed limits
     if (this.rateLimits.currentRequests >= this.rateLimits.requestsPerMinute ||
-        this.rateLimits.currentTokens + tokensUsed > this.rateLimits.tokensPerMinute) {
+      this.rateLimits.currentTokens + tokensUsed > this.rateLimits.tokensPerMinute) {
       return false;
     }
 
     // Update counters
     this.rateLimits.currentRequests++;
     this.rateLimits.currentTokens += tokensUsed;
-    
+
     return true;
   }
 
@@ -221,7 +221,7 @@ class Provider {
   getRateLimitStatus() {
     const now = Date.now();
     const timeUntilReset = Math.max(0, this.rateLimits.resetTime - now);
-    
+
     return {
       requestsRemaining: Math.max(0, this.rateLimits.requestsPerMinute - this.rateLimits.currentRequests),
       tokensRemaining: Math.max(0, this.rateLimits.tokensPerMinute - this.rateLimits.currentTokens),
@@ -248,15 +248,15 @@ class Provider {
     };
 
     // Standardize common error types
-    if (error.message.toLowerCase().includes('unauthorized') || 
-        error.message.toLowerCase().includes('invalid api key')) {
+    if (error.message.toLowerCase().includes('unauthorized') ||
+      error.message.toLowerCase().includes('invalid api key')) {
       return new Error(`Authentication failed for ${this.displayName}: ${error.message}`);
     }
-    
+
     if (error.message.toLowerCase().includes('rate limit')) {
       return new Error(`Rate limit exceeded for ${this.displayName}: ${error.message}`);
     }
-    
+
     if (error.message.toLowerCase().includes('quota')) {
       return new Error(`Quota exceeded for ${this.displayName}: ${error.message}`);
     }

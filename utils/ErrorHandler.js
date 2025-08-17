@@ -56,18 +56,18 @@ class ErrorHandler {
    */
   static handle(error, context, options = {}) {
     const processedError = this.processError(error, context, options);
-    
+
     // Log the error
     this.logError(processedError);
-    
+
     // Notify user if requested
     if (options.notify !== false) {
       this.notifyUser(processedError);
     }
-    
+
     // Report for analytics (if enabled)
     this.reportError(processedError);
-    
+
     return processedError;
   }
 
@@ -84,7 +84,7 @@ class ErrorHandler {
   static processError(error, context, options = {}) {
     const timestamp = new Date().toISOString();
     const errorObj = error instanceof Error ? error : new Error(String(error));
-    
+
     return {
       id: this.generateErrorId(),
       timestamp,
@@ -112,7 +112,7 @@ class ErrorHandler {
    */
   static categorizeError(error) {
     const message = error.message.toLowerCase();
-    
+
     if (message.includes('api') || message.includes('fetch') || message.includes('http')) {
       return ErrorCategory.API;
     }
@@ -134,7 +134,7 @@ class ErrorHandler {
     if (message.includes('config') || message.includes('setting')) {
       return ErrorCategory.CONFIGURATION;
     }
-    
+
     return ErrorCategory.UNKNOWN;
   }
 
@@ -148,7 +148,7 @@ class ErrorHandler {
    */
   static determineSeverity(error) {
     const message = error.message.toLowerCase();
-    
+
     if (message.includes('critical') || message.includes('fatal')) {
       return ErrorSeverity.CRITICAL;
     }
@@ -158,7 +158,7 @@ class ErrorHandler {
     if (message.includes('api') || message.includes('network')) {
       return ErrorSeverity.MEDIUM;
     }
-    
+
     return ErrorSeverity.LOW;
   }
 
@@ -182,7 +182,7 @@ class ErrorHandler {
       [ErrorCategory.CONFIGURATION]: 'Configuration error. Please check your settings.',
       [ErrorCategory.UNKNOWN]: 'An unexpected error occurred. Please try again.'
     };
-    
+
     return categoryMessages[category] || categoryMessages[ErrorCategory.UNKNOWN];
   }
 
@@ -195,7 +195,7 @@ class ErrorHandler {
    */
   static logError(processedError) {
     const logMessage = `[${processedError.context}] ${processedError.message}`;
-    
+
     switch (processedError.severity) {
       case ErrorSeverity.CRITICAL:
       case ErrorSeverity.HIGH:
@@ -221,7 +221,7 @@ class ErrorHandler {
     if (processedError.severity === ErrorSeverity.LOW) {
       return;
     }
-    
+
     // Use chrome notifications if available
     if (typeof chrome !== 'undefined' && chrome.notifications) {
       chrome.notifications.create({

@@ -53,7 +53,7 @@ class TemplateVersioning {
     try {
       const versions = template.versions || [];
       const nextVersion = this.getNextVersionNumber(versions);
-      
+
       const newVersion = {
         id: `v${nextVersion}_${Date.now()}`,
         version: nextVersion,
@@ -95,7 +95,7 @@ class TemplateVersioning {
     if (!versions || versions.length === 0) {
       return 1;
     }
-    
+
     const maxVersion = Math.max(...versions.map(v => v.version));
     return maxVersion + 1;
   }
@@ -127,7 +127,7 @@ class TemplateVersioning {
       versions.sort((a, b) => {
         const aVal = a[sortBy];
         const bVal = b[sortBy];
-        
+
         if (sortOrder === 'desc') {
           return bVal > aVal ? 1 : bVal < aVal ? -1 : 0;
         } else {
@@ -160,10 +160,10 @@ class TemplateVersioning {
   getVersion(template, versionIdentifier) {
     try {
       const versions = template.versions || [];
-      
+
       // Search by version number or ID
-      const version = versions.find(v => 
-        v.version === versionIdentifier || 
+      const version = versions.find(v =>
+        v.version === versionIdentifier ||
         v.id === versionIdentifier
       );
 
@@ -186,7 +186,7 @@ class TemplateVersioning {
   rollbackToVersion(template, versionIdentifier, changelog = '') {
     try {
       const targetVersion = this.getVersion(template, versionIdentifier);
-      
+
       if (!targetVersion) {
         throw new Error(`Version ${versionIdentifier} not found`);
       }
@@ -194,8 +194,8 @@ class TemplateVersioning {
       // Create new version with rollback content
       const rollbackChangelog = changelog || `Rolled back to version ${targetVersion.version}`;
       const newVersion = this.createVersion(
-        template, 
-        targetVersion.content, 
+        template,
+        targetVersion.content,
         rollbackChangelog,
         'rollback'
       );
@@ -258,7 +258,7 @@ class TemplateVersioning {
   generateSimpleDiff(oldContent, newContent) {
     const oldLines = oldContent.split('\n');
     const newLines = newContent.split('\n');
-    
+
     const diff = {
       added: [],
       removed: [],
@@ -266,20 +266,20 @@ class TemplateVersioning {
     };
 
     const maxLines = Math.max(oldLines.length, newLines.length);
-    
+
     for (let i = 0; i < maxLines; i++) {
       const oldLine = oldLines[i];
       const newLine = newLines[i];
-      
+
       if (oldLine === undefined) {
         diff.added.push({ line: i + 1, content: newLine });
       } else if (newLine === undefined) {
         diff.removed.push({ line: i + 1, content: oldLine });
       } else if (oldLine !== newLine) {
-        diff.modified.push({ 
-          line: i + 1, 
-          old: oldLine, 
-          new: newLine 
+        diff.modified.push({
+          line: i + 1,
+          old: oldLine,
+          new: newLine
         });
       }
     }
@@ -324,7 +324,7 @@ class TemplateVersioning {
   exportVersionHistory(template, options = {}) {
     try {
       const versions = this.getVersionHistory(template, options);
-      
+
       return {
         templateId: template.id,
         templateName: template.name,
@@ -353,7 +353,7 @@ class TemplateVersioning {
   getVersionStatistics(template) {
     try {
       const versions = template.versions || [];
-      
+
       if (versions.length === 0) {
         return {
           totalVersions: 0,
@@ -367,7 +367,7 @@ class TemplateVersioning {
       const contentLengths = versions.map(v => v.content.length);
       const creators = [...new Set(versions.map(v => v.createdBy))];
       const timestamps = versions.map(v => v.createdAt);
-      
+
       return {
         totalVersions: versions.length,
         averageContentLength: Math.round(contentLengths.reduce((a, b) => a + b, 0) / contentLengths.length),

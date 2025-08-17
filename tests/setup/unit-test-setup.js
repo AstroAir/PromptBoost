@@ -70,14 +70,14 @@ global.unitTestUtils = {
    */
   mockExtensionClass: (ClassConstructor) => {
     const instance = new ClassConstructor();
-    
+
     // Mock all methods
     Object.getOwnPropertyNames(Object.getPrototypeOf(instance))
       .filter(name => name !== 'constructor' && typeof instance[name] === 'function')
       .forEach(methodName => {
         instance[methodName] = jest.fn(instance[methodName]);
       });
-    
+
     return instance;
   }
 };

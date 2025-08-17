@@ -18,6 +18,7 @@ This guide provides practical examples of creating custom templates for various 
 ```
 
 **Example Usage**:
+
 - **Input**: "there going to the store tommorow"
 - **Output**: "They're going to the store tomorrow"
 
@@ -35,6 +36,7 @@ This guide provides practical examples of creating custom templates for various 
 ```
 
 **Example Usage**:
+
 - **Input**: Long paragraph about project status
 - **Output**: "Project is 75% complete with database integration finished. Frontend development is on track for next week. Final testing scheduled for month-end."
 
@@ -54,8 +56,10 @@ This guide provides practical examples of creating custom templates for various 
 ```
 
 **Example Usage**:
+
 - **Input**: "john, sarah, mike present. talked about budget - need 50k more. sarah will check with finance by friday. mike concerned about timeline."
-- **Output**: 
+- **Output**:
+
 ```
 Meeting Minutes
 
@@ -86,8 +90,10 @@ Action Items:
 ```
 
 **Example Usage**:
+
 - **Input**: "thanks for the proposal. looks good but need to discuss pricing. can we meet next week?"
 - **Output**:
+
 ```
 Dear [Name],
 
@@ -130,6 +136,7 @@ Best regards,
 ```
 
 **Example Usage**:
+
 - **Input**: "The man walked into the room. It was dark. He was scared."
 - **Output**: "The man hesitated at the threshold, his hand trembling on the cold doorknob. The room beyond lay shrouded in an oppressive darkness that seemed to swallow the faint light from the hallway. His heart hammered against his ribs as an inexplicable dread settled over him."
 
@@ -175,8 +182,10 @@ Best regards,
 ```
 
 **Example Usage**:
+
 - **Input**: "POST /users - creates user. needs name and email."
 - **Output**:
+
 ```
 ## POST /users
 
@@ -195,6 +204,7 @@ Creates a new user account in the system.
 ```
 
 ### Example Response
+
 ```json
 {
   "id": 123,
@@ -205,8 +215,10 @@ Creates a new user account in the system.
 ```
 
 ### Error Responses
+
 - `400 Bad Request`: Invalid input parameters
 - `409 Conflict`: Email address already exists
+
 ```
 
 ### Code Comment Enhancer
@@ -251,8 +263,10 @@ Creates a new user account in the system.
 ```
 
 **Example Usage**:
+
 - **Input**: "finished big project at work feeling proud"
 - **Output**:
+
 ```
 🎉 Just wrapped up a major project that's been months in the making!
 
@@ -480,6 +494,7 @@ const results = await templateManager.testTemplate(testConfig);
 4. **Version Control**: Use template versioning for improvements
 
 For more examples, see:
+
 - [Basic Usage Examples](basic-usage.md)
 - [Provider Integration Examples](providers.md)
 - [Development Examples](development.md)

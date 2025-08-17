@@ -90,7 +90,7 @@ class TemplateTester {
   async runTests(template, options = {}) {
     try {
       this.logger.startTiming('runTests');
-      
+
       const {
         testTypes = ['validation', 'structure', 'performance', 'api'],
         provider,
@@ -139,7 +139,7 @@ class TemplateTester {
 
       // Calculate overall results
       this.calculateOverallResults(results);
-      
+
       results.testEndTime = Date.now();
       results.duration = results.testEndTime - results.testStartTime;
 
@@ -176,7 +176,7 @@ class TemplateTester {
 
       // Basic validation
       const validation = this.validator.validate(template.template);
-      
+
       if (!validation.isValid) {
         result.passed = false;
         result.errors.push(...validation.errors.map(e => e.message));
@@ -184,7 +184,7 @@ class TemplateTester {
       }
 
       result.warnings.push(...validation.warnings.map(w => w.message));
-      
+
       // Check for required placeholder
       if (!template.template.includes('{text}')) {
         result.passed = false;
@@ -314,12 +314,12 @@ class TemplateTester {
 
       // Test template processing speed
       const processingTimes = [];
-      
+
       for (const sample of this.testSamples) {
         const processStart = performance.now();
         const processedTemplate = template.template.replace('{text}', sample.text);
         const processEnd = performance.now();
-        
+
         processingTimes.push(processEnd - processStart);
       }
 
@@ -339,7 +339,7 @@ class TemplateTester {
 
       // Test memory usage (approximate)
       const templateSize = new Blob([template.template]).size;
-      const processedSizes = this.testSamples.map(sample => 
+      const processedSizes = this.testSamples.map(sample =>
         new Blob([template.template.replace('{text}', sample.text)]).size
       );
 
@@ -391,7 +391,7 @@ class TemplateTester {
       for (const sample of this.testSamples.slice(0, 3)) { // Limit to 3 samples for API tests
         try {
           const prompt = template.template.replace('{text}', sample.text);
-          
+
           // This would need to be integrated with the actual provider system
           // For now, we'll simulate the test
           const testResult = await this.simulateAPICall(prompt, provider, providerConfig);
@@ -439,7 +439,7 @@ class TemplateTester {
         totalTests: apiResults.length,
         successfulTests: successfulTests.length,
         successRate: successRate,
-        averageResponseTime: successfulTests.length > 0 ? 
+        averageResponseTime: successfulTests.length > 0 ?
           successfulTests.reduce((sum, r) => sum + r.responseTime, 0) / successfulTests.length : 0,
         averageResponseLength: successfulTests.length > 0 ?
           successfulTests.reduce((sum, r) => sum + r.responseLength, 0) / successfulTests.length : 0,
@@ -468,7 +468,7 @@ class TemplateTester {
   async simulateAPICall(prompt, provider, config) {
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, Math.random() * 2000 + 500));
-    
+
     // Simulate response
     return {
       success: Math.random() > 0.1, // 90% success rate
@@ -493,7 +493,7 @@ class TemplateTester {
     // Calculate weighted average score
     const totalScore = results.tests.reduce((sum, t) => sum + t.score, 0);
     results.overallScore = Math.round(totalScore / results.tests.length);
-    
+
     // Overall pass/fail
     results.passed = results.summary.failed === 0 && results.overallScore >= 70;
   }
@@ -507,40 +507,40 @@ class TemplateTester {
    */
   generateReport(testResults) {
     const lines = [];
-    
+
     lines.push(`# Template Test Report`);
     lines.push(`Template: ${testResults.templateName}`);
     lines.push(`Overall Score: ${testResults.overallScore}/100`);
     lines.push(`Status: ${testResults.passed ? 'PASSED' : 'FAILED'}`);
     lines.push(`Duration: ${testResults.duration}ms`);
     lines.push('');
-    
+
     lines.push(`## Summary`);
     lines.push(`- Total Tests: ${testResults.summary.total}`);
     lines.push(`- Passed: ${testResults.summary.passed}`);
     lines.push(`- Failed: ${testResults.summary.failed}`);
     lines.push(`- Warnings: ${testResults.summary.warnings}`);
     lines.push('');
-    
+
     testResults.tests.forEach(test => {
       lines.push(`## ${test.testName}`);
       lines.push(`Score: ${test.score}/100`);
       lines.push(`Status: ${test.passed ? 'PASSED' : 'FAILED'}`);
       lines.push(`Duration: ${test.duration}ms`);
-      
+
       if (test.errors.length > 0) {
         lines.push(`### Errors:`);
         test.errors.forEach(error => lines.push(`- ${error}`));
       }
-      
+
       if (test.warnings.length > 0) {
         lines.push(`### Warnings:`);
         test.warnings.forEach(warning => lines.push(`- ${warning}`));
       }
-      
+
       lines.push('');
     });
-    
+
     return lines.join('\n');
   }
 }

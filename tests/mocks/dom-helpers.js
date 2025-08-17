@@ -19,22 +19,22 @@ global.domTestUtils = {
       element.type = type;
     }
     element.value = value;
-    
+
     // Mock selection methods
     element.setSelectionRange = jest.fn((start, end) => {
       element.selectionStart = start;
       element.selectionEnd = end;
     });
-    
+
     element.select = jest.fn(() => {
       element.selectionStart = 0;
       element.selectionEnd = element.value.length;
     });
-    
+
     // Mock focus/blur
     element.focus = jest.fn();
     element.blur = jest.fn();
-    
+
     return element;
   },
 
@@ -47,11 +47,11 @@ global.domTestUtils = {
     const element = document.createElement('div');
     element.contentEditable = 'true';
     element.textContent = content;
-    
+
     // Mock selection methods
     element.focus = jest.fn();
     element.blur = jest.fn();
-    
+
     return element;
   },
 
@@ -69,14 +69,14 @@ global.domTestUtils = {
       endOffset: text.length,
       collapsed: text.length === 0,
       commonAncestorContainer: container || document.body,
-      
+
       cloneContents: jest.fn(() => {
         const fragment = document.createDocumentFragment();
         const textNode = document.createTextNode(text);
         fragment.appendChild(textNode);
         return fragment;
       }),
-      
+
       deleteContents: jest.fn(),
       insertNode: jest.fn(),
       selectNode: jest.fn(),
@@ -94,7 +94,7 @@ global.domTestUtils = {
       focusOffset: text.length,
       isCollapsed: text.length === 0,
       type: text ? 'Range' : 'None',
-      
+
       getRangeAt: jest.fn((index) => index === 0 ? range : null),
       addRange: jest.fn(),
       removeRange: jest.fn(),
@@ -183,11 +183,11 @@ global.domTestUtils = {
     if (end === null) {
       end = element.value ? element.value.length : element.textContent.length;
     }
-    
+
     if (element.setSelectionRange) {
       element.setSelectionRange(start, end);
     }
-    
+
     // Trigger selection event
     element.dispatchEvent(new Event('select', { bubbles: true }));
     document.dispatchEvent(new Event('selectionchange', { bubbles: true }));

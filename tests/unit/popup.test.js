@@ -192,14 +192,14 @@ describe('PromptBoostPopup', () => {
   beforeEach(async () => {
     // Reset DOM
     document.body.innerHTML = '';
-    
+
     // Reset Chrome API mocks
     global.chromeTestUtils.resetMocks();
     global.chromeTestUtils.setStorageData(sampleSettings.default);
-    
+
     // Mock window.close
     global.window.close = jest.fn();
-    
+
     // Create fresh instance
     popup = new PromptBoostPopup();
     await popup.init();
@@ -227,25 +227,25 @@ describe('PromptBoostPopup', () => {
   describe('UI Updates', () => {
     test('should update status for enabled extension with API key', () => {
       popup.settings = { enabled: true, apiKey: 'test-key' };
-      
+
       popup.updateStatus();
-      
+
       expect(popup.elements.statusText.textContent).toBe('Active');
       expect(popup.elements.statusText.className).toContain('active');
     });
 
     test('should update status for disabled extension', () => {
       popup.settings = { enabled: false, apiKey: 'test-key' };
-      
+
       popup.updateStatus();
-      
+
       expect(popup.elements.statusText.textContent).toBe('Disabled');
       expect(popup.elements.statusText.className).toContain('inactive');
     });
 
     test('should update status with custom message', () => {
       popup.updateStatus('Custom message', 'error');
-      
+
       expect(popup.elements.statusText.textContent).toBe('Custom message');
       expect(popup.elements.statusText.className).toContain('error');
     });
@@ -256,9 +256,9 @@ describe('PromptBoostPopup', () => {
         model: 'gpt-4',
         apiKey: 'test-key'
       };
-      
+
       popup.updateProviderInfo();
-      
+
       expect(popup.elements.providerInfo.innerHTML).toContain('OPENAI');
       expect(popup.elements.providerInfo.innerHTML).toContain('gpt-4');
       expect(popup.elements.providerInfo.innerHTML).toContain('API Key Configured');
@@ -270,9 +270,9 @@ describe('PromptBoostPopup', () => {
         model: 'gpt-3.5-turbo',
         apiKey: ''
       };
-      
+
       popup.updateProviderInfo();
-      
+
       expect(popup.elements.providerInfo.innerHTML).toContain('No API Key');
     });
   });

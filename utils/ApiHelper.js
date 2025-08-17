@@ -56,11 +56,11 @@ class ApiHelper {
     }
 
     let lastError;
-    
+
     for (let attempt = 0; attempt <= retries; attempt++) {
       try {
         const startTime = performance.now();
-        
+
         if (onProgress) {
           onProgress({ attempt, total: retries + 1, status: 'requesting' });
         }
@@ -77,11 +77,11 @@ class ApiHelper {
         }
 
         if (onProgress) {
-          onProgress({ 
-            attempt, 
-            total: retries + 1, 
+          onProgress({
+            attempt,
+            total: retries + 1,
             status: response.ok ? 'success' : 'error',
-            response 
+            response
           });
         }
 
@@ -89,7 +89,7 @@ class ApiHelper {
 
       } catch (error) {
         lastError = error;
-        
+
         if (onProgress) {
           onProgress({ attempt, total: retries + 1, status: 'error', error });
         }
@@ -121,12 +121,12 @@ class ApiHelper {
    */
   static async jsonRequest(url, options = {}) {
     const response = await this.request(url, options);
-    
+
     if (!response.ok) {
       const errorData = await this.safeJsonParse(response);
       throw new Error(
-        errorData?.error?.message || 
-        errorData?.message || 
+        errorData?.error?.message ||
+        errorData?.message ||
         `HTTP ${response.status}: ${response.statusText}`
       );
     }
@@ -169,24 +169,24 @@ class ApiHelper {
       case 'openrouter':
         headers['Authorization'] = `Bearer ${apiKey}`;
         break;
-        
+
       case 'anthropic':
         headers['x-api-key'] = apiKey;
         headers['anthropic-version'] = '2023-06-01';
         break;
-        
+
       case 'cohere':
         headers['Authorization'] = `Bearer ${apiKey}`;
         break;
-        
+
       case 'huggingface':
         headers['Authorization'] = `Bearer ${apiKey}`;
         break;
-        
+
       case 'gemini':
         // Gemini uses API key in URL parameter
         break;
-        
+
       default:
         headers['Authorization'] = `Bearer ${apiKey}`;
     }
@@ -222,7 +222,7 @@ class ApiHelper {
           temperature,
           stream
         };
-        
+
       case 'anthropic':
         return {
           model,
@@ -231,7 +231,7 @@ class ApiHelper {
           temperature,
           stream
         };
-        
+
       case 'cohere':
         return {
           model,
@@ -240,7 +240,7 @@ class ApiHelper {
           temperature,
           stream
         };
-        
+
       case 'huggingface':
         return {
           inputs: prompt,
@@ -250,7 +250,7 @@ class ApiHelper {
             do_sample: temperature > 0
           }
         };
-        
+
       case 'gemini':
         return {
           contents: [{
@@ -261,7 +261,7 @@ class ApiHelper {
             temperature
           }
         };
-        
+
       default:
         return {
           prompt,
@@ -288,22 +288,22 @@ class ApiHelper {
       case 'openai':
       case 'openrouter':
         return responseData.choices?.[0]?.message?.content || '';
-        
+
       case 'anthropic':
         return responseData.content?.[0]?.text || '';
-        
+
       case 'cohere':
         return responseData.text || '';
-        
+
       case 'huggingface':
         if (Array.isArray(responseData)) {
           return responseData[0]?.generated_text || '';
         }
         return responseData.generated_text || '';
-        
+
       case 'gemini':
         return responseData.candidates?.[0]?.content?.parts?.[0]?.text || '';
-        
+
       default:
         return responseData.text || responseData.response || responseData.output || '';
     }
@@ -340,13 +340,13 @@ class ApiHelper {
           throw new Error('No response choices returned');
         }
         break;
-        
+
       case 'anthropic':
         if (!responseData.content || responseData.content.length === 0) {
           throw new Error('No content returned');
         }
         break;
-        
+
       case 'gemini':
         if (!responseData.candidates || responseData.candidates.length === 0) {
           throw new Error('No candidates returned');
@@ -372,20 +372,20 @@ class ApiHelper {
 
     const now = Date.now();
     const windowStart = now - windowMs;
-    
+
     if (!this.rateLimitStore.has(key)) {
       this.rateLimitStore.set(key, []);
     }
 
     const requests = this.rateLimitStore.get(key);
-    
+
     // Remove old requests outside the window
     const validRequests = requests.filter(timestamp => timestamp > windowStart);
-    
+
     if (validRequests.length >= maxRequests) {
       const oldestRequest = Math.min(...validRequests);
       const waitTime = oldestRequest + windowMs - now;
-      
+
       if (waitTime > 0) {
         await this.sleep(waitTime);
       }
@@ -394,7 +394,7 @@ class ApiHelper {
     // Add current request
     validRequests.push(now);
     this.rateLimitStore.set(key, validRequests);
-    
+
     return true;
   }
 
@@ -422,13 +422,13 @@ class ApiHelper {
     try {
       const urlObj = new URL(url);
       const sensitiveParams = ['key', 'token', 'auth', 'password', 'secret'];
-      
+
       sensitiveParams.forEach(param => {
         if (urlObj.searchParams.has(param)) {
           urlObj.searchParams.set(param, '[REDACTED]');
         }
       });
-      
+
       return urlObj.toString();
     } catch {
       return url.replace(/[?&](key|token|auth|password|secret)=[^&]*/gi, '$1=[REDACTED]');

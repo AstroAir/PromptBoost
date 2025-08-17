@@ -7,6 +7,7 @@ This directory contains AI provider implementations for the PromptBoost extensio
 The provider system uses a unified interface that allows seamless integration of different AI services. All providers implement the same base interface, making it easy to add new providers or switch between existing ones.
 
 For detailed provider documentation, see:
+
 - **[Providers API Reference](../docs/api/providers.md)** - Complete API documentation
 - **[Provider Integration Examples](../docs/examples/providers.md)** - Practical integration examples
 - **[Architecture Overview](../docs/architecture/overview.md)** - System architecture details
@@ -14,7 +15,9 @@ For detailed provider documentation, see:
 ### Base Classes
 
 #### Provider.js
+
 Abstract base class that defines the common interface for all providers:
+
 - Authentication management
 - API calling interface
 - Configuration validation
@@ -22,7 +25,9 @@ Abstract base class that defines the common interface for all providers:
 - Error handling
 
 #### ProviderRegistry.js
+
 Central registry for managing provider instances:
+
 - Provider registration and discovery
 - Fallback provider management
 - Provider instance caching
@@ -31,6 +36,7 @@ Central registry for managing provider instances:
 ## Supported Providers
 
 ### OpenAI (openai/)
+
 **File**: `OpenAIProvider.js`
 **Models**: GPT-4, GPT-4 Turbo, GPT-3.5 Turbo
 **Features**: Chat completion, streaming, function calling
@@ -45,6 +51,7 @@ const provider = new OpenAIProvider({
 ```
 
 ### Anthropic (anthropic/)
+
 **File**: `AnthropicProvider.js`
 **Models**: Claude 3 Opus, Claude 3 Sonnet, Claude 3 Haiku
 **Features**: Chat completion, streaming, long context
@@ -59,6 +66,7 @@ const provider = new AnthropicProvider({
 ```
 
 ### Google Gemini (google/)
+
 **File**: `GeminiProvider.js`
 **Models**: Gemini Pro, Gemini Pro Vision
 **Features**: Text generation, multimodal capabilities
@@ -72,6 +80,7 @@ const provider = new GeminiProvider({
 ```
 
 ### Cohere (cohere/)
+
 **File**: `CohereProvider.js`
 **Models**: Command, Command Light, Command Nightly
 **Features**: Text generation, embeddings
@@ -85,6 +94,7 @@ const provider = new CohereProvider({
 ```
 
 ### Hugging Face (huggingface/)
+
 **File**: `HuggingFaceProvider.js`
 **Models**: Thousands of open-source models
 **Features**: Text generation, model flexibility
@@ -99,10 +109,11 @@ const provider = new HuggingFaceProvider({
 ```
 
 ### OpenRouter (openrouter/)
+
 **File**: `OpenRouterProvider.js`
 **Models**: Multiple models through unified API
-**Features**: Access to various models, cost optimization
-**Authentication**: Bearer token
+**Features**: Access to various models, cost optimization, OAuth PKCE authentication
+**Authentication**: Bearer token or OAuth PKCE flow
 
 ```javascript
 const provider = new OpenRouterProvider({
@@ -110,9 +121,12 @@ const provider = new OpenRouterProvider({
   baseURL: 'https://openrouter.ai/api/v1',
   appName: 'PromptBoost'
 });
+
+// OAuth PKCE authentication is also supported through the UI
 ```
 
 ### Local Models (local/)
+
 **File**: `LocalProvider.js`
 **Models**: Self-hosted models (Ollama, LM Studio, etc.)
 **Features**: Privacy, customization, offline usage
@@ -132,7 +146,9 @@ All providers implement the following interface:
 ### Core Methods
 
 #### authenticate(credentials)
+
 Authenticates with the provider's API.
+
 ```javascript
 await provider.authenticate({
   apiKey: 'your-api-key',
@@ -142,7 +158,9 @@ await provider.authenticate({
 ```
 
 #### callAPI(prompt, options)
+
 Makes an API call to generate text.
+
 ```javascript
 const result = await provider.callAPI('Hello, world!', {
   model: 'gpt-3.5-turbo',
@@ -153,7 +171,9 @@ const result = await provider.callAPI('Hello, world!', {
 ```
 
 #### validateConfig(config)
+
 Validates provider configuration.
+
 ```javascript
 const validation = provider.validateConfig({
   apiKey: 'sk-...',
@@ -165,28 +185,35 @@ const validation = provider.validateConfig({
 ### Information Methods
 
 #### getDefaultModel()
+
 Returns the default model for the provider.
 
 #### getAvailableModels()
+
 Returns list of available models.
 
 #### getConfigSchema()
+
 Returns configuration schema for UI generation.
 
 ### Utility Methods
 
 #### checkRateLimit()
+
 Checks and enforces rate limits.
 
 #### handleError(error, context)
+
 Handles provider-specific errors.
 
 #### updateRateLimitFromHeaders(headers)
+
 Updates rate limit info from response headers.
 
 ## Usage Examples
 
 ### Basic Usage
+
 ```javascript
 // Get provider from registry
 const provider = providerRegistry.getProvider('openai');
@@ -207,6 +234,7 @@ console.log(result); // Improved text
 ```
 
 ### With Fallback
+
 ```javascript
 // Get provider with automatic fallback
 const provider = providerRegistry.getProviderWithFallback('openai', {
@@ -218,6 +246,7 @@ const result = await provider.callAPI(prompt, options);
 ```
 
 ### Streaming Response
+
 ```javascript
 const stream = await provider.callAPI(prompt, {
   stream: true,
@@ -232,6 +261,7 @@ for await (const chunk of stream) {
 ## Adding New Providers
 
 ### Step 1: Create Provider Class
+
 ```javascript
 class NewProvider extends Provider {
   constructor(config) {
@@ -263,6 +293,7 @@ class NewProvider extends Provider {
 ```
 
 ### Step 2: Register Provider
+
 ```javascript
 // In background.js or provider setup
 providerRegistry.register('newprovider', NewProvider, {
@@ -273,6 +304,7 @@ providerRegistry.register('newprovider', NewProvider, {
 ```
 
 ### Step 3: Add to UI
+
 Update the options page to include the new provider in the dropdown and configuration forms.
 
 ## Error Handling

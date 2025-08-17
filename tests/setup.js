@@ -91,7 +91,7 @@ global.URL = class URL {
   constructor(url, base) {
     const fullUrl = base ? new URL(url, base).href : url;
     const parsed = new URL(fullUrl);
-    
+
     this.href = parsed.href;
     this.protocol = parsed.protocol;
     this.hostname = parsed.hostname;
@@ -109,7 +109,7 @@ global.URL = class URL {
 global.URLSearchParams = class URLSearchParams {
   constructor(init) {
     this.params = new Map();
-    
+
     if (typeof init === 'string') {
       init.replace(/^\?/, '').split('&').forEach(pair => {
         const [key, value] = pair.split('=');
@@ -264,7 +264,7 @@ global.testUtils = {
 beforeEach(() => {
   // Clear all mocks before each test
   jest.clearAllMocks();
-  
+
   // Reset fetch mock
   fetch.mockClear();
   fetch.mockResolvedValue({
@@ -273,13 +273,13 @@ beforeEach(() => {
     json: jest.fn().mockResolvedValue({}),
     text: jest.fn().mockResolvedValue('')
   });
-  
+
   // Reset storage mocks
   chrome.storage.sync.get.mockResolvedValue({});
   chrome.storage.sync.set.mockResolvedValue();
   chrome.storage.local.get.mockResolvedValue({});
   chrome.storage.local.set.mockResolvedValue();
-  
+
   // Reset localStorage
   localStorageMock.getItem.mockReturnValue(null);
   localStorageMock.setItem.mockClear();
@@ -290,7 +290,7 @@ beforeEach(() => {
 afterEach(() => {
   // Clean up any timers
   jest.clearAllTimers();
-  
+
   // Reset any global state
   if (global.TemplateManager) {
     global.TemplateManager.instance = null;

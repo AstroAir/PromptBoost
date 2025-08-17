@@ -97,10 +97,10 @@ document.execCommand = jest.fn();
 beforeEach(() => {
   // Clear document body
   document.body.innerHTML = '';
-  
+
   // Reset all mocks
   jest.clearAllMocks();
-  
+
   // Reset Chrome API mocks
   if (global.chrome) {
     Object.keys(global.chrome).forEach(api => {
@@ -115,7 +115,7 @@ beforeEach(() => {
 afterEach(() => {
   // Clear any timers
   jest.clearAllTimers();
-  
+
   // Clear any intervals
   jest.useRealTimers();
 });

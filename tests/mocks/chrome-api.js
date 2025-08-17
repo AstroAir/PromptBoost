@@ -26,7 +26,7 @@ global.chrome = {
         } else {
           Object.assign(result, mockStorageData);
         }
-        
+
         if (callback) {
           callback(result);
         }
@@ -214,7 +214,7 @@ global.chromeTestUtils = {
   simulateMessage: (type, data = {}, sender = { tab: { id: 1 } }) => {
     const message = { type, ...data };
     const listeners = chrome.runtime.onMessage.addListener.mock.calls;
-    
+
     listeners.forEach(([listener]) => {
       listener(message, sender, jest.fn());
     });

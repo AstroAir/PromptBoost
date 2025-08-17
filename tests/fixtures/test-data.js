@@ -35,7 +35,7 @@ export const sampleSettings = {
     selectedTemplate: 'general',
     quickTemplateSelection: true
   },
-  
+
   anthropic: {
     enabled: true,
     timeWindow: 1000,
@@ -44,7 +44,7 @@ export const sampleSettings = {
     model: 'claude-3-sonnet-20240229',
     promptTemplate: 'Improve this text: {text}'
   },
-  
+
   custom: {
     enabled: true,
     timeWindow: 1500,
@@ -54,7 +54,7 @@ export const sampleSettings = {
     model: 'custom-model',
     promptTemplate: 'Optimize: {text}'
   },
-  
+
   disabled: {
     enabled: false,
     timeWindow: 1000,
@@ -76,7 +76,7 @@ export const sampleTemplates = {
     category: 'General',
     isDefault: true
   },
-  
+
   professional: {
     id: 'professional',
     name: 'Professional Tone',
@@ -84,7 +84,7 @@ export const sampleTemplates = {
     template: 'Please rewrite the following text to make it more professional and business-appropriate:\n\n{text}',
     category: 'Business'
   },
-  
+
   casual: {
     id: 'casual',
     name: 'Casual & Friendly',
@@ -92,7 +92,7 @@ export const sampleTemplates = {
     template: 'Please rewrite the following text to make it more casual and friendly:\n\n{text}',
     category: 'General'
   },
-  
+
   concise: {
     id: 'concise',
     name: 'Make Concise',
@@ -121,7 +121,7 @@ export const sampleApiResponses = {
       }
     }
   },
-  
+
   anthropic: {
     success: {
       content: [{
@@ -135,7 +135,7 @@ export const sampleApiResponses = {
       }
     }
   },
-  
+
   custom: {
     success: {
       response: 'Custom API optimized text response.'
@@ -155,19 +155,19 @@ export const sampleMessages = {
     text: sampleTexts.medium,
     settings: sampleSettings.default
   },
-  
+
   optimizeWithTemplate: {
     type: 'OPTIMIZE_WITH_TEMPLATE',
     text: sampleTexts.short,
     templateId: 'professional',
     settings: sampleSettings.default
   },
-  
+
   testApi: {
     type: 'TEST_API',
     settings: sampleSettings.default
   },
-  
+
   optimizeResult: {
     type: 'OPTIMIZE_RESULT',
     data: {
@@ -175,7 +175,7 @@ export const sampleMessages = {
       templateUsed: 'General Improvement'
     }
   },
-  
+
   optimizationError: {
     type: 'OPTIMIZATION_ERROR',
     error: 'API request failed'
@@ -191,12 +191,12 @@ export const sampleElements = {
     type: 'text',
     value: sampleTexts.short
   },
-  
+
   textarea: {
     tagName: 'textarea',
     value: sampleTexts.medium
   },
-  
+
   contentEditable: {
     tagName: 'div',
     contentEditable: 'true',
@@ -238,7 +238,7 @@ export const testUtils = {
    * @returns {Object} Deep copy
    */
   deepCopy: (obj) => JSON.parse(JSON.stringify(obj)),
-  
+
   /**
    * Generate random text of specified length
    * @param {number} length - Text length
@@ -248,7 +248,7 @@ export const testUtils = {
     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ';
     return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
   },
-  
+
   /**
    * Create a mock timestamp
    * @param {number} offsetMs - Offset from current time in milliseconds

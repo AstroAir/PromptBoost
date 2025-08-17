@@ -63,24 +63,27 @@ This document provides the complete schema and reference for PromptBoost templat
 ## Core Properties
 
 ### id
+
 - **Type**: `string`
 - **Required**: Yes
 - **Format**: UUID v4 or kebab-case slug
-- **Examples**: 
+- **Examples**:
   - `"550e8400-e29b-41d4-a716-446655440000"`
   - `"professional-email-tone"`
 - **Validation**: Must be unique across all templates
 
 ### name
+
 - **Type**: `string`
 - **Required**: Yes
 - **Length**: 1-100 characters
-- **Examples**: 
+- **Examples**:
   - `"Professional Email Tone"`
   - `"Social Media Post Optimizer"`
 - **Validation**: Must not be empty, no leading/trailing whitespace
 
 ### description
+
 - **Type**: `string`
 - **Required**: Yes
 - **Length**: 10-500 characters
@@ -88,6 +91,7 @@ This document provides the complete schema and reference for PromptBoost templat
 - **Example**: `"Converts casual text into professional email format suitable for business communication"`
 
 ### category
+
 - **Type**: `string`
 - **Required**: Yes
 - **Enum Values**:
@@ -101,6 +105,7 @@ This document provides the complete schema and reference for PromptBoost templat
   - `"custom"` - User-defined category
 
 ### template
+
 - **Type**: `string`
 - **Required**: Yes
 - **Length**: 20-2000 characters
@@ -142,36 +147,43 @@ This document provides the complete schema and reference for PromptBoost templat
 ### Built-in Categories
 
 #### general
+
 - **Purpose**: Basic text improvement
 - **Use Cases**: General enhancement, cleanup, clarity
 - **Examples**: Grammar fixes, readability improvement
 
 #### tone
+
 - **Purpose**: Adjust text tone and style
 - **Use Cases**: Professional, casual, formal, friendly
 - **Examples**: Business tone, conversational style
 
 #### business
+
 - **Purpose**: Business communication
 - **Use Cases**: Emails, proposals, reports, presentations
 - **Examples**: Meeting notes, project updates
 
 #### creative
+
 - **Purpose**: Creative writing assistance
 - **Use Cases**: Stories, poetry, marketing copy
 - **Examples**: Character development, plot enhancement
 
 #### technical
+
 - **Purpose**: Technical documentation
 - **Use Cases**: API docs, user guides, specifications
 - **Examples**: Code documentation, troubleshooting guides
 
 #### social
+
 - **Purpose**: Social media optimization
 - **Use Cases**: Posts, tweets, captions
 - **Examples**: Engagement optimization, hashtag suggestions
 
 #### academic
+
 - **Purpose**: Academic writing
 - **Use Cases**: Papers, research, citations
 - **Examples**: Thesis writing, literature reviews
@@ -179,6 +191,7 @@ This document provides the complete schema and reference for PromptBoost templat
 ### Custom Categories
 
 Users can create custom categories:
+
 - **Format**: Lowercase, alphanumeric, hyphens allowed
 - **Length**: 3-20 characters
 - **Examples**: `"marketing"`, `"legal-docs"`, `"personal"`
@@ -246,6 +259,7 @@ const metadataValidation = {
 ### Default Template Set
 
 #### General Improvement
+
 ```javascript
 {
   "id": "general-improvement",
@@ -263,6 +277,7 @@ const metadataValidation = {
 ```
 
 #### Professional Tone
+
 ```javascript
 {
   "id": "professional-tone",
@@ -280,6 +295,7 @@ const metadataValidation = {
 ```
 
 #### Grammar Check
+
 ```javascript
 {
   "id": "grammar-check",
@@ -318,21 +334,25 @@ const metadataValidation = {
 ### Test Types
 
 #### validation
+
 - **Purpose**: Validate template syntax and structure
 - **Checks**: Placeholder presence, content length, prohibited patterns
 - **Score**: Pass/fail (100 or 0)
 
 #### structure
+
 - **Purpose**: Analyze template structure and quality
 - **Checks**: Instruction clarity, specificity, completeness
 - **Score**: 0-100 based on quality metrics
 
 #### performance
+
 - **Purpose**: Test API performance with template
 - **Checks**: Response time, success rate, token usage
 - **Score**: 0-100 based on performance metrics
 
 #### quality
+
 - **Purpose**: Evaluate output quality with sample inputs
 - **Checks**: Output relevance, improvement, consistency
 - **Score**: 0-100 based on quality assessment
@@ -481,6 +501,7 @@ const testConfig = {
 ```
 
 For implementation details, see:
+
 - [Template Management Guide](../guides/templates.md)
 - [Services API](../api/services.md)
 - [User Manual](../guides/user-manual.md)

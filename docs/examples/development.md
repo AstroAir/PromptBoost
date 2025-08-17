@@ -9,6 +9,7 @@ This guide provides practical examples for developers working on PromptBoost, in
 #### Example: Adding Word Count Display
 
 **1. Content Script Modification**
+
 ```javascript
 // content.js - Add word count functionality
 class PromptBoostContent {
@@ -43,6 +44,7 @@ class PromptBoostContent {
 ```
 
 **2. Options Page Integration**
+
 ```javascript
 // options.js - Add word count setting
 class PromptBoostOptions {
@@ -68,6 +70,7 @@ class PromptBoostOptions {
 ```
 
 **3. HTML Template Addition**
+
 ```html
 <!-- options.html - Add word count option -->
 <div class="setting-group">
@@ -86,6 +89,7 @@ class PromptBoostOptions {
 #### Example: Analytics Service
 
 **1. Service Implementation**
+
 ```javascript
 // services/AnalyticsService.js
 class AnalyticsService {
@@ -174,6 +178,7 @@ export default analyticsService;
 ```
 
 **2. Service Integration**
+
 ```javascript
 // background.js - Integrate analytics service
 import analyticsService from './services/AnalyticsService.js';
@@ -228,6 +233,7 @@ class PromptBoostBackground {
 #### Example: Adding Cohere Provider
 
 **1. Provider Implementation**
+
 ```javascript
 // providers/cohere/CohereProvider.js
 import { Provider } from '../base/Provider.js';
@@ -357,6 +363,7 @@ export default CohereProvider;
 ```
 
 **2. Provider Registration**
+
 ```javascript
 // providers/index.js - Register new provider
 import CohereProvider from './cohere/CohereProvider.js';
@@ -1085,6 +1092,7 @@ server.start();
 ```
 
 For more development information, see:
+
 - [Development Setup](../development/setup.md)
 - [Contributing Guidelines](../development/contributing.md)
 - [Testing Documentation](../development/testing.md)

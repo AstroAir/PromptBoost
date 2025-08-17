@@ -54,7 +54,7 @@ class Logger {
       performance: options.performance === true,
       ...options
     };
-    
+
     this.performanceMarks = new Map();
   }
 
@@ -72,7 +72,7 @@ class Logger {
         return LogLevel.DEBUG;
       }
     }
-    
+
     // Production mode - only show warnings and errors
     return LogLevel.WARN;
   }
@@ -136,7 +136,7 @@ class Logger {
 
     const formattedMessage = this.formatMessage(level, message);
     const consoleMethod = this.getConsoleMethod(level);
-    
+
     consoleMethod(formattedMessage, ...args);
   }
 
@@ -150,15 +150,15 @@ class Logger {
    */
   formatMessage(level, message) {
     const parts = [];
-    
+
     if (this.options.timestamp) {
       parts.push(`[${new Date().toISOString()}]`);
     }
-    
+
     parts.push(`[${LogLevelNames[level]}]`);
     parts.push(`[${this.module}]`);
     parts.push(message);
-    
+
     return parts.join(' ');
   }
 
@@ -192,17 +192,17 @@ class Logger {
    */
   startTiming(operation) {
     if (!this.options.performance) return;
-    
+
     const mark = `${this.module}_${operation}_start`;
     this.performanceMarks.set(operation, {
       start: performance.now(),
       mark
     });
-    
+
     if (performance.mark) {
       performance.mark(mark);
     }
-    
+
     this.debug(`Started timing: ${operation}`);
   }
 
@@ -215,22 +215,22 @@ class Logger {
    */
   endTiming(operation) {
     if (!this.options.performance) return 0;
-    
+
     const timing = this.performanceMarks.get(operation);
     if (!timing) {
       this.warn(`No timing started for operation: ${operation}`);
       return 0;
     }
-    
+
     const duration = performance.now() - timing.start;
     this.performanceMarks.delete(operation);
-    
+
     if (performance.mark && performance.measure) {
       const endMark = `${this.module}_${operation}_end`;
       performance.mark(endMark);
       performance.measure(`${this.module}_${operation}`, timing.mark, endMark);
     }
-    
+
     this.info(`${operation} completed in ${duration.toFixed(2)}ms`);
     return duration;
   }

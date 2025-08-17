@@ -173,7 +173,7 @@ class CohereProvider extends Provider {
       }
 
       const data = await response.json();
-      
+
       // Filter and format models for generation tasks
       const liveModels = data.models
         .filter(model => model.endpoints?.includes('generate'))
@@ -380,7 +380,7 @@ class CohereProvider extends Provider {
    */
   getUsageStats(inputTokens, outputTokens, model) {
     const modelInfo = this.models.find(m => m.id === model) || this.models[0];
-    
+
     const inputCost = (inputTokens / 1000) * modelInfo.inputCost;
     const outputCost = (outputTokens / 1000) * modelInfo.outputCost;
     const totalCost = inputCost + outputCost;

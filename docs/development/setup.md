@@ -41,6 +41,7 @@ PromptBoost follows the standard Chrome extension architecture with Manifest V3:
 ```
 
 ### Key Principles
+
 - **Separation of Concerns**: Each component has a specific responsibility
 - **Message-Driven Communication**: Components communicate via Chrome's message passing API
 - **Centralized API Management**: All LLM API calls handled by background script
@@ -50,12 +51,14 @@ PromptBoost follows the standard Chrome extension architecture with Manifest V3:
 ## Development Setup
 
 ### Prerequisites
+
 - Node.js 16+ and npm
 - Chrome or Chromium-based browser
 - Git for version control
 - Code editor with JavaScript support (VS Code recommended)
 
 ### Initial Setup
+
 ```bash
 # Clone repository
 git clone https://github.com/your-repo/promptboost.git
@@ -72,6 +75,7 @@ npm install
 ```
 
 ### Development Commands
+
 ```bash
 # Run tests
 npm test
@@ -122,18 +126,22 @@ PromptBoost/
 ## Core Components
 
 ### Background Script (`background.js`)
+
 **Purpose**: Service worker handling API calls and inter-component communication
 
 **Key Responsibilities**:
+
 - LLM API integration (OpenAI, Anthropic, Custom)
 - Message routing between components
 - Settings and template management
 - Extension lifecycle management
 
 **Main Classes**:
+
 - `PromptBoostBackground`: Main controller class
 
 **Key Methods**:
+
 ```javascript
 handleOptimizeText(message, sender)      // Process optimization requests
 handleOptimizeWithTemplate(message, sender) // Template-based optimization
@@ -143,9 +151,11 @@ callAnthropic(prompt, apiKey, model)     // Anthropic-specific API calls
 ```
 
 ### Content Script (`content.js`)
+
 **Purpose**: Handles user interactions and text manipulation on web pages
 
 **Key Responsibilities**:
+
 - Triple spacebar detection
 - Text selection and replacement
 - Undo functionality
@@ -153,9 +163,11 @@ callAnthropic(prompt, apiKey, model)     // Anthropic-specific API calls
 - UI overlays and notifications
 
 **Main Classes**:
+
 - `PromptBoostContent`: Main content script controller
 
 **Key Methods**:
+
 ```javascript
 handleKeyDown(event)                     // Keyboard event handling
 recordSpacebarPress()                    // Spacebar detection logic
@@ -165,21 +177,26 @@ showLoadingOverlay()                     # Loading UI management
 ```
 
 ### Popup Interface (`popup/popup.js`)
+
 **Purpose**: Extension popup for quick access and status display
 
 **Key Responsibilities**:
+
 - Extension toggle functionality
 - Status display and updates
 - Quick settings access
 - API connection testing
 
 **Main Classes**:
+
 - `PromptBoostPopup`: Popup controller
 
 ### Options Page (`options/options.js`)
+
 **Purpose**: Comprehensive settings and configuration interface
 
 **Key Responsibilities**:
+
 - Settings management and persistence
 - Provider configuration
 - Template CRUD operations
@@ -187,11 +204,13 @@ showLoadingOverlay()                     # Loading UI management
 - Form validation and error handling
 
 **Main Classes**:
+
 - `PromptBoostOptions`: Options page controller
 
 ## Development Workflow
 
 ### 1. Feature Development
+
 ```bash
 # Create feature branch
 git checkout -b feature/new-feature
@@ -211,6 +230,7 @@ git push origin feature/new-feature
 ```
 
 ### 2. Testing Workflow
+
 ```bash
 # Run unit tests during development
 npm run test:watch
@@ -226,6 +246,7 @@ npm run test:coverage
 ```
 
 ### 3. Code Quality
+
 ```bash
 # Lint code
 npm run lint
@@ -242,6 +263,7 @@ npm run format
 ### Adding New LLM Providers
 
 1. **Create Provider Class**:
+
 ```javascript
 // providers/newprovider/NewProvider.js
 class NewProvider extends Provider {
@@ -261,18 +283,22 @@ class NewProvider extends Provider {
 ```
 
 2. **Register Provider**:
+
 ```javascript
 // In background.js
 providerRegistry.register('newprovider', NewProvider);
 ```
 
 3. **Update UI**:
+
 - Add provider to options page dropdown
 - Add configuration fields
 - Update validation logic
 
 ### Provider Interface Requirements
+
 All providers must implement:
+
 - `authenticate(credentials)`: Authentication with API
 - `callAPI(prompt, options)`: Text generation
 - `validateConfig(config)`: Configuration validation
@@ -282,16 +308,19 @@ All providers must implement:
 ## Testing Strategy
 
 ### Unit Testing
+
 - **Framework**: Jest with Chrome extension mocks
 - **Coverage**: Minimum 80% for all components
 - **Scope**: Individual functions and classes in isolation
 
 ### Integration Testing
+
 - **Framework**: Puppeteer for browser automation
 - **Scope**: End-to-end user workflows
 - **Environment**: Real browser with loaded extension
 
 ### Manual Testing
+
 - **Test Page**: Use `test.html` for controlled testing
 - **Real World**: Test on various websites
 - **Edge Cases**: Test with different text types and lengths
@@ -299,6 +328,7 @@ All providers must implement:
 ## Debugging Guide
 
 ### Chrome DevTools
+
 ```javascript
 // Background script debugging
 chrome://extensions/ → PromptBoost → "service worker" link
@@ -314,6 +344,7 @@ Right-click on options page → "Inspect"
 ```
 
 ### Logging
+
 ```javascript
 // Use built-in logger
 const logger = new Logger('ComponentName');
@@ -325,6 +356,7 @@ chrome.storage.sync.set({ debugLogging: true });
 ```
 
 ### Common Issues
+
 1. **Message passing failures**: Check sender/receiver setup
 2. **API errors**: Verify API keys and endpoints
 3. **Content script not loading**: Check manifest permissions
@@ -333,16 +365,19 @@ chrome.storage.sync.set({ debugLogging: true });
 ## Performance Considerations
 
 ### Memory Management
+
 - Use weak references for DOM elements
 - Clean up event listeners on component destruction
 - Implement proper garbage collection for large objects
 
 ### Network Optimization
+
 - Batch API requests when possible
 - Implement request caching for repeated calls
 - Use connection pooling for multiple requests
 
 ### UI Responsiveness
+
 - Use `requestAnimationFrame` for smooth animations
 - Debounce user input to prevent excessive API calls
 - Implement progressive loading for large datasets
@@ -350,21 +385,25 @@ chrome.storage.sync.set({ debugLogging: true });
 ## Security Guidelines
 
 ### API Key Protection
+
 - Never log API keys or include them in error messages
 - Store keys in Chrome's secure storage only
 - Validate and sanitize all user inputs
 
 ### Content Security Policy
+
 - Follow strict CSP guidelines
 - Avoid inline scripts and styles
 - Use nonce-based CSP where necessary
 
 ### Permission Management
+
 - Request minimal necessary permissions
 - Explain permission usage to users
 - Regularly audit and remove unused permissions
 
 ### Data Handling
+
 - Encrypt sensitive data before storage
 - Implement proper input validation
 - Use HTTPS for all external communications
@@ -372,24 +411,28 @@ chrome.storage.sync.set({ debugLogging: true });
 ## Code Style Guidelines
 
 ### JavaScript Standards
+
 - Use ES6+ features consistently
 - Follow JSDoc documentation standards
 - Implement proper error handling
 - Use async/await over Promises where possible
 
 ### File Organization
+
 - Group related functionality in modules
 - Use consistent naming conventions
 - Keep files under 500 lines when possible
 - Implement proper import/export patterns
 
 ### Documentation Standards
+
 - JSDoc for all public APIs
 - Inline comments for complex logic
 - README files for each major component
 - Keep documentation up-to-date with code changes
 
 For more information, see:
+
 - [CONTRIBUTING.md](contributing.md) - Contribution guidelines
 - [TESTING.md](testing.md) - Testing documentation
 - [README.md](../README.md) - User documentation

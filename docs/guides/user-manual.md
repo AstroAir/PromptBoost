@@ -45,6 +45,7 @@ PromptBoost is a browser extension that enhances your text using AI. Simply sele
 4. **Your text is automatically replaced** with the optimized version
 
 **Example:**
+
 - Original: "hey can u help me with this thing"
 - Optimized: "Hello, could you please help me with this matter?"
 
@@ -90,6 +91,7 @@ PromptBoost keeps track of all your optimizations:
 ### Quick Template Selection
 
 Enable quick template selection in settings to:
+
 - See template options after selecting text
 - Choose different templates for different contexts
 - Access recently used templates quickly
@@ -97,6 +99,7 @@ Enable quick template selection in settings to:
 ### Per-Page Settings
 
 Configure different settings for different websites:
+
 - **Gmail**: Use professional tone templates
 - **Twitter**: Use casual, concise templates
 - **Documents**: Use formal writing templates
@@ -108,16 +111,19 @@ Configure different settings for different websites:
 PromptBoost comes with several pre-built templates:
 
 #### General Templates
+
 - **General Improvement**: Enhance text while maintaining tone
 - **Grammar Check**: Fix grammar and spelling errors
 - **Summarize**: Create concise summaries
 
 #### Tone Templates
+
 - **Professional Tone**: Make text more formal and business-appropriate
 - **Casual Tone**: Make text more conversational and friendly
 - **Academic Tone**: Enhance text for academic writing
 
 #### Specialized Templates
+
 - **Email Enhancement**: Optimize text for email communication
 - **Social Media**: Optimize for social media posts
 - **Technical Writing**: Improve technical documentation
@@ -125,11 +131,13 @@ PromptBoost comes with several pre-built templates:
 ### Using Templates
 
 #### Quick Access
+
 1. **Select text** and press spacebar 3 times
 2. **Choose template** from the popup (if enabled)
 3. **Text is optimized** with the selected template
 
 #### Template Selector
+
 1. **Select text** and press Ctrl+Shift+T
 2. **Browse available templates** by category
 3. **Preview template** descriptions
@@ -150,6 +158,7 @@ Create your own templates for specific needs:
 5. **Save and use** your custom template
 
 **Example Custom Template:**
+
 ```
 Name: Meeting Notes
 Description: Converts rough notes into structured meeting minutes
@@ -162,17 +171,20 @@ Template: Please convert these rough meeting notes into well-structured, profess
 ### General Settings
 
 #### Extension Control
+
 - **Enable/Disable**: Toggle the extension on/off
 - **Detection Window**: Time window for triple spacebar detection (500-3000ms)
 - **Keyboard Shortcuts**: Customize keyboard shortcuts
 
 #### Provider Settings
+
 - **AI Provider**: Choose your preferred AI service
 - **API Key**: Enter your provider's API key
 - **Model**: Select specific model (GPT-4, Claude-3, etc.)
 - **Custom Endpoint**: For custom API configurations
 
 #### Template Settings
+
 - **Default Template**: Choose your default optimization template
 - **Quick Selection**: Enable template chooser popup
 - **Recent Templates**: Number of recent templates to show
@@ -180,18 +192,21 @@ Template: Please convert these rough meeting notes into well-structured, profess
 ### Advanced Settings
 
 #### Performance
+
 - **Request Timeout**: Maximum time to wait for API response
 - **Retry Attempts**: Number of retry attempts for failed requests
 - **Max Tokens**: Maximum tokens for AI generation
 - **Temperature**: Creativity level for AI responses (0-1)
 
 #### Privacy & Data
+
 - **History Tracking**: Enable/disable optimization history
 - **Max History Items**: Maximum number of history entries
 - **Auto-clear History**: Automatically clear old history
 - **Debug Logging**: Enable detailed logging for troubleshooting
 
 #### Notifications
+
 - **Show Notifications**: Enable/disable success notifications
 - **Notification Duration**: How long notifications stay visible
 - **Error Notifications**: Show error messages
@@ -208,6 +223,7 @@ Set different configurations for different websites:
 6. **Save configuration**
 
 **Use Cases:**
+
 - **Gmail**: Professional templates, formal tone
 - **Twitter**: Casual templates, character limits
 - **Google Docs**: Academic templates, detailed improvements
@@ -225,6 +241,7 @@ Set different configurations for different websites:
 ### Keyboard Shortcuts
 
 Master these shortcuts for faster workflow:
+
 - **Ctrl+Shift+Space**: Quick optimize
 - **Ctrl+Shift+T**: Template selector
 - **Ctrl+Z**: Undo (within 30 seconds)
@@ -233,6 +250,7 @@ Master these shortcuts for faster workflow:
 ### Template Selection
 
 Choose the right template for your needs:
+
 - **Email**: Use "Professional Tone" or "Email Enhancement"
 - **Social Media**: Use "Casual Tone" or "Social Media"
 - **Documents**: Use "Academic Tone" or "General Improvement"
@@ -250,6 +268,7 @@ Choose the right template for your needs:
 PromptBoost works on virtually all websites and applications:
 
 ### Fully Supported
+
 - **Email**: Gmail, Outlook, Yahoo Mail
 - **Social Media**: Twitter, Facebook, LinkedIn, Instagram
 - **Documents**: Google Docs, Microsoft Office Online, Notion
@@ -258,6 +277,7 @@ PromptBoost works on virtually all websites and applications:
 - **Forms**: Any text input field or textarea
 
 ### Special Considerations
+
 - **Rich Text Editors**: May require selecting text differently
 - **Protected Sites**: Some banking/secure sites may restrict modifications
 - **Mobile**: Works on mobile browsers with text selection support
@@ -267,21 +287,25 @@ PromptBoost works on virtually all websites and applications:
 ### Common Issues
 
 #### Extension Not Working
+
 - Check if extension is enabled in popup
 - Verify API key is configured correctly
 - Test API connection in settings
 
 #### Triple Spacebar Not Detected
+
 - Adjust detection window in settings (try 1500ms)
 - Ensure text is selected before triggering
 - Try keyboard shortcut instead (Ctrl+Shift+Space)
 
 #### Text Not Replacing
+
 - Some websites prevent text modification
 - Try on a different website to test
 - Check browser console for error messages
 
 #### API Errors
+
 - Verify API key is valid and has credits
 - Check internet connection
 - Try different AI provider
@@ -289,6 +313,7 @@ PromptBoost works on virtually all websites and applications:
 ### Getting Help
 
 If you need additional help:
+
 1. **Check Settings**: Review your configuration
 2. **Test on Simple Site**: Try on a basic text field
 3. **Check Console**: Look for error messages in browser console
@@ -299,6 +324,7 @@ For detailed troubleshooting, see the [Troubleshooting Guide](troubleshooting.md
 ## Next Steps
 
 Now that you know the basics:
+
 1. **Explore Templates**: Try different templates for various use cases
 2. **Create Custom Templates**: Build templates for your specific needs
 3. **Configure Per-Page Settings**: Optimize settings for your favorite sites

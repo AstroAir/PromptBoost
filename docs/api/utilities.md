@@ -20,6 +20,7 @@ const errorHandler = ErrorHandler.getInstance();
 Processes and categorizes errors with appropriate user messaging.
 
 **Parameters:**
+
 - `error` (Error|string): The error to handle
 - `context` (Object, optional): Additional context information
   - `component` (string): Component where error occurred
@@ -29,6 +30,7 @@ Processes and categorizes errors with appropriate user messaging.
 **Returns:** Object with error details and user message
 
 **Example:**
+
 ```javascript
 try {
   await apiCall();
@@ -49,11 +51,13 @@ try {
 Categorizes errors into predefined types for consistent handling.
 
 **Parameters:**
+
 - `error` (Error): Error to categorize
 
 **Returns:** Object with category and severity information
 
 **Categories:**
+
 - `VALIDATION`: Input validation errors
 - `API`: API-related errors  
 - `NETWORK`: Network connectivity issues
@@ -66,6 +70,7 @@ Categorizes errors into predefined types for consistent handling.
 Creates user-friendly error messages from technical errors.
 
 **Parameters:**
+
 - `error` (Error): Original error
 - `category` (string): Error category
 
@@ -78,6 +83,7 @@ Creates user-friendly error messages from technical errors.
 Suggests recovery actions for different error types.
 
 **Parameters:**
+
 - `error` (Error): Original error
 - `category` (string): Error category
 
@@ -101,6 +107,7 @@ const logger = new Logger('ComponentName');
 Logs debug information (only in debug mode).
 
 **Parameters:**
+
 - `message` (string): Log message
 - `data` (any, optional): Additional data to log
 
@@ -109,6 +116,7 @@ Logs debug information (only in debug mode).
 Logs informational messages.
 
 **Parameters:**
+
 - `message` (string): Log message
 - `data` (any, optional): Additional data to log
 
@@ -117,6 +125,7 @@ Logs informational messages.
 Logs warning messages.
 
 **Parameters:**
+
 - `message` (string): Warning message
 - `data` (any, optional): Additional data to log
 
@@ -125,6 +134,7 @@ Logs warning messages.
 Logs error messages with stack traces.
 
 **Parameters:**
+
 - `message` (string): Error description
 - `error` (Error, optional): Error object with stack trace
 
@@ -135,6 +145,7 @@ Logs error messages with stack traces.
 Starts timing an operation for performance monitoring.
 
 **Parameters:**
+
 - `operation` (string): Operation name
 
 #### endTiming(operation)
@@ -142,11 +153,13 @@ Starts timing an operation for performance monitoring.
 Ends timing and logs the duration.
 
 **Parameters:**
+
 - `operation` (string): Operation name
 
 **Returns:** number - Duration in milliseconds
 
 **Example:**
+
 ```javascript
 logger.startTiming('template_validation');
 await validateTemplate(template);
@@ -161,6 +174,7 @@ const duration = logger.endTiming('template_validation');
 Sets the minimum log level to output.
 
 **Parameters:**
+
 - `level` (string): Log level ('debug', 'info', 'warn', 'error')
 
 #### enableDebug(enabled)
@@ -168,6 +182,7 @@ Sets the minimum log level to output.
 Enables or disables debug logging.
 
 **Parameters:**
+
 - `enabled` (boolean): Whether to enable debug logging
 
 ## ConfigValidator
@@ -181,15 +196,18 @@ Validates configuration objects against defined schemas.
 Validates a configuration object against a schema.
 
 **Parameters:**
+
 - `config` (Object): Configuration to validate
 - `schema` (Object): Validation schema
 
 **Returns:** Object with validation results
+
 - `isValid` (boolean): Whether configuration is valid
 - `errors` (Array<string>): List of validation errors
 - `warnings` (Array<string>): List of validation warnings
 
 **Example:**
+
 ```javascript
 const schema = {
   apiKey: { required: true, type: 'string', minLength: 10 },
@@ -208,6 +226,7 @@ if (!result.isValid) {
 Validates API key format for specific providers.
 
 **Parameters:**
+
 - `apiKey` (string): API key to validate
 - `provider` (string): Provider name
 
@@ -218,6 +237,7 @@ Validates API key format for specific providers.
 Validates template structure and content.
 
 **Parameters:**
+
 - `template` (Object): Template to validate
 
 **Returns:** Object with validation result
@@ -233,6 +253,7 @@ Common utilities for API communication and request handling.
 Makes HTTP requests with built-in error handling and retry logic.
 
 **Parameters:**
+
 - `url` (string): Request URL
 - `options` (Object): Request options
   - `method` (string): HTTP method
@@ -244,6 +265,7 @@ Makes HTTP requests with built-in error handling and retry logic.
 **Returns:** Promise<Response> - Fetch response object
 
 **Example:**
+
 ```javascript
 const response = await ApiHelper.makeRequest('https://api.example.com/data', {
   method: 'POST',
@@ -259,6 +281,7 @@ const response = await ApiHelper.makeRequest('https://api.example.com/data', {
 Processes API error responses into standardized error objects.
 
 **Parameters:**
+
 - `response` (Response): Fetch response object
 - `context` (Object): Request context information
 
@@ -269,6 +292,7 @@ Processes API error responses into standardized error objects.
 Builds appropriate headers for different API providers.
 
 **Parameters:**
+
 - `apiKey` (string): API key
 - `provider` (string): Provider name
 - `additionalHeaders` (Object, optional): Additional headers
@@ -282,6 +306,7 @@ Builds appropriate headers for different API providers.
 Adds timeout functionality to promises.
 
 **Parameters:**
+
 - `promise` (Promise): Promise to add timeout to
 - `timeoutMs` (number): Timeout in milliseconds
 
@@ -292,6 +317,7 @@ Adds timeout functionality to promises.
 Adds retry logic to functions.
 
 **Parameters:**
+
 - `fn` (Function): Function to retry
 - `options` (Object): Retry options
   - `retries` (number): Number of retry attempts
@@ -311,6 +337,7 @@ Utilities for Chrome storage operations.
 Gets values from Chrome storage.
 
 **Parameters:**
+
 - `keys` (string|Array<string>|Object): Keys to retrieve
 
 **Returns:** Promise<Object> - Retrieved values
@@ -320,6 +347,7 @@ Gets values from Chrome storage.
 Sets values in Chrome storage.
 
 **Parameters:**
+
 - `items` (Object): Key-value pairs to store
 
 **Returns:** Promise<void>
@@ -329,6 +357,7 @@ Sets values in Chrome storage.
 Removes values from Chrome storage.
 
 **Parameters:**
+
 - `keys` (string|Array<string>): Keys to remove
 
 **Returns:** Promise<void>
@@ -346,6 +375,7 @@ Clears all values from Chrome storage.
 Migrates settings between versions.
 
 **Parameters:**
+
 - `currentVersion` (number): Current settings version
 - `targetVersion` (number): Target settings version
 
@@ -362,6 +392,7 @@ Utilities for text processing and manipulation.
 Sanitizes text input for safe processing.
 
 **Parameters:**
+
 - `text` (string): Text to sanitize
 
 **Returns:** string - Sanitized text
@@ -371,6 +402,7 @@ Sanitizes text input for safe processing.
 Truncates text to specified length with ellipsis.
 
 **Parameters:**
+
 - `text` (string): Text to truncate
 - `maxLength` (number): Maximum length
 
@@ -381,6 +413,7 @@ Truncates text to specified length with ellipsis.
 Estimates token count for different AI models.
 
 **Parameters:**
+
 - `text` (string): Text to count tokens for
 - `model` (string): AI model name
 
@@ -391,6 +424,7 @@ Estimates token count for different AI models.
 Extracts placeholders from template text.
 
 **Parameters:**
+
 - `template` (string): Template text
 
 **Returns:** Array<string> - List of placeholders found
@@ -406,6 +440,7 @@ Utilities for DOM manipulation and interaction.
 Checks if an element is editable.
 
 **Parameters:**
+
 - `element` (Element): DOM element to check
 
 **Returns:** boolean - Whether element is editable
@@ -421,6 +456,7 @@ Gets currently selected text from the page.
 Replaces selected text with new text.
 
 **Parameters:**
+
 - `newText` (string): Text to replace selection with
 
 **Returns:** boolean - Whether replacement was successful
@@ -430,6 +466,7 @@ Replaces selected text with new text.
 Creates notification elements.
 
 **Parameters:**
+
 - `message` (string): Notification message
 - `type` (string): Notification type ('info', 'success', 'error', 'warning')
 
@@ -523,6 +560,7 @@ async function loadUserSettings() {
 ```
 
 For more information, see:
+
 - [Background Script API](background.md)
 - [Services API](services.md)
 - [Development Guide](../development/setup.md)

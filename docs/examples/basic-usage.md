@@ -9,16 +9,19 @@ This guide provides practical examples of how to use PromptBoost for common text
 **Scenario**: Converting casual text to professional email format
 
 **Original Text**:
+
 ```
 hey john, can u send me the report asap? need it for the meeting tomorrow. thx
 ```
 
 **Steps**:
+
 1. Select the text in your email client
 2. Press spacebar 3 times quickly
 3. Choose "Professional Tone" template (or use default)
 
 **Result**:
+
 ```
 Hello John,
 
@@ -32,16 +35,19 @@ Thank you for your assistance.
 **Scenario**: Optimizing a social media post for better engagement
 
 **Original Text**:
+
 ```
 just finished my workout feeling great gonna eat some food now
 ```
 
 **Steps**:
+
 1. Select text in your social media platform
 2. Press Ctrl+Shift+T to open template selector
 3. Choose "Social Media" template
 
 **Result**:
+
 ```
 Just crushed my workout and feeling amazing! 💪 Time to refuel with some delicious food. What's your favorite post-workout meal? #fitness #workout #motivation
 ```
@@ -51,16 +57,19 @@ Just crushed my workout and feeling amazing! 💪 Time to refuel with some delic
 **Scenario**: Improving academic or professional writing
 
 **Original Text**:
+
 ```
 The meeting went ok. We talked about stuff and made some decisions about the project.
 ```
 
 **Steps**:
+
 1. Select text in Google Docs or Word
 2. Right-click and select "PromptBoost"
 3. Choose "Academic Tone" or "Professional Tone"
 
 **Result**:
+
 ```
 The meeting proceeded successfully and yielded productive discussions. We addressed key project components and reached several important strategic decisions regarding project implementation and timeline.
 ```
@@ -70,7 +79,9 @@ The meeting proceeded successfully and yielded productive discussions. We addres
 ### Business Communication
 
 #### Meeting Notes
+
 **Before**:
+
 ```
 - talked about budget
 - john said we need more money
@@ -80,6 +91,7 @@ The meeting proceeded successfully and yielded productive discussions. We addres
 
 **Template**: "Meeting Notes Formatter" (custom template)
 **After**:
+
 ```
 Meeting Summary:
 • Budget Discussion: Team reviewed current budget allocation
@@ -89,13 +101,16 @@ Meeting Summary:
 ```
 
 #### Project Updates
+
 **Before**:
+
 ```
 project is going good, finished most of the work, few things left to do
 ```
 
 **Template**: "Professional Tone"
 **After**:
+
 ```
 The project is progressing well with the majority of deliverables completed. We have a few remaining tasks to finalize before project completion.
 ```
@@ -103,25 +118,31 @@ The project is progressing well with the majority of deliverables completed. We 
 ### Content Creation
 
 #### Blog Post Introduction
+
 **Before**:
+
 ```
 today i want to talk about productivity tips that actually work
 ```
 
 **Template**: "Creative Writing"
 **After**:
+
 ```
 In today's fast-paced world, discovering productivity strategies that deliver real results can be transformative. Let's explore proven techniques that can revolutionize your daily workflow and help you achieve more meaningful outcomes.
 ```
 
 #### Product Description
+
 **Before**:
+
 ```
 this phone is really good has nice camera and battery lasts long
 ```
 
 **Template**: "Marketing Copy" (custom template)
 **After**:
+
 ```
 Experience exceptional mobile technology with this premium smartphone featuring an advanced camera system that captures stunning photos and an extended-life battery that keeps you connected throughout your busiest days.
 ```
@@ -129,25 +150,31 @@ Experience exceptional mobile technology with this premium smartphone featuring 
 ### Academic Writing
 
 #### Research Summary
+
 **Before**:
+
 ```
 the study shows that people who exercise are happier than people who dont
 ```
 
 **Template**: "Academic Tone"
 **After**:
+
 ```
 The research findings demonstrate a significant positive correlation between regular physical exercise and reported levels of psychological well-being, with active individuals showing measurably higher happiness indices compared to sedentary control groups.
 ```
 
 #### Thesis Statement
+
 **Before**:
+
 ```
 i think social media affects how teenagers think about themselves
 ```
 
 **Template**: "Academic Tone"
 **After**:
+
 ```
 This research examines the significant impact of social media platforms on adolescent self-perception and identity formation, analyzing how digital interactions influence teenage psychological development and self-esteem.
 ```
@@ -157,6 +184,7 @@ This research examines the significant impact of social media platforms on adole
 ### Gmail
 
 **Configuration**:
+
 ```javascript
 // Per-page settings for Gmail
 {
@@ -168,6 +196,7 @@ This research examines the significant impact of social media platforms on adole
 ```
 
 **Example Usage**:
+
 1. Compose new email
 2. Type casual message
 3. Select text and use triple spacebar
@@ -176,6 +205,7 @@ This research examines the significant impact of social media platforms on adole
 ### Twitter/X
 
 **Configuration**:
+
 ```javascript
 // Per-page settings for Twitter
 {
@@ -193,6 +223,7 @@ This research examines the significant impact of social media platforms on adole
 ### Google Docs
 
 **Configuration**:
+
 ```javascript
 // Per-page settings for Google Docs
 {
@@ -204,6 +235,7 @@ This research examines the significant impact of social media platforms on adole
 ```
 
 **Usage Pattern**:
+
 1. Write rough draft
 2. Select paragraphs one by one
 3. Use PromptBoost to refine each section
@@ -212,6 +244,7 @@ This research examines the significant impact of social media platforms on adole
 ### Slack
 
 **Configuration**:
+
 ```javascript
 // Per-page settings for Slack
 {
@@ -276,6 +309,7 @@ This research examines the significant impact of social media platforms on adole
 ### Context Menu with Templates
 
 The context menu shows:
+
 ```
 PromptBoost
 ├── Quick Optimize
@@ -298,8 +332,10 @@ PromptBoost
 ### Common Error Scenarios
 
 #### No Text Selected
+
 **Error**: "Please select some text first"
-**Solution**: 
+**Solution**:
+
 ```
 1. Highlight text with mouse
 2. Ensure text is actually selected (appears highlighted)
@@ -307,8 +343,10 @@ PromptBoost
 ```
 
 #### Text Too Long
+
 **Error**: "Text too long (maximum 10,000 characters)"
 **Solution**:
+
 ```
 1. Select smaller portion of text
 2. Break large text into smaller chunks
@@ -316,8 +354,10 @@ PromptBoost
 ```
 
 #### API Key Issues
+
 **Error**: "API key not configured" or "API request failed: 401"
 **Solution**:
+
 ```
 1. Open PromptBoost settings
 2. Verify API key is entered correctly
@@ -328,6 +368,7 @@ PromptBoost
 ### Recovery Strategies
 
 #### When Optimization Fails
+
 ```
 1. Check internet connection
 2. Try different AI provider
@@ -337,6 +378,7 @@ PromptBoost
 ```
 
 #### When Results Are Poor
+
 ```
 1. Try different template
 2. Adjust temperature setting
@@ -371,24 +413,28 @@ PromptBoost
 ## Best Practices
 
 ### Text Selection
+
 - **Select complete thoughts**: Full sentences work better than fragments
 - **Include context**: Select enough text to provide context
 - **Avoid partial words**: Don't cut off words in the middle
 - **Consider formatting**: Some formatting may be lost
 
 ### Template Usage
+
 - **Match template to purpose**: Use appropriate template for your goal
 - **Start with built-in templates**: Learn from proven templates
 - **Create custom templates**: For recurring specific needs
 - **Test templates**: Verify templates work as expected
 
 ### Review and Editing
+
 - **Always review results**: AI isn't perfect, check the output
 - **Make manual adjustments**: Fine-tune as needed
 - **Learn from results**: Improve your template selection over time
 - **Use undo feature**: Don't hesitate to undo and try again
 
 For more advanced examples, see:
+
 - [Template Examples](templates.md)
 - [Provider Integration Examples](providers.md)
 - [Development Examples](development.md)

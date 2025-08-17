@@ -35,7 +35,7 @@ class OpenAIProvider extends Provider {
     this.baseURL = config.baseURL || 'https://api.openai.com/v1';
     this.apiKey = config.apiKey || null;
     this.organization = config.organization || null;
-    
+
     // Default models
     this.defaultModel = 'gpt-3.5-turbo';
     this.availableModels = [
@@ -93,7 +93,7 @@ class OpenAIProvider extends Provider {
       const data = await response.json();
       this.availableModels = data.data?.map(model => model.id) || this.availableModels;
       this.isAuthenticated = true;
-      
+
       return true;
     } catch (error) {
       this.isAuthenticated = false;
@@ -250,13 +250,13 @@ class OpenAIProvider extends Provider {
     }
 
     const data = await response.json();
-    
+
     // Update rate limit info
     this.updateRateLimitFromHeaders(response.headers);
-    
+
     // Validate response
     ApiHelper.validateResponse(data, 'openai');
-    
+
     return ApiHelper.extractResponseText(data, 'openai');
   }
 

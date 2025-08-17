@@ -289,22 +289,22 @@ describe('PromptBoostContent', () => {
   beforeEach(async () => {
     // Reset DOM
     document.body.innerHTML = '';
-    
+
     // Reset Chrome API mocks
     global.chromeTestUtils.resetMocks();
     global.chromeTestUtils.setStorageData(sampleSettings.default);
-    
+
     // Create mock elements
     mockInput = global.domTestUtils.createMockInput('text', sampleTexts.short);
     mockTextarea = global.domTestUtils.createMockInput('textarea', sampleTexts.medium);
-    
+
     document.body.appendChild(mockInput);
     document.body.appendChild(mockTextarea);
-    
+
     // Create fresh instance
     content = new PromptBoostContent();
     await content.init();
-    
+
     // Mock timers
     jest.useFakeTimers();
   });

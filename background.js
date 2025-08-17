@@ -781,16 +781,17 @@ class PromptBoostBackground {
           openrouter_code_verifier: codeVerifier
         });
 
-        // Build OAuth URL
+        // Build OAuth URL using OpenRouter's PKCE format
         const redirectUri = chrome.identity.getRedirectURL('oauth');
         const authUrl = new URL('https://openrouter.ai/auth');
-        authUrl.searchParams.set('response_type', 'code');
-        authUrl.searchParams.set('client_id', 'promptboost-extension');
-        authUrl.searchParams.set('redirect_uri', redirectUri);
-        authUrl.searchParams.set('scope', 'read write');
+        authUrl.searchParams.set('callback_url', redirectUri);
         authUrl.searchParams.set('code_challenge', codeChallenge);
         authUrl.searchParams.set('code_challenge_method', 'S256');
-        authUrl.searchParams.set('state', 'promptboost-auth');
+
+        this.logger.info('Starting OpenRouter OAuth flow', {
+          redirectUri,
+          authUrl: authUrl.toString()
+        });
 
         // Launch OAuth flow
         chrome.identity.launchWebAuthFlow({
@@ -798,6 +799,7 @@ class PromptBoostBackground {
           interactive: true
         }, async (responseUrl) => {
           if (chrome.runtime.lastError) {
+            this.logger.error('OAuth flow failed', chrome.runtime.lastError);
             chrome.runtime.sendMessage({
               type: 'OPENROUTER_AUTH_ERROR',
               error: chrome.runtime.lastError.message
@@ -810,6 +812,7 @@ class PromptBoostBackground {
 
       }
     } catch (error) {
+      this.logger.error('OpenRouter auth error', error);
       chrome.runtime.sendMessage({
         type: 'OPENROUTER_AUTH_ERROR',
         error: error.message
@@ -819,52 +822,61 @@ class PromptBoostBackground {
 
   async handleOAuthCallback(responseUrl, codeVerifier) {
     try {
+      this.logger.info('Processing OAuth callback', { responseUrl });
+
       const url = new URL(responseUrl);
       const code = url.searchParams.get('code');
-      const state = url.searchParams.get('state');
       const error = url.searchParams.get('error');
 
       if (error) {
         throw new Error(`OAuth error: ${error}`);
       }
 
-      if (!code || state !== 'promptboost-auth') {
-        throw new Error('Invalid OAuth response');
+      if (!code) {
+        throw new Error('No authorization code received');
       }
 
-      // Exchange code for token
-      const redirectUri = chrome.identity.getRedirectURL('oauth');
-      const tokenResponse = await fetch('https://openrouter.ai/api/v1/auth/token', {
+      // Exchange code for API key using OpenRouter's endpoint
+      const tokenResponse = await fetch('https://openrouter.ai/api/v1/auth/keys', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          grant_type: 'authorization_code',
-          client_id: 'promptboost-extension',
           code: code,
-          redirect_uri: redirectUri,
-          code_verifier: codeVerifier
+          code_verifier: codeVerifier,
+          code_challenge_method: 'S256'
         })
       });
 
       if (!tokenResponse.ok) {
         const errorData = await tokenResponse.json().catch(() => ({}));
-        throw new Error(errorData.error_description || 'Failed to exchange code for token');
+        this.logger.error('Token exchange failed', {
+          status: tokenResponse.status,
+          statusText: tokenResponse.statusText,
+          errorData
+        });
+        throw new Error(errorData.error || errorData.message || `HTTP ${tokenResponse.status}: Failed to exchange code for API key`);
       }
 
       const tokenData = await tokenResponse.json();
+      this.logger.info('Token exchange successful', {
+        hasKey: !!tokenData.key,
+        userId: tokenData.user_id
+      });
 
       // Clean up stored verifier
       await chrome.storage.local.remove(['openrouter_code_verifier']);
 
-      // Send success message with token
+      // Send success message with API key (OpenRouter returns 'key', not 'access_token')
       chrome.runtime.sendMessage({
         type: 'OPENROUTER_AUTH_SUCCESS',
-        token: tokenData.access_token
+        token: tokenData.key,
+        userId: tokenData.user_id
       });
 
     } catch (error) {
+      this.logger.error('OAuth callback error', error);
       chrome.runtime.sendMessage({
         type: 'OPENROUTER_AUTH_ERROR',
         error: error.message

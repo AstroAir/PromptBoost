@@ -11,6 +11,7 @@ new PromptBoostBackground()
 ```
 
 Creates a new instance of the background service worker. Automatically initializes:
+
 - Logger system
 - Template and Configuration managers
 - Provider system
@@ -24,6 +25,7 @@ Creates a new instance of the background service worker. Automatically initializ
 Calls the configured LLM API to optimize text with comprehensive error handling and retry logic.
 
 **Parameters:**
+
 - `text` (string): The text to be optimized
 - `settings` (Object): API configuration settings
   - `provider` (string): The LLM provider ('openai', 'anthropic', 'gemini', etc.)
@@ -40,6 +42,7 @@ Calls the configured LLM API to optimize text with comprehensive error handling 
 **Throws:** Error with categorized error types
 
 **Example:**
+
 ```javascript
 const settings = {
   provider: 'openai',
@@ -57,6 +60,7 @@ const optimizedText = await background.callLLMAPI('Hello world', settings);
 Calls the new unified provider system API.
 
 **Parameters:**
+
 - `providerName` (string): Name of the provider to use
 - `prompt` (string): The formatted prompt to send
 - `settings` (Object): Provider-specific settings
@@ -64,6 +68,7 @@ Calls the new unified provider system API.
 **Returns:** Promise<string> - The API response
 
 **Example:**
+
 ```javascript
 const result = await background.callNewProviderAPI('openai', 'Improve: Hello', settings);
 ```
@@ -77,6 +82,7 @@ The background script handles various message types from other extension compone
 Handles text optimization requests from content scripts.
 
 **Message Format:**
+
 ```javascript
 {
   type: 'OPTIMIZE_TEXT',
@@ -86,6 +92,7 @@ Handles text optimization requests from content scripts.
 ```
 
 **Response:**
+
 ```javascript
 // Success
 {
@@ -108,6 +115,7 @@ Handles text optimization requests from content scripts.
 Handles template-based text optimization requests.
 
 **Message Format:**
+
 ```javascript
 {
   type: 'OPTIMIZE_WITH_TEMPLATE',
@@ -122,6 +130,7 @@ Handles template-based text optimization requests.
 Tests API connection with current settings.
 
 **Message Format:**
+
 ```javascript
 {
   type: 'TEST_API',
@@ -130,6 +139,7 @@ Tests API connection with current settings.
 ```
 
 **Response:**
+
 ```javascript
 {
   type: 'API_TEST_RESULT',
@@ -144,6 +154,7 @@ Tests API connection with current settings.
 Retrieves available templates.
 
 **Message Format:**
+
 ```javascript
 {
   type: 'GET_TEMPLATES',
@@ -152,6 +163,7 @@ Retrieves available templates.
 ```
 
 **Response:**
+
 ```javascript
 {
   type: 'TEMPLATES_RESULT',
@@ -164,6 +176,7 @@ Retrieves available templates.
 Saves or updates a template.
 
 **Message Format:**
+
 ```javascript
 {
   type: 'SAVE_TEMPLATE',
@@ -172,6 +185,7 @@ Saves or updates a template.
 ```
 
 **Response:**
+
 ```javascript
 {
   type: 'TEMPLATE_SAVED',
@@ -184,6 +198,7 @@ Saves or updates a template.
 Deletes a template.
 
 **Message Format:**
+
 ```javascript
 {
   type: 'DELETE_TEMPLATE',
@@ -196,6 +211,7 @@ Deletes a template.
 Retrieves configuration for a specific domain.
 
 **Message Format:**
+
 ```javascript
 {
   type: 'GET_CONFIGURATION',
@@ -204,6 +220,7 @@ Retrieves configuration for a specific domain.
 ```
 
 **Response:**
+
 ```javascript
 {
   type: 'CONFIGURATION_LOADED',
@@ -252,6 +269,7 @@ The background script uses centralized error handling with categorized error typ
 #### Retry Logic
 
 Automatic retry with exponential backoff for transient errors:
+
 - Maximum 3 retry attempts
 - Exponential backoff: 1s, 2s, 4s
 - Only retries transient errors (network, rate limit, etc.)
@@ -328,6 +346,7 @@ Automatically sets up default settings on extension installation:
 #### Service Initialization
 
 Services are initialized asynchronously:
+
 1. Template Manager initialization
 2. Configuration Manager initialization
 3. Provider system setup
@@ -385,6 +404,7 @@ chrome.runtime.sendMessage({
 ```
 
 For more information, see:
+
 - [Content Script API](content.md)
 - [Services API](services.md)
 - [Providers API](providers.md)

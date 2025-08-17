@@ -246,12 +246,12 @@ class HuggingFaceProvider extends Provider {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        
+
         // Handle model loading errors
         if (response.status === 503 && errorData.error?.includes('loading')) {
           throw new Error('Model is currently loading, please try again in a few moments');
         }
-        
+
         throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
       }
 
@@ -264,17 +264,17 @@ class HuggingFaceProvider extends Provider {
         }
 
         const result = data[0];
-        
+
         // For text-generation models
         if (result.generated_text !== undefined) {
           return result.generated_text;
         }
-        
+
         // For text2text-generation models
         if (result.generated_text !== undefined) {
           return result.generated_text;
         }
-        
+
         // For other formats
         if (typeof result === 'string') {
           return result;
@@ -326,8 +326,8 @@ class HuggingFaceProvider extends Provider {
         label: 'Model',
         description: 'Hugging Face model to use',
         default: 'gpt2',
-        options: this.models.map(m => ({ 
-          value: m.id, 
+        options: this.models.map(m => ({
+          value: m.id,
           label: m.name,
           description: m.description
         }))
@@ -368,7 +368,7 @@ class HuggingFaceProvider extends Provider {
    */
   getUsageStats(inputTokens, outputTokens, model) {
     const modelInfo = this.models.find(m => m.id === model);
-    
+
     return {
       inputTokens,
       outputTokens,

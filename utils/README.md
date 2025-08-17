@@ -3,6 +3,7 @@
 This directory contains shared utility modules that provide common functionality across the PromptBoost extension.
 
 For detailed utility documentation, see:
+
 - **[Utilities API Reference](../docs/api/utilities.md)** - Complete API documentation
 - **[Development Guide](../docs/development/setup.md)** - Development information
 - **[Architecture Overview](../docs/architecture/overview.md)** - System architecture details
@@ -10,28 +11,36 @@ For detailed utility documentation, see:
 ## Modules
 
 ### ErrorHandler.js
+
 Centralized error handling system that provides:
+
 - Consistent error formatting and logging
 - Error categorization and severity levels
 - User-friendly error messages
 - Error reporting and analytics
 
 ### Logger.js
+
 Unified logging system that provides:
+
 - Consistent log formatting
 - Log level management (debug, info, warn, error)
 - Performance logging
 - Development vs production logging modes
 
 ### ConfigValidator.js
+
 Configuration validation utilities that provide:
+
 - API key validation
 - Endpoint URL validation
 - Model parameter validation
 - Settings schema validation
 
 ### ApiHelper.js
+
 Common API utilities that provide:
+
 - HTTP request helpers
 - Response parsing utilities
 - Rate limiting helpers

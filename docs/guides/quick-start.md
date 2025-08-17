@@ -17,18 +17,21 @@ Get up and running with PromptBoost in just a few minutes!
 Choose your preferred AI provider:
 
 #### Option A: OpenAI (Recommended for beginners)
+
 1. Visit [OpenAI API Keys](https://platform.openai.com/api-keys)
 2. Sign in or create account
 3. Click "Create new secret key"
 4. Copy the key (starts with `sk-`)
 
 #### Option B: Anthropic Claude
+
 1. Visit [Anthropic Console](https://console.anthropic.com/)
 2. Sign in or create account
 3. Generate new API key
 4. Copy the key (starts with `sk-ant-`)
 
 #### Option C: Google Gemini (Free tier available)
+
 1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
 2. Sign in with Google account
 3. Create new API key
@@ -60,6 +63,7 @@ Your text should transform into something like: "Hello, could you please help me
 ### Alternative Methods
 
 If triple spacebar doesn't work:
+
 - **Keyboard shortcut**: Select text and press `Ctrl+Shift+Space`
 - **Right-click menu**: Right-click selected text → "PromptBoost"
 - **Template selector**: Select text and press `Ctrl+Shift+T`
@@ -67,25 +71,31 @@ If triple spacebar doesn't work:
 ## 🎯 Common Use Cases
 
 ### Email Enhancement
+
 **Before:** "hey john, can u send me the report asap? thx"
 **After:** "Hi John, could you please send me the report as soon as possible? Thank you."
 
 ### Social Media Posts
+
 **Before:** "just finished my workout feeling great gonna eat some food now"
 **After:** "Just finished my workout and feeling great! Time for a well-deserved meal. 💪"
 
 ### Professional Documents
+
 **Before:** "the meeting went ok we talked about stuff and made some decisions"
 **After:** "The meeting proceeded successfully. We discussed key agenda items and reached several important decisions."
 
 ## 🛠️ Essential Settings
 
 ### Adjust Triple Spacebar Timing
+
 If triple spacebar is too fast/slow:
+
 1. Open Settings → General
 2. Adjust "Detection Window" (try 1500ms for slower typing)
 
 ### Choose Default Template
+
 1. Open Settings → Templates
 2. Select your preferred default template:
    - **General Improvement**: Good for most text
@@ -93,6 +103,7 @@ If triple spacebar is too fast/slow:
    - **Grammar Check**: For fixing errors only
 
 ### Enable Quick Template Selection
+
 1. Open Settings → Templates
 2. Enable "Quick Template Selection"
 3. Now you'll see template options after selecting text
@@ -102,16 +113,19 @@ If triple spacebar is too fast/slow:
 PromptBoost comes with these ready-to-use templates:
 
 ### General
+
 - **General Improvement**: Enhance while maintaining tone
 - **Grammar Check**: Fix grammar and spelling only
 - **Summarize**: Create concise summaries
 
 ### Tone Adjustment
+
 - **Professional Tone**: Make text more formal
 - **Casual Tone**: Make text more conversational
 - **Academic Tone**: Enhance for academic writing
 
 ### Specialized
+
 - **Email Enhancement**: Perfect for email communication
 - **Social Media**: Optimize for social platforms
 - **Technical Writing**: Improve technical documentation
@@ -119,19 +133,23 @@ PromptBoost comes with these ready-to-use templates:
 ## ⚡ Pro Tips
 
 ### Keyboard Shortcuts
+
 Master these for lightning-fast optimization:
+
 - `Ctrl+Shift+Space`: Quick optimize
 - `Ctrl+Shift+T`: Open template selector
 - `Ctrl+Z`: Undo last change (within 30 seconds)
 - `Escape`: Close template selector
 
 ### Best Practices
+
 1. **Select complete thoughts**: Full sentences work better than fragments
 2. **Review results**: Always check AI-generated text before using
 3. **Use appropriate templates**: Match templates to your context
 4. **Undo if needed**: Don't hesitate to undo and try again
 
 ### Troubleshooting Quick Fixes
+
 - **Not working?** Check if extension is enabled in popup
 - **Triple spacebar not detected?** Try increasing detection window to 1500ms
 - **API errors?** Verify your API key and check internet connection
@@ -159,7 +177,7 @@ Now that you're set up:
 - **Settings**: Check your configuration if something isn't working
 - **Support**: Use the feedback link in the extension for help
 
-## 🎉 You're Ready!
+## 🎉 You're Ready
 
 Congratulations! You're now ready to enhance your text with AI. Start with simple optimizations and gradually explore more advanced features as you get comfortable.
 
@@ -170,17 +188,20 @@ Congratulations! You're now ready to enhance your text with AI. Start with simpl
 ### Quick Reference Card
 
 **Activation Methods:**
+
 - Triple spacebar (default)
 - Ctrl+Shift+Space (keyboard shortcut)
 - Right-click → PromptBoost (context menu)
 - Ctrl+Shift+T (template selector)
 
 **Essential Shortcuts:**
+
 - Ctrl+Z: Undo (within 30 seconds)
 - Escape: Close menus
 - Ctrl+Shift+T: Template selector
 
 **Common Templates:**
+
 - General Improvement (default)
 - Professional Tone
 - Grammar Check

@@ -47,12 +47,14 @@ This document provides a complete reference for all PromptBoost configuration op
 ## Core Settings
 
 ### enabled
+
 - **Type**: `boolean`
 - **Default**: `true`
 - **Description**: Master switch for the extension
 - **Values**: `true` (enabled), `false` (disabled)
 
 ### timeWindow
+
 - **Type**: `number`
 - **Default**: `1000`
 - **Range**: `500` - `3000`
@@ -64,9 +66,10 @@ This document provides a complete reference for all PromptBoost configuration op
   - Slow typers: `1500`
 
 ### provider
+
 - **Type**: `string`
 - **Default**: `"openai"`
-- **Values**: 
+- **Values**:
   - `"openai"` - OpenAI GPT models
   - `"anthropic"` - Anthropic Claude models
   - `"gemini"` - Google Gemini models
@@ -77,6 +80,7 @@ This document provides a complete reference for all PromptBoost configuration op
   - `"custom"` - Custom API endpoint
 
 ### apiKey
+
 - **Type**: `string`
 - **Default**: `""`
 - **Description**: API key for the selected provider
@@ -88,6 +92,7 @@ This document provides a complete reference for all PromptBoost configuration op
 - **Security**: Stored in Chrome's secure storage
 
 ### apiEndpoint
+
 - **Type**: `string`
 - **Default**: Provider-specific
 - **Description**: API endpoint URL
@@ -98,6 +103,7 @@ This document provides a complete reference for all PromptBoost configuration op
   - Custom: User-defined
 
 ### model
+
 - **Type**: `string`
 - **Default**: Provider-specific
 - **Description**: AI model to use
@@ -107,6 +113,7 @@ This document provides a complete reference for all PromptBoost configuration op
   - Gemini: `"gemini-pro"`
 
 ### promptTemplate
+
 - **Type**: `string`
 - **Default**: `"Please improve and optimize the following text while maintaining its original meaning and tone:\n\n{text}"`
 - **Description**: Default prompt template with `{text}` placeholder
@@ -115,6 +122,7 @@ This document provides a complete reference for all PromptBoost configuration op
 ## User Interface Settings
 
 ### keyboardShortcut
+
 - **Type**: `string`
 - **Default**: `"Ctrl+Shift+Space"`
 - **Description**: Keyboard shortcut for quick optimization
@@ -122,14 +130,16 @@ This document provides a complete reference for all PromptBoost configuration op
 - **Supported Modifiers**: `Ctrl`, `Shift`, `Alt`, `Meta`
 
 ### quickTemplateSelection
+
 - **Type**: `boolean`
 - **Default**: `true`
 - **Description**: Show template selector after triple spacebar
-- **Values**: 
+- **Values**:
   - `true`: Show template chooser popup
   - `false`: Use default template immediately
 
 ### selectedTemplate
+
 - **Type**: `string`
 - **Default**: `"general"`
 - **Description**: ID of the default template to use
@@ -138,18 +148,21 @@ This document provides a complete reference for all PromptBoost configuration op
 ## Advanced Settings
 
 ### enableLogging
+
 - **Type**: `boolean`
 - **Default**: `false`
 - **Description**: Enable debug logging for troubleshooting
 - **Impact**: May affect performance when enabled
 
 ### autoSaveHistory
+
 - **Type**: `boolean`
 - **Default**: `true`
 - **Description**: Automatically save optimization history
 - **Storage**: Local browser storage
 
 ### maxHistoryItems
+
 - **Type**: `number`
 - **Default**: `100`
 - **Range**: `10` - `1000`
@@ -157,6 +170,7 @@ This document provides a complete reference for all PromptBoost configuration op
 - **Cleanup**: Older entries automatically removed
 
 ### requestTimeout
+
 - **Type**: `number`
 - **Default**: `30`
 - **Range**: `10` - `120`
@@ -164,6 +178,7 @@ This document provides a complete reference for all PromptBoost configuration op
 - **Description**: Maximum time to wait for API response
 
 ### retryAttempts
+
 - **Type**: `number`
 - **Default**: `3`
 - **Range**: `0` - `5`
@@ -171,11 +186,13 @@ This document provides a complete reference for all PromptBoost configuration op
 - **Backoff**: Exponential backoff between retries
 
 ### showNotifications
+
 - **Type**: `boolean`
 - **Default**: `true`
 - **Description**: Show success/error notifications to user
 
 ### notificationDuration
+
 - **Type**: `number`
 - **Default**: `4`
 - **Range**: `1` - `10`
@@ -183,6 +200,7 @@ This document provides a complete reference for all PromptBoost configuration op
 - **Description**: How long notifications remain visible
 
 ### maxTokens
+
 - **Type**: `number`
 - **Default**: `1000`
 - **Range**: `100` - `4000`
@@ -190,6 +208,7 @@ This document provides a complete reference for all PromptBoost configuration op
 - **Impact**: Affects response length and API cost
 
 ### temperature
+
 - **Type**: `number`
 - **Default**: `0.7`
 - **Range**: `0.0` - `1.0`
@@ -202,6 +221,7 @@ This document provides a complete reference for all PromptBoost configuration op
 ## Per-Page Configuration
 
 ### Structure
+
 ```javascript
 "perPage": {
   "gmail.com": {
@@ -222,11 +242,13 @@ This document provides a complete reference for all PromptBoost configuration op
 ```
 
 ### Domain Matching
+
 - **Exact Match**: `"gmail.com"` matches only gmail.com
 - **Subdomain Support**: `"mail.google.com"` for specific subdomains
 - **Wildcard Support**: Not currently supported
 
 ### Setting Inheritance
+
 1. **Per-page settings** (highest priority)
 2. **Global settings** (fallback)
 3. **Default settings** (ultimate fallback)
@@ -234,6 +256,7 @@ This document provides a complete reference for all PromptBoost configuration op
 ## Template Configuration
 
 ### Template Object Schema
+
 ```javascript
 {
   "id": string,                          // Unique template identifier
@@ -272,6 +295,7 @@ This document provides a complete reference for all PromptBoost configuration op
 ```
 
 ### Template Categories
+
 - `"general"`: General text improvement
 - `"tone"`: Tone adjustment templates
 - `"business"`: Business communication
@@ -283,6 +307,7 @@ This document provides a complete reference for all PromptBoost configuration op
 ## Environment Variables
 
 ### Development Environment
+
 ```bash
 # API Configuration
 PROMPTBOOST_DEFAULT_PROVIDER=openai
@@ -298,6 +323,7 @@ PROMPTBOOST_TEST_ENDPOINT=http://localhost:3000/api
 ```
 
 ### Production Environment
+
 ```bash
 # Disable debug features
 PROMPTBOOST_DEBUG=false
@@ -311,6 +337,7 @@ PROMPTBOOST_REQUEST_TIMEOUT=30
 ## Storage Schema
 
 ### Chrome Storage Structure
+
 ```javascript
 // chrome.storage.sync
 {
@@ -331,6 +358,7 @@ PROMPTBOOST_REQUEST_TIMEOUT=30
 ## Migration Schema
 
 ### Version 1 to Version 2
+
 ```javascript
 // Migration rules
 {
@@ -359,6 +387,7 @@ PROMPTBOOST_REQUEST_TIMEOUT=30
 ## Validation Rules
 
 ### API Key Validation
+
 ```javascript
 const apiKeyValidation = {
   openai: /^sk-[A-Za-z0-9]{48}$/,
@@ -368,6 +397,7 @@ const apiKeyValidation = {
 ```
 
 ### Configuration Validation
+
 ```javascript
 const configValidation = {
   timeWindow: { min: 500, max: 3000 },
@@ -381,6 +411,7 @@ const configValidation = {
 ## Default Configurations
 
 ### Minimal Configuration
+
 ```javascript
 {
   "enabled": true,
@@ -391,6 +422,7 @@ const configValidation = {
 ```
 
 ### Recommended Configuration
+
 ```javascript
 {
   "enabled": true,
@@ -411,6 +443,7 @@ const configValidation = {
 ```
 
 ### Power User Configuration
+
 ```javascript
 {
   "enabled": true,
@@ -441,6 +474,7 @@ const configValidation = {
 ```
 
 For implementation details, see:
+
 - [Configuration Guide](../guides/configuration.md)
 - [Services API](../api/services.md)
 - [User Manual](../guides/user-manual.md)

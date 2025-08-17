@@ -62,19 +62,19 @@ class ConfigValidator {
           result.warnings.push('OpenAI API keys are typically longer');
         }
         break;
-        
+
       case 'anthropic':
         if (!trimmedKey.startsWith('sk-ant-')) {
           result.warnings.push('Anthropic API keys typically start with "sk-ant-"');
         }
         break;
-        
+
       case 'cohere':
         if (trimmedKey.length < 30) {
           result.warnings.push('Cohere API keys are typically longer');
         }
         break;
-        
+
       case 'huggingface':
         if (!trimmedKey.startsWith('hf_')) {
           result.warnings.push('Hugging Face tokens typically start with "hf_"');
@@ -126,27 +126,27 @@ class ConfigValidator {
     }
 
     const trimmedEndpoint = endpoint.trim();
-    
+
     try {
       const url = new URL(trimmedEndpoint);
-      
+
       // Must use HTTPS in production
       if (url.protocol !== 'https:' && url.protocol !== 'http:') {
         result.isValid = false;
         result.errors.push('Endpoint must use HTTP or HTTPS protocol');
       }
-      
+
       if (url.protocol === 'http:' && !this.isLocalhost(url.hostname)) {
         result.warnings.push('HTTP endpoints are not secure. Consider using HTTPS.');
       }
-      
+
       // Provider-specific endpoint validation
       if (provider) {
         this.validateProviderEndpoint(url, provider, result);
       }
-      
+
       result.sanitized = url.toString();
-      
+
     } catch (error) {
       result.isValid = false;
       result.errors.push('Invalid URL format');
@@ -322,7 +322,7 @@ class ConfigValidator {
     Object.entries(numericParams).forEach(([param, constraints]) => {
       if (config[param] !== undefined) {
         const value = Number(config[param]);
-        
+
         if (isNaN(value)) {
           result.errors.push(`${param} must be a number`);
           result.isValid = false;
@@ -384,12 +384,12 @@ class ConfigValidator {
     } else {
       const content = template.template.trim();
       result.sanitized.template = content;
-      
+
       // Check for {text} placeholder
       if (!content.includes('{text}')) {
         result.warnings.push('Template should include {text} placeholder');
       }
-      
+
       // Check template length
       if (content.length > 10000) {
         result.warnings.push('Template is very long and may affect performance');

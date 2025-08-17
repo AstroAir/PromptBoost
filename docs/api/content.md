@@ -11,6 +11,7 @@ new PromptBoostContent()
 ```
 
 Creates a new instance of the content script. Automatically initializes:
+
 - Event listeners for keyboard and mouse interactions
 - Message listeners for background script communication
 - Settings and history loading
@@ -19,6 +20,7 @@ Creates a new instance of the content script. Automatically initializes:
 ### Properties
 
 #### Core State
+
 - `spacebarPresses` (Array<number>): Timestamps of recent spacebar presses
 - `isEnabled` (boolean): Whether the extension is currently enabled
 - `isProcessing` (boolean): Whether an optimization is currently in progress
@@ -37,6 +39,7 @@ Initializes the content script asynchronously.
 **Returns:** Promise<void>
 
 **Example:**
+
 ```javascript
 const content = new PromptBoostContent();
 // init() is called automatically
@@ -47,9 +50,11 @@ const content = new PromptBoostContent();
 Triggers text optimization for the currently selected text.
 
 **Parameters:**
+
 - `templateId` (string, optional): ID of the template to use
 
 **Example:**
+
 ```javascript
 // Quick optimization with default template
 content.triggerOptimization();
@@ -65,6 +70,7 @@ Gets the currently selected text from the page.
 **Returns:** string - The selected text, or empty string if no selection
 
 **Example:**
+
 ```javascript
 const selectedText = content.getSelectedText();
 if (selectedText) {
@@ -77,9 +83,11 @@ if (selectedText) {
 Replaces the currently selected text with new text.
 
 **Parameters:**
+
 - `newText` (string): The text to replace the selection with
 
 **Example:**
+
 ```javascript
 content.replaceSelectedText('This is the new text');
 ```
@@ -89,6 +97,7 @@ content.replaceSelectedText('This is the new text');
 Undoes the last text replacement made by PromptBoost.
 
 **Example:**
+
 ```javascript
 content.undoLastChange();
 ```
@@ -98,10 +107,12 @@ content.undoLastChange();
 Shows a notification to the user.
 
 **Parameters:**
+
 - `message` (string): The notification message
 - `type` (string): Notification type ('info', 'success', 'error', 'warning')
 
 **Example:**
+
 ```javascript
 content.showNotification('Text optimized successfully!', 'success');
 content.showNotification('Error occurred', 'error');
@@ -114,6 +125,7 @@ content.showNotification('Error occurred', 'error');
 Handles keyboard events, specifically spacebar detection.
 
 **Parameters:**
+
 - `event` (KeyboardEvent): The keyboard event
 
 **Triggered by:** Spacebar presses for triple-spacebar detection
@@ -123,9 +135,11 @@ Handles keyboard events, specifically spacebar detection.
 Handles keyboard shortcuts for various actions.
 
 **Parameters:**
+
 - `event` (KeyboardEvent): The keyboard event
 
 **Shortcuts:**
+
 - `Ctrl+Shift+Space`: Quick optimization
 - `Ctrl+Shift+T`: Open template selector
 - `Ctrl+Z`: Undo last change (within 30 seconds)
@@ -142,6 +156,7 @@ Handles text selection changes on the page.
 Handles right-click context menu events.
 
 **Parameters:**
+
 - `event` (MouseEvent): The context menu event
 
 **Shows:** PromptBoost context menu with optimization options
@@ -155,6 +170,7 @@ The content script listens for messages from the background script:
 Reloads settings when they are updated.
 
 **Message Format:**
+
 ```javascript
 {
   type: 'SETTINGS_UPDATED'
@@ -166,6 +182,7 @@ Reloads settings when they are updated.
 Enables or disables the extension.
 
 **Message Format:**
+
 ```javascript
 {
   type: 'TOGGLE_EXTENSION',
@@ -178,6 +195,7 @@ Enables or disables the extension.
 Handles successful optimization results.
 
 **Message Format:**
+
 ```javascript
 {
   type: 'OPTIMIZE_RESULT',
@@ -193,6 +211,7 @@ Handles successful optimization results.
 Handles optimization errors.
 
 **Message Format:**
+
 ```javascript
 {
   type: 'OPTIMIZATION_ERROR',
@@ -207,10 +226,12 @@ Handles optimization errors.
 Shows a loading spinner during optimization.
 
 **Methods:**
+
 - `showLoadingOverlay()`: Display loading overlay
 - `hideLoadingOverlay()`: Hide loading overlay
 
 **HTML Structure:**
+
 ```html
 <div class="promptboost-loading-overlay">
   <div class="promptboost-loading-content">
@@ -225,10 +246,12 @@ Shows a loading spinner during optimization.
 Right-click menu with optimization options.
 
 **Methods:**
+
 - `showContextMenu(event)`: Show context menu at cursor position
 - `hideContextMenu()`: Hide context menu
 
 **Features:**
+
 - Quick optimize option
 - Template selection
 - Recent templates
@@ -239,6 +262,7 @@ Right-click menu with optimization options.
 Modal for selecting optimization templates.
 
 **Methods:**
+
 - `showTemplateSelector(selectedText)`: Show template selector
 - `hideTemplateSelector()`: Hide template selector
 
@@ -247,6 +271,7 @@ Modal for selecting optimization templates.
 Toast notifications for user feedback.
 
 **Types:**
+
 - `info`: General information
 - `success`: Successful operations
 - `error`: Error messages
@@ -257,6 +282,7 @@ Toast notifications for user feedback.
 Special notification with undo button.
 
 **Methods:**
+
 - `showUndoNotification()`: Show undo notification with button
 
 ### History Management
@@ -266,6 +292,7 @@ Special notification with undo button.
 Adds an optimization to the history.
 
 **Parameters:**
+
 - `entry` (Object): History entry object
   - `originalText` (string): Original text
   - `optimizedText` (string): Optimized text
@@ -299,6 +326,7 @@ Gets the currently active/focused element.
 Checks if an element is editable (input, textarea, contenteditable).
 
 **Parameters:**
+
 - `element` (Element): Element to check
 
 **Returns:** boolean
@@ -308,6 +336,7 @@ Checks if an element is editable (input, textarea, contenteditable).
 Gets detailed information about the current selection.
 
 **Returns:** Object with selection details:
+
 - `text` (string): Selected text
 - `range` (Range): Selection range
 - `element` (Element): Container element
@@ -319,24 +348,28 @@ Gets detailed information about the current selection.
 Records a spacebar press timestamp and checks for triple-press pattern.
 
 **Logic:**
+
 1. Records current timestamp
 2. Filters out old presses outside time window
 3. Triggers optimization if 3 presses detected
 4. Resets press array after triggering
 
 **Configuration:**
+
 - Time window configurable in settings (default: 1000ms)
 - Requires exactly 3 presses within window
 
 ### Cross-Site Compatibility
 
 #### Element Support
+
 - `<textarea>` elements
 - `<input type="text">` elements
 - `contenteditable` elements
 - Regular text selections
 
 #### Security Considerations
+
 - Respects Content Security Policy
 - Handles sites that prevent text modification
 - Graceful degradation on restricted sites
@@ -344,6 +377,7 @@ Records a spacebar press timestamp and checks for triple-press pattern.
 ### Error Handling
 
 #### Common Scenarios
+
 - No text selected
 - Text too long (>10,000 characters)
 - API errors
@@ -351,6 +385,7 @@ Records a spacebar press timestamp and checks for triple-press pattern.
 - Permission denied
 
 #### Error Display
+
 - User-friendly error messages
 - Automatic error recovery
 - Fallback options
@@ -358,10 +393,12 @@ Records a spacebar press timestamp and checks for triple-press pattern.
 ### Performance Optimization
 
 #### Debouncing
+
 - Selection change events are debounced
 - Prevents excessive processing
 
 #### Memory Management
+
 - Automatic cleanup of old history entries
 - Efficient DOM manipulation
 - Event listener cleanup
@@ -433,6 +470,7 @@ window.promptBoostInstance.showNotification('Hello!', 'info');
 ```
 
 For more information, see:
+
 - [Background Script API](background.md)
 - [User Manual](../guides/user-manual.md)
 - [Configuration Guide](../guides/configuration.md)

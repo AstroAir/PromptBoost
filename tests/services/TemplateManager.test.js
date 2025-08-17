@@ -71,13 +71,13 @@ describe('TemplateManager', () => {
   beforeEach(() => {
     // Reset all mocks
     jest.clearAllMocks();
-    
+
     // Reset singleton instance
     TemplateManager.instance = null;
-    
+
     // Create fresh instance
     templateManager = TemplateManager.getInstance();
-    
+
     // Mock storage responses
     chrome.storage.sync.get.mockResolvedValue({ templates: {} });
     chrome.storage.sync.set.mockResolvedValue();
@@ -89,14 +89,14 @@ describe('TemplateManager', () => {
     test('should return same instance on multiple calls', () => {
       const instance1 = TemplateManager.getInstance();
       const instance2 = TemplateManager.getInstance();
-      
+
       expect(instance1).toBe(instance2);
     });
 
     test('should initialize only once', async () => {
       await templateManager.initialize();
       await templateManager.initialize(); // Second call
-      
+
       expect(templateManager.isInitialized).toBe(true);
     });
   });
@@ -104,17 +104,17 @@ describe('TemplateManager', () => {
   describe('Initialization', () => {
     test('should initialize successfully', async () => {
       await templateManager.initialize();
-      
+
       expect(templateManager.isInitialized).toBe(true);
       expect(chrome.storage.sync.get).toHaveBeenCalledWith(['templates']);
     });
 
     test('should load default templates', async () => {
       await templateManager.initialize();
-      
+
       const templates = templateManager.getAllTemplates();
       expect(templates.length).toBeGreaterThan(0);
-      
+
       // Check for default templates
       const generalTemplate = templates.find(t => t.id === 'general');
       expect(generalTemplate).toBeDefined();
@@ -123,7 +123,7 @@ describe('TemplateManager', () => {
 
     test('should handle initialization errors', async () => {
       chrome.storage.sync.get.mockRejectedValue(new Error('Storage error'));
-      
+
       await expect(templateManager.initialize()).rejects.toThrow('Storage error');
       expect(ErrorHandler.handle).toHaveBeenCalled();
     });
@@ -177,7 +177,7 @@ describe('TemplateManager', () => {
         };
 
         const result = await templateManager.createTemplate(templateData);
-        
+
         expect(result.id).toMatch(/^custom_\d+$/);
       });
     });
@@ -213,7 +213,7 @@ describe('TemplateManager', () => {
 
       test('should not update default template without permission', async () => {
         const defaultTemplate = templateManager.getTemplate('general');
-        
+
         await expect(templateManager.updateTemplate('general', { name: 'Modified' }))
           .rejects.toThrow('Cannot update default template');
       });
@@ -249,7 +249,7 @@ describe('TemplateManager', () => {
     describe('getTemplate', () => {
       test('should retrieve existing template', async () => {
         const template = templateManager.getTemplate('general');
-        
+
         expect(template).toBeDefined();
         expect(template.id).toBe('general');
         expect(template.isDefault).toBe(true);
@@ -257,7 +257,7 @@ describe('TemplateManager', () => {
 
       test('should return null for non-existent template', () => {
         const template = templateManager.getTemplate('non-existent');
-        
+
         expect(template).toBeNull();
       });
     });
@@ -265,14 +265,14 @@ describe('TemplateManager', () => {
     describe('getAllTemplates', () => {
       test('should return all templates', async () => {
         const templates = templateManager.getAllTemplates();
-        
+
         expect(Array.isArray(templates)).toBe(true);
         expect(templates.length).toBeGreaterThan(0);
       });
 
       test('should filter by category', async () => {
         const toneTemplates = templateManager.getAllTemplates({ category: 'tone' });
-        
+
         toneTemplates.forEach(template => {
           expect(template.category).toBe('tone');
         });
@@ -280,7 +280,7 @@ describe('TemplateManager', () => {
 
       test('should filter by custom flag', async () => {
         const customTemplates = templateManager.getAllTemplates({ isCustom: true });
-        
+
         customTemplates.forEach(template => {
           expect(template.isCustom).toBe(true);
         });
@@ -288,7 +288,7 @@ describe('TemplateManager', () => {
 
       test('should search templates', async () => {
         const searchResults = templateManager.getAllTemplates({ search: 'professional' });
-        
+
         expect(searchResults.length).toBeGreaterThan(0);
         searchResults.forEach(template => {
           const searchText = `${template.name} ${template.description} ${template.template}`.toLowerCase();
@@ -478,7 +478,7 @@ describe('TemplateManager', () => {
       const faultyListener = jest.fn().mockImplementation(() => {
         throw new Error('Listener error');
       });
-      
+
       templateManager.on('templateCreated', faultyListener);
 
       const templateData = {

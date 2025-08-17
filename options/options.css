@@ -7,7 +7,8 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
   background: hsl(0 0% 98%);
   color: hsl(222.2 84% 4.9%);
   line-height: 1.6;
@@ -322,7 +323,7 @@ header {
 }
 
 .breadcrumb-item:not(:last-child)::after {
-  content: '›';
+  content: "›";
   margin: 0 0.5rem;
   color: hsl(215.4 16.3% 46.9%);
 }
@@ -774,7 +775,8 @@ header {
   position: fixed;
   background: hsl(0 0% 100%);
   border-radius: 0.75rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
   max-width: 400px;
   min-width: 300px;
   pointer-events: all;
@@ -917,7 +919,8 @@ header {
 }
 
 @keyframes tour-pulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 0 4px hsl(221.2 83.2% 53.3% / 0.2);
   }
   50% {
@@ -942,7 +945,8 @@ header {
 }
 
 .dashboard-card:hover {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .settings-section {
@@ -1138,7 +1142,7 @@ header {
 }
 
 .toggle-slider::before {
-  content: '';
+  content: "";
   position: absolute;
   width: 20px;
   height: 20px;
@@ -1150,12 +1154,12 @@ header {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.toggle-label input[type="checkbox"]:checked+.toggle-slider {
+.toggle-label input[type="checkbox"]:checked + .toggle-slider {
   background: hsl(221.2 83.2% 53.3%);
   border-color: hsl(221.2 83.2% 53.3%);
 }
 
-.toggle-label input[type="checkbox"]:checked+.toggle-slider::before {
+.toggle-label input[type="checkbox"]:checked + .toggle-slider::before {
   transform: translateX(20px);
 }
 
@@ -1887,7 +1891,8 @@ footer p {
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -1912,7 +1917,7 @@ footer p {
 
 /* Enhanced textarea fallback */
 textarea.template-editor {
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
   font-size: 14px;
   line-height: 1.5;
   background: hsl(0 0% 100%);

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - Comprehensive unit test suite with Jest
 - Integration tests using Puppeteer for end-to-end testing
 - Chrome extension API mocks for reliable testing
@@ -19,16 +20,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Security guidelines for extension development
 
 ### Changed
+
 - Enhanced code documentation with comprehensive JSDoc comments
 - Improved project structure with dedicated testing infrastructure
 - Updated main README with testing information
 
 ### Fixed
+
 - Code quality improvements based on ESLint recommendations
 
 ## [1.0.0] - 2024-01-XX
 
 ### Added
+
 - **Core Functionality**
   - Triple spacebar detection for text optimization
   - Support for multiple LLM providers (OpenAI, Anthropic, Custom APIs)
@@ -86,12 +90,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Performance optimization for large text processing
 
 ### Browser Support
+
 - Chrome 88+ (full support)
 - Microsoft Edge 88+ (full support)
 - Chromium-based browsers (full support)
 - Firefox (requires manifest modifications)
 
 ### Documentation
+
 - Comprehensive README with installation and usage instructions
 - Detailed troubleshooting guide
 - Privacy and security information
@@ -99,6 +105,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - API provider setup guides
 
 ### Known Limitations
+
 - Maximum text length of 10,000 characters
 - Requires active internet connection for API calls
 - Some websites may prevent text modification due to security policies
@@ -109,11 +116,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Version History Notes
 
 ### Versioning Strategy
+
 - **Major versions (x.0.0)**: Breaking changes or major feature additions
 - **Minor versions (x.y.0)**: New features and enhancements
 - **Patch versions (x.y.z)**: Bug fixes and minor improvements
 
 ### Release Process
+
 1. Update version in `manifest.json`
 2. Update this CHANGELOG.md with release notes
 3. Create git tag with version number
@@ -122,6 +131,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 6. Create GitHub release with changelog
 
 ### Future Roadmap
+
 - Additional LLM provider integrations
 - Advanced template sharing and marketplace
 - Collaborative features for team usage
@@ -142,7 +152,7 @@ See [CONTRIBUTING.md](../development/contributing.md) for information on how to 
 - **Issues**: [GitHub Issues](https://github.com/your-repo/promptboost/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/your-repo/promptboost/discussions)
 - **Documentation**: [Documentation Site](../README.md)
-- **Email**: support@promptboost.dev
+- **Email**: <support@promptboost.dev>
 
 ---
 

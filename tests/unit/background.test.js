@@ -221,10 +221,10 @@ describe('PromptBoostBackground', () => {
     // Reset Chrome API mocks
     global.chromeTestUtils.resetMocks();
     global.chromeTestUtils.clearStorageData();
-    
+
     // Create fresh instance
     background = new PromptBoostBackground();
-    
+
     // Mock sender object
     mockSender = {
       tab: { id: 1 }
@@ -242,9 +242,9 @@ describe('PromptBoostBackground', () => {
 
     test('should set default settings on install', () => {
       const installListener = chrome.runtime.onInstalled.addListener.mock.calls[0][0];
-      
+
       installListener({ reason: 'install' });
-      
+
       expect(chrome.storage.sync.set).toHaveBeenCalledWith(
         expect.objectContaining({
           enabled: true,
@@ -261,7 +261,7 @@ describe('PromptBoostBackground', () => {
   describe('Message Handling', () => {
     test('should handle OPTIMIZE_TEXT message', async () => {
       const message = sampleMessages.optimizeText;
-      
+
       // Mock successful API response
       global.fetch.mockResolvedValueOnce({
         ok: true,
@@ -288,7 +288,7 @@ describe('PromptBoostBackground', () => {
       });
 
       const message = sampleMessages.optimizeWithTemplate;
-      
+
       // Mock successful API response
       global.fetch.mockResolvedValueOnce({
         ok: true,
@@ -311,7 +311,7 @@ describe('PromptBoostBackground', () => {
 
     test('should handle TEST_API message', async () => {
       const message = sampleMessages.testApi;
-      
+
       // Mock successful API response
       global.fetch.mockResolvedValueOnce({
         ok: true,

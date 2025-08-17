@@ -959,32 +959,74 @@ class PromptBoostOptions {
     const provider = this.elements.provider.value;
     const config = this.getProviderConfig();
 
+    // Show loading state
+    const refreshButton = document.getElementById('refreshModels');
+    if (refreshButton) {
+      refreshButton.disabled = true;
+      refreshButton.textContent = '⏳';
+    }
+
+    this.updateProviderStatus('loading', 'Loading models...');
+
     try {
+      // Validate configuration for OpenRouter
+      if (provider === 'openrouter' && (!config.apiKey || !config.apiKey.trim())) {
+        throw new Error('OpenRouter API key is required. Please authenticate first.');
+      }
+
       chrome.runtime.sendMessage({
         type: 'GET_PROVIDER_MODELS',
         provider: provider,
         config: config
       });
 
-      // Listen for response
-      const response = await new Promise((resolve) => {
+      // Listen for response with timeout
+      const response = await new Promise((resolve, reject) => {
         const listener = (message) => {
           if (message.type === 'PROVIDER_MODELS_RESULT') {
             chrome.runtime.onMessage.removeListener(listener);
             resolve(message.data);
           } else if (message.type === 'PROVIDER_MODELS_ERROR') {
             chrome.runtime.onMessage.removeListener(listener);
-            throw new Error(message.error);
+            reject(new Error(message.error));
           }
         };
         chrome.runtime.onMessage.addListener(listener);
+
+        // Timeout after 30 seconds
+        setTimeout(() => {
+          chrome.runtime.onMessage.removeListener(listener);
+          reject(new Error('Request timed out'));
+        }, 30000);
       });
 
       this.updateModelSelect(response.models);
+      this.updateProviderStatus('success', `${response.models.length} models loaded`);
       this.showStatus(`Loaded ${response.models.length} models for ${provider}`, 'success');
+
     } catch (error) {
       console.error('Failed to load provider models:', error);
-      this.showStatus(`Failed to load models: ${error.message}`, 'error');
+      this.updateProviderStatus('error', 'Failed to load models');
+
+      // Provide specific error messages for OpenRouter
+      let errorMessage = `Failed to load models: ${error.message}`;
+      if (provider === 'openrouter') {
+        if (error.message.includes('API key')) {
+          errorMessage = 'OpenRouter API key is required. Please authenticate first.';
+        } else if (error.message.includes('401') || error.message.includes('Unauthorized')) {
+          errorMessage = 'Invalid OpenRouter API key. Please re-authenticate.';
+        } else if (error.message.includes('timeout')) {
+          errorMessage = 'Request timed out. Please check your connection and try again.';
+        }
+      }
+
+      this.showStatus(errorMessage, 'error');
+    } finally {
+      // Reset loading state
+      if (refreshButton) {
+        refreshButton.disabled = false;
+        refreshButton.textContent = '🔄';
+      }
     }
   }
 
@@ -1062,15 +1104,10 @@ class PromptBoostOptions {
   }
 
   async testAPI() {
-    const settings = {
-      provider: this.elements.provider.value,
-      apiKey: this.elements.apiKey.value.trim(),
-      apiEndpoint: this.elements.apiEndpoint.value.trim(),
-      model: this.elements.model.value.trim(),
-      promptTemplate: this.elements.promptTemplate.value.trim()
-    };
+    const provider = this.elements.provider.value;
+    const config = this.getProviderConfig();
 
-    if (!settings.apiKey) {
+    if (!config.apiKey) {
       this.showStatus('Please enter an API key first', 'error');
       return;
     }
@@ -1078,25 +1115,62 @@ class PromptBoostOptions {
     this.elements.testApi.disabled = true;
     this.elements.testApi.textContent = 'Testing...';
     this.showStatus('Testing API connection...', 'info');
+    this.updateProviderStatus('loading', 'Testing connection...');
 
     try {
-      // Send test request to background script
+      // Validate configuration for OpenRouter
+      if (provider === 'openrouter' && (!config.apiKey || !config.apiKey.trim())) {
+        throw new Error('OpenRouter API key is required. Please authenticate first.');
+      }
+
+      // Use the new provider test system for better results
       chrome.runtime.sendMessage({
-        type: 'TEST_API',
-        settings: settings
+        type: 'TEST_PROVIDER',
+        provider: provider,
+        config: config
       });
 
       // Listen for response
       const listener = (message) => {
-        if (message.type === 'API_TEST_RESULT') {
+        if (message.type === 'PROVIDER_TEST_RESULT') {
           chrome.runtime.onMessage.removeListener(listener);
 
-          if (message.success) {
-            this.showStatus('API test successful!', 'success');
+          if (message.data.success) {
+            this.updateProviderStatus('success', 'Connection successful');
+            let successMessage = 'API test successful!';
+
+            // Add provider-specific success details
+            if (provider === 'openrouter' && message.data.modelsFound) {
+              successMessage += ` Found ${message.data.modelsFound} available models.`;
+            } else if (message.data.result) {
+              successMessage += ` Response: "${message.data.result.substring(0, 50)}..."`;
+            }
+
+            this.showStatus(successMessage, 'success');
           } else {
-            this.showStatus(`API test failed: ${message.error}`, 'error');
+            this.updateProviderStatus('error', 'Connection failed');
+
+            // Provide specific error messages for OpenRouter
+            let errorMessage = `API test failed: ${message.data.error}`;
+            if (provider === 'openrouter') {
+              if (message.data.error.includes('401') || message.data.error.includes('Unauthorized')) {
+                errorMessage = 'Invalid OpenRouter API key. Please re-authenticate.';
+              } else if (message.data.error.includes('API key')) {
+                errorMessage = 'OpenRouter API key is required. Please authenticate first.';
+              } else if (message.data.error.includes('Network')) {
+                errorMessage = 'Network error. Please check your connection and try again.';
+              }
+            }
+
+            this.showStatus(errorMessage, 'error');
           }
 
+          this.elements.testApi.disabled = false;
+          this.elements.testApi.textContent = 'Test API';
+        } else if (message.type === 'PROVIDER_TEST_ERROR') {
+          chrome.runtime.onMessage.removeListener(listener);
+          this.updateProviderStatus('error', 'Test failed');
+          this.showStatus(`API test failed: ${message.error}`, 'error');
           this.elements.testApi.disabled = false;
           this.elements.testApi.textContent = 'Test API';
         }
@@ -1109,13 +1183,15 @@ class PromptBoostOptions {
         chrome.runtime.onMessage.removeListener(listener);
         this.elements.testApi.disabled = false;
         this.elements.testApi.textContent = 'Test API';
-        this.showStatus('API test timed out', 'error');
+        this.updateProviderStatus('error', 'Test timeout');
+        this.showStatus('API test timed out. Please check your connection and try again.', 'error');
       }, 30000);
 
     } catch (error) {
       this.showStatus(`API test failed: ${error.message}`, 'error');
       this.elements.testApi.disabled = false;
       this.elements.testApi.textContent = 'Test API';
+      this.updateProviderStatus('error', 'Test failed');
     }
   }
 
@@ -1586,7 +1662,7 @@ class PromptBoostOptions {
       });
 
       const mostUsed = Object.entries(templateCounts)
-        .sort(([,a], [,b]) => b - a)[0];
+        .sort(([, a], [, b]) => b - a)[0];
 
       // Update UI
       this.elements.totalOptimizations.textContent = total;
@@ -1747,16 +1823,48 @@ class PromptBoostOptions {
           this.elements.apiKey.value = message.token;
           this.elements.quickLogin.disabled = false;
           this.elements.quickLogin.innerHTML = '<span class="login-icon">🔐</span>Login with OpenRouter';
-          this.showStatus('Successfully authenticated with OpenRouter!', 'success');
+          this.showStatus('Successfully authenticated with OpenRouter! Your API key has been saved.', 'success');
+
+          // Update provider status
+          this.updateProviderStatus('success', 'Authenticated');
+
+          // Auto-save the settings
+          this.saveSettings();
+
+          // Auto-refresh models for OpenRouter after successful authentication
+          if (this.elements.provider.value === 'openrouter') {
+            setTimeout(() => {
+              this.loadProviderModels();
+            }, 1000); // Small delay to ensure settings are saved
+          }
+
         } else if (message.type === 'OPENROUTER_AUTH_ERROR') {
           chrome.runtime.onMessage.removeListener(messageListener);
           this.elements.quickLogin.disabled = false;
           this.elements.quickLogin.innerHTML = '<span class="login-icon">🔐</span>Login with OpenRouter';
-          this.showStatus('Authentication failed: ' + message.error, 'error');
+
+          // Provide more specific error messages
+          let errorMessage = 'Authentication failed';
+          const error = message.error || '';
+
+          if (error.includes('User denied')) {
+            errorMessage = 'Authentication cancelled by user';
+          } else if (error.includes('Network')) {
+            errorMessage = 'Network error during authentication. Please check your connection and try again.';
+          } else if (error.includes('Invalid')) {
+            errorMessage = 'Invalid authentication response. Please try again.';
+          } else if (error.includes('timeout')) {
+            errorMessage = 'Authentication timed out. Please try again.';
+          } else if (error) {
+            errorMessage = `Authentication failed: ${error}`;
+          }
+
+          this.showStatus(errorMessage, 'error');
+          this.updateProviderStatus('error', 'Authentication failed');
         }
       };
 
-      chrome.runtime.onMessage.addListener(messageListener);
+      chrome.runtime.onMessage.addListener(wrappedListener);
 
       // Start OAuth flow via background script
       chrome.runtime.sendMessage({
@@ -1765,12 +1873,22 @@ class PromptBoostOptions {
       });
 
       // Timeout after 5 minutes
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         chrome.runtime.onMessage.removeListener(messageListener);
         this.elements.quickLogin.disabled = false;
         this.elements.quickLogin.innerHTML = '<span class="login-icon">🔐</span>Login with OpenRouter';
-        this.showStatus('Authentication timed out', 'error');
+        this.showStatus('Authentication timed out. Please try again or use manual API key entry.', 'error');
+        this.updateProviderStatus('error', 'Timeout');
       }, 300000);
+
+      // Clear timeout if authentication completes
+      const originalListener = messageListener;
+      const wrappedListener = (message) => {
+        if (message.type === 'OPENROUTER_AUTH_SUCCESS' || message.type === 'OPENROUTER_AUTH_ERROR') {
+          clearTimeout(timeoutId);
+        }
+        originalListener(message);
+      };
 
     } catch (error) {
       this.elements.quickLogin.disabled = false;

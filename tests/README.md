@@ -44,6 +44,7 @@ tests/
 ### Prerequisites
 
 Install dependencies:
+
 ```bash
 npm install
 ```
@@ -82,6 +83,7 @@ Unit tests focus on testing individual components in isolation with comprehensiv
 ### Background Script Tests (`background.test.js`)
 
 Tests for the `PromptBoostBackground` class:
+
 - Message handling between components
 - LLM API calls (OpenAI, Anthropic, Custom)
 - Template management
@@ -91,6 +93,7 @@ Tests for the `PromptBoostBackground` class:
 ### Content Script Tests (`content.test.js`)
 
 Tests for the `PromptBoostContent` class:
+
 - Triple spacebar detection
 - Text selection and replacement
 - Undo functionality
@@ -101,6 +104,7 @@ Tests for the `PromptBoostContent` class:
 ### Popup Tests (`popup.test.js`)
 
 Tests for the `PromptBoostPopup` class:
+
 - Extension toggle functionality
 - Status display and updates
 - API connection testing
@@ -110,6 +114,7 @@ Tests for the `PromptBoostPopup` class:
 ### Options Tests (`options.test.js`)
 
 Tests for the `PromptBoostOptions` class:
+
 - Settings management and persistence
 - Provider configuration
 - Template CRUD operations
@@ -123,6 +128,7 @@ Integration tests use Puppeteer to test the extension in a real browser environm
 ### Extension Flow Tests (`extension-flow.test.js`)
 
 End-to-end tests covering:
+
 - Extension loading and initialization
 - Cross-component communication
 - User interaction workflows
@@ -134,6 +140,7 @@ End-to-end tests covering:
 ### Chrome API Mocks (`chrome-api.js`)
 
 Comprehensive mocks for Chrome extension APIs:
+
 - `chrome.storage` - Settings and data persistence
 - `chrome.runtime` - Message passing and extension lifecycle
 - `chrome.tabs` - Tab management and communication
@@ -143,6 +150,7 @@ Comprehensive mocks for Chrome extension APIs:
 ### DOM Helpers (`dom-helpers.js`)
 
 Utilities for DOM testing:
+
 - Mock input elements with selection capabilities
 - Text selection simulation
 - Event creation and dispatching
@@ -151,6 +159,7 @@ Utilities for DOM testing:
 ### Test Data (`test-data.js`)
 
 Sample data for consistent testing:
+
 - Text samples of various lengths and types
 - Settings configurations for different providers
 - Template definitions
@@ -167,6 +176,7 @@ The test suite maintains high coverage standards:
 - **Statements**: 80% minimum
 
 Coverage reports are generated in the `tests/coverage/` directory with multiple formats:
+
 - HTML report for detailed analysis
 - LCOV format for CI/CD integration
 - JSON format for programmatic access

@@ -269,17 +269,17 @@ describe('PromptBoostOptions', () => {
   beforeEach(async () => {
     // Reset DOM
     document.body.innerHTML = '';
-    
+
     // Reset Chrome API mocks
     global.chromeTestUtils.resetMocks();
     global.chromeTestUtils.setStorageData(sampleSettings.default);
-    
+
     // Mock URL.createObjectURL
     global.URL.createObjectURL = jest.fn(() => 'blob:mock-url');
-    
+
     // Mock FileReader
     global.FileReader = jest.fn(() => ({
-      readAsText: jest.fn(function(file) {
+      readAsText: jest.fn(function (file) {
         // Simulate successful file read
         setTimeout(() => {
           this.onload({ target: { result: JSON.stringify(sampleSettings.default) } });
@@ -287,7 +287,7 @@ describe('PromptBoostOptions', () => {
       }),
       onload: null
     }));
-    
+
     // Create fresh instance
     options = new PromptBoostOptions();
     await options.init();
@@ -468,7 +468,7 @@ describe('PromptBoostOptions', () => {
 
       // Mock FileReader to return invalid JSON
       global.FileReader = jest.fn(() => ({
-        readAsText: jest.fn(function(file) {
+        readAsText: jest.fn(function (file) {
           setTimeout(() => {
             this.onload({ target: { result: 'invalid json' } });
           }, 0);

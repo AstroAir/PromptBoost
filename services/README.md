@@ -3,6 +3,7 @@
 This directory contains centralized service modules that manage core functionality of the PromptBoost extension.
 
 For detailed service documentation, see:
+
 - **[Services API Reference](../docs/api/services.md)** - Complete API documentation
 - **[Architecture Overview](../docs/architecture/overview.md)** - System architecture details
 - **[Development Guide](../docs/development/setup.md)** - Development information
@@ -10,7 +11,9 @@ For detailed service documentation, see:
 ## Services
 
 ### TemplateManager.js
+
 Centralized template management service that provides:
+
 - Template CRUD operations (Create, Read, Update, Delete)
 - Template versioning and history tracking
 - Template validation and testing
@@ -19,7 +22,9 @@ Centralized template management service that provides:
 - Template performance metrics
 
 ### ConfigurationManager.js
+
 Centralized configuration management service that provides:
+
 - Settings storage and retrieval
 - Per-page configuration support
 - Configuration validation and migration
@@ -30,6 +35,7 @@ Centralized configuration management service that provides:
 ## Architecture
 
 Services follow a consistent pattern:
+
 - **Singleton Pattern**: Each service is a singleton to ensure consistent state
 - **Event-Driven**: Services emit events for state changes
 - **Async/Await**: All operations are asynchronous for better performance
@@ -57,6 +63,7 @@ const settings = await configManager.getSettings();
 ## Service Communication
 
 Services communicate through:
+
 - **Direct method calls**: For synchronous operations
 - **Events**: For asynchronous notifications
 - **Shared storage**: For persistent data
