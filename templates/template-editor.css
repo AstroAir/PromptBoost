@@ -1,0 +1,549 @@
+/**
+ * Enhanced Template Editor Styles
+ * Styles for the CodeMirror-based template editor with preview and validation
+ */
+
+/* Template Editor Container */
+.template-editor-container {
+  display: flex;
+  flex-direction: column;
+  height: 600px;
+  border: 1px solid hsl(214.3 31.8% 91.4%);
+  border-radius: 0.5rem;
+  background: hsl(0 0% 100%);
+  overflow: hidden;
+}
+
+/* Editor Toolbar */
+.editor-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: hsl(210 40% 98%);
+  border-bottom: 1px solid hsl(214.3 31.8% 91.4%);
+  flex-shrink: 0;
+}
+
+.toolbar-left,
+.toolbar-right {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Editor Layout */
+.editor-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.editor-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid hsl(214.3 31.8% 91.4%);
+  min-width: 0;
+}
+
+.editor-panel.focused {
+  border-right-color: hsl(221.2 83.2% 53.3%);
+}
+
+.preview-panel {
+  flex: 0 0 400px;
+  display: flex;
+  flex-direction: column;
+  background: hsl(210 40% 98%);
+  min-width: 0;
+}
+
+/* Panel Headers */
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: hsl(0 0% 100%);
+  border-bottom: 1px solid hsl(214.3 31.8% 91.4%);
+  flex-shrink: 0;
+}
+
+.panel-header h4 {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: hsl(222.2 84% 4.9%);
+}
+
+.editor-status {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: hsl(215.4 16.3% 46.9%);
+}
+
+.status-indicator {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+.status-indicator.status-valid {
+  background: hsl(142.1 76.2% 36.3% / 0.1);
+  color: hsl(142.1 76.2% 36.3%);
+}
+
+.status-indicator.status-error {
+  background: hsl(0 84.2% 60.2% / 0.1);
+  color: hsl(0 84.2% 60.2%);
+}
+
+.status-indicator.status-warning {
+  background: hsl(47.9 95.8% 53.1% / 0.1);
+  color: hsl(47.9 95.8% 53.1%);
+}
+
+.status-indicator.status-suggestion {
+  background: hsl(221.2 83.2% 53.3% / 0.1);
+  color: hsl(221.2 83.2% 53.3%);
+}
+
+.character-count {
+  font-family: monospace;
+}
+
+.validation-score {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-weight: 500;
+  font-size: 0.75rem;
+  font-family: monospace;
+}
+
+.validation-score.score-excellent {
+  background: hsl(142.1 76.2% 36.3% / 0.1);
+  color: hsl(142.1 76.2% 36.3%);
+}
+
+.validation-score.score-good {
+  background: hsl(120 60% 50% / 0.1);
+  color: hsl(120 60% 50%);
+}
+
+.validation-score.score-fair {
+  background: hsl(47.9 95.8% 53.1% / 0.1);
+  color: hsl(47.9 95.8% 53.1%);
+}
+
+.validation-score.score-poor {
+  background: hsl(25 95% 53% / 0.1);
+  color: hsl(25 95% 53%);
+}
+
+.validation-score.score-bad {
+  background: hsl(0 84.2% 60.2% / 0.1);
+  color: hsl(0 84.2% 60.2%);
+}
+
+.preview-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Editor Content */
+.editor-content {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.CodeMirror {
+  height: 100%;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.CodeMirror-placeholder {
+  color: hsl(215.4 16.3% 46.9%);
+  font-style: italic;
+}
+
+/* Custom CodeMirror Theme */
+.cm-variable {
+  color: hsl(221.2 83.2% 53.3%);
+  font-weight: 600;
+  background: hsl(221.2 83.2% 53.3% / 0.1);
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+}
+
+.cm-keyword {
+  color: hsl(262.1 83.3% 57.8%);
+  font-weight: 600;
+}
+
+.cm-string {
+  color: hsl(142.1 76.2% 36.3%);
+}
+
+/* Validation Panel */
+.validation-panel {
+  border-top: 1px solid hsl(214.3 31.8% 91.4%);
+  background: hsl(0 84.2% 60.2% / 0.05);
+  flex-shrink: 0;
+}
+
+.validation-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: hsl(0 84.2% 60.2% / 0.1);
+  border-bottom: 1px solid hsl(0 84.2% 60.2% / 0.2);
+}
+
+.validation-icon {
+  font-size: 1rem;
+}
+
+.validation-title {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: hsl(0 84.2% 60.2%);
+}
+
+.validation-content {
+  padding: 0.75rem 1rem;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.validation-error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.validation-error:last-child {
+  margin-bottom: 0;
+}
+
+.validation-error.validation-error {
+  background: hsl(0 84.2% 60.2% / 0.1);
+  border: 1px solid hsl(0 84.2% 60.2% / 0.2);
+}
+
+.validation-error.validation-warning {
+  background: hsl(47.9 95.8% 53.1% / 0.1);
+  border: 1px solid hsl(47.9 95.8% 53.1% / 0.2);
+}
+
+.validation-error.validation-suggestion {
+  background: hsl(221.2 83.2% 53.3% / 0.1);
+  border: 1px solid hsl(221.2 83.2% 53.3% / 0.2);
+}
+
+.validation-group {
+  margin-bottom: 1rem;
+}
+
+.validation-group:last-child {
+  margin-bottom: 0;
+}
+
+.validation-group h5 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: hsl(222.2 84% 4.9%);
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid hsl(214.3 31.8% 91.4%);
+}
+
+.validation-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+}
+
+.validation-error:last-child {
+  margin-bottom: 0;
+}
+
+.error-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.error-message {
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.error-meta {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  color: hsl(215.4 16.3% 46.9%);
+}
+
+.error-location {
+  font-family: monospace;
+  background: hsl(214.3 31.8% 91.4%);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+}
+
+.error-code {
+  font-family: monospace;
+  background: hsl(214.3 31.8% 91.4%);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-weight: 500;
+}
+
+/* Severity-based styling */
+.validation-error.severity-high {
+  border-left: 4px solid hsl(0 84.2% 60.2%);
+}
+
+.validation-error.severity-medium {
+  border-left: 4px solid hsl(47.9 95.8% 53.1%);
+}
+
+.validation-error.severity-low {
+  border-left: 4px solid hsl(221.2 83.2% 53.3%);
+}
+
+.error-icon {
+  flex-shrink: 0;
+}
+
+.error-message {
+  flex: 1;
+}
+
+.error-location {
+  font-size: 0.75rem;
+  color: hsl(215.4 16.3% 46.9%);
+  font-family: monospace;
+}
+
+/* Preview Content */
+.preview-content {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.preview-section {
+  margin-bottom: 1.5rem;
+}
+
+.preview-section:last-child {
+  margin-bottom: 0;
+}
+
+.preview-section h5 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: hsl(222.2 84% 4.9%);
+}
+
+.preview-data-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid hsl(214.3 31.8% 91.4%);
+  border-radius: 0.375rem;
+  font-family: inherit;
+  font-size: 0.875rem;
+  resize: vertical;
+  min-height: 60px;
+}
+
+.preview-data-input:focus {
+  outline: none;
+  border-color: hsl(221.2 83.2% 53.3%);
+  box-shadow: 0 0 0 3px hsl(221.2 83.2% 53.3% / 0.1);
+}
+
+.preview-output {
+  border: 1px solid hsl(214.3 31.8% 91.4%);
+  border-radius: 0.375rem;
+  background: hsl(0 0% 100%);
+  min-height: 100px;
+}
+
+.preview-rendered {
+  padding: 1rem;
+}
+
+.preview-rendered pre {
+  margin: 0;
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.preview-error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  color: hsl(0 84.2% 60.2%);
+  background: hsl(0 84.2% 60.2% / 0.05);
+}
+
+/* Variable Inserter Dialog */
+.variable-inserter-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+}
+
+.dialog-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.dialog-content {
+  background: hsl(0 0% 100%);
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  max-width: 500px;
+  width: 100%;
+  max-height: 80vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid hsl(214.3 31.8% 91.4%);
+}
+
+.dialog-header h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: hsl(222.2 84% 4.9%);
+}
+
+.dialog-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: hsl(215.4 16.3% 46.9%);
+  cursor: pointer;
+  padding: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem;
+}
+
+.dialog-close:hover {
+  background: hsl(214.3 31.8% 91.4%);
+}
+
+.dialog-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.variable-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.variable-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  border: 1px solid hsl(214.3 31.8% 91.4%);
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.variable-item:hover {
+  border-color: hsl(221.2 83.2% 53.3%);
+  background: hsl(221.2 83.2% 53.3% / 0.05);
+}
+
+.variable-name {
+  font-family: monospace;
+  font-weight: 600;
+  color: hsl(221.2 83.2% 53.3%);
+  font-size: 0.875rem;
+}
+
+.variable-description {
+  font-size: 0.75rem;
+  color: hsl(215.4 16.3% 46.9%);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .template-editor-container {
+    height: auto;
+    min-height: 400px;
+  }
+  
+  .editor-layout {
+    flex-direction: column;
+  }
+  
+  .preview-panel {
+    flex: 0 0 300px;
+    border-right: none;
+    border-top: 1px solid hsl(214.3 31.8% 91.4%);
+  }
+  
+  .editor-toolbar {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .toolbar-left,
+  .toolbar-right {
+    flex-wrap: wrap;
+  }
+}

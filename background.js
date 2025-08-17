@@ -4,9 +4,42 @@
  * and manages extension lifecycle events.
  *
  * @author PromptBoost Team
- * @version 1.0.0
+ * @version 2.0.0
  * @since 1.0.0
  */
+
+// Import utilities
+importScripts(
+  'utils/ErrorHandler.js',
+  'utils/Logger.js',
+  'utils/ConfigValidator.js',
+  'utils/ApiHelper.js'
+);
+
+// Import services
+importScripts(
+  'services/TemplateManager.js',
+  'services/ConfigurationManager.js'
+);
+
+// Import template modules
+importScripts(
+  'templates/TemplateVersioning.js',
+  'templates/TemplateTester.js'
+);
+
+// Import provider system
+importScripts(
+  'providers/base/Provider.js',
+  'providers/base/ProviderRegistry.js',
+  'providers/openai/OpenAIProvider.js',
+  'providers/anthropic/AnthropicProvider.js',
+  'providers/google/GeminiProvider.js',
+  'providers/cohere/CohereProvider.js',
+  'providers/huggingface/HuggingFaceProvider.js',
+  'providers/local/LocalProvider.js',
+  'providers/openrouter/OpenRouterProvider.js'
+);
 
 /**
  * Main background service worker class for PromptBoost extension.
@@ -19,14 +52,112 @@
 class PromptBoostBackground {
   /**
    * Creates an instance of PromptBoostBackground.
-   * Initializes message listeners and install handlers.
+   * Initializes message listeners, install handlers, and provider system.
    *
    * @constructor
    * @since 1.0.0
    */
   constructor() {
+    // Initialize logger
+    this.logger = new Logger('PromptBoostBackground');
+
+    // Initialize services
+    this.templateManager = TemplateManager.getInstance();
+    this.configManager = ConfigurationManager.getInstance();
+
+    this.setupProviderSystem();
     this.setupMessageListener();
     this.setupInstallListener();
+
+    // Initialize services asynchronously
+    this.initializeServices();
+  }
+
+  /**
+   * Sets up the provider system with all available providers.
+   *
+   * @method setupProviderSystem
+   * @since 2.0.0
+   * @private
+   */
+  setupProviderSystem() {
+    try {
+      // Register all providers
+      providerRegistry.register('openai', OpenAIProvider, {
+        displayName: 'OpenAI (GPT)',
+        description: 'OpenAI\'s GPT models including GPT-3.5 and GPT-4',
+        category: 'cloud'
+      });
+
+      providerRegistry.register('anthropic', AnthropicProvider, {
+        displayName: 'Anthropic (Claude)',
+        description: 'Anthropic\'s Claude models including Claude 3 Opus, Sonnet, and Haiku',
+        category: 'cloud'
+      });
+
+      providerRegistry.register('gemini', GeminiProvider, {
+        displayName: 'Google Gemini',
+        description: 'Google\'s advanced AI model with multimodal capabilities',
+        category: 'cloud'
+      });
+
+      providerRegistry.register('cohere', CohereProvider, {
+        displayName: 'Cohere',
+        description: 'Cohere\'s powerful language models',
+        category: 'cloud'
+      });
+
+      providerRegistry.register('huggingface', HuggingFaceProvider, {
+        displayName: 'Hugging Face',
+        description: 'Access to thousands of open-source models',
+        category: 'cloud'
+      });
+
+      providerRegistry.register('local', LocalProvider, {
+        displayName: 'Local Models',
+        description: 'Connect to local model servers',
+        category: 'local'
+      });
+
+      providerRegistry.register('openrouter', OpenRouterProvider, {
+        displayName: 'OpenRouter (Multiple Models)',
+        description: 'Access to multiple AI models through OpenRouter\'s unified API',
+        category: 'cloud'
+      });
+
+      // Set default provider
+      providerRegistry.setDefaultProvider('openai');
+
+      // Set fallback providers
+      providerRegistry.setFallbackProviders(['anthropic', 'gemini', 'cohere', 'openrouter']);
+
+      this.logger.info('Provider system initialized successfully');
+    } catch (error) {
+      ErrorHandler.handle(error, 'PromptBoostBackground.setupProviderSystem');
+    }
+  }
+
+  /**
+   * Initializes services asynchronously.
+   *
+   * @method initializeServices
+   * @since 2.0.0
+   * @private
+   * @async
+   */
+  async initializeServices() {
+    try {
+      this.logger.startTiming('initializeServices');
+
+      // Initialize services
+      await this.templateManager.initialize();
+      await this.configManager.initialize();
+
+      this.logger.endTiming('initializeServices');
+      this.logger.info('Services initialized successfully');
+    } catch (error) {
+      ErrorHandler.handle(error, 'PromptBoostBackground.initializeServices');
+    }
   }
 
   /**
@@ -60,6 +191,32 @@ class PromptBoostBackground {
           break;
         case 'OPENROUTER_AUTH':
           this.handleOpenRouterAuth(message, sender);
+          break;
+        // New provider system handlers
+        case 'GET_PROVIDERS':
+          this.handleGetProviders(message, sender);
+          break;
+        case 'GET_PROVIDER_MODELS':
+          this.handleGetProviderModels(message, sender);
+          break;
+        case 'TEST_PROVIDER':
+          this.handleTestProvider(message, sender);
+          break;
+        case 'GET_PROVIDER_CONFIG_SCHEMA':
+          this.handleGetProviderConfigSchema(message, sender);
+          break;
+        // Configuration management handlers
+        case 'GET_CONFIGURATION':
+          this.handleGetConfiguration(message, sender);
+          break;
+        case 'UPDATE_CONFIGURATION':
+          this.handleUpdateConfiguration(message, sender);
+          break;
+        case 'RESET_CONFIGURATION':
+          this.handleResetConfiguration(message, sender);
+          break;
+        case 'TEST_TEMPLATE':
+          this.handleTestTemplate(message, sender);
           break;
       }
     });
@@ -265,14 +422,15 @@ class PromptBoostBackground {
 
   async handleGetTemplates(message, sender) {
     try {
-      const result = await chrome.storage.sync.get(['templates']);
-      const templates = result.templates || this.getDefaultTemplates();
+      this.logger.debug('Getting templates');
+      const templates = this.templateManager.getAllTemplates(message.filters);
 
       chrome.runtime.sendMessage({
         type: 'TEMPLATES_RESULT',
         data: templates
       });
     } catch (error) {
+      ErrorHandler.handle(error, 'PromptBoostBackground.handleGetTemplates');
       chrome.runtime.sendMessage({
         type: 'TEMPLATES_ERROR',
         error: error.message
@@ -283,27 +441,23 @@ class PromptBoostBackground {
   async handleSaveTemplate(message, sender) {
     try {
       const { template } = message;
-      const result = await chrome.storage.sync.get(['templates']);
-      const templates = result.templates || {};
+      this.logger.debug('Saving template:', template.name);
 
-      // Generate ID if not provided
-      if (!template.id) {
-        template.id = 'custom_' + Date.now();
+      let savedTemplate;
+      if (template.id && this.templateManager.getTemplate(template.id)) {
+        // Update existing template
+        savedTemplate = await this.templateManager.updateTemplate(template.id, template);
+      } else {
+        // Create new template
+        savedTemplate = await this.templateManager.createTemplate(template);
       }
-
-      template.isCustom = true;
-      template.createdAt = template.createdAt || Date.now();
-      template.updatedAt = Date.now();
-
-      templates[template.id] = template;
-
-      await chrome.storage.sync.set({ templates });
 
       chrome.runtime.sendMessage({
         type: 'TEMPLATE_SAVED',
-        data: template
+        data: savedTemplate
       });
     } catch (error) {
+      ErrorHandler.handle(error, 'PromptBoostBackground.handleSaveTemplate');
       chrome.runtime.sendMessage({
         type: 'TEMPLATE_SAVE_ERROR',
         error: error.message
@@ -314,21 +468,16 @@ class PromptBoostBackground {
   async handleDeleteTemplate(message, sender) {
     try {
       const { templateId } = message;
-      const result = await chrome.storage.sync.get(['templates']);
-      const templates = result.templates || {};
+      this.logger.debug('Deleting template:', templateId);
 
-      if (templates[templateId] && !templates[templateId].isDefault) {
-        delete templates[templateId];
-        await chrome.storage.sync.set({ templates });
+      await this.templateManager.deleteTemplate(templateId);
 
-        chrome.runtime.sendMessage({
-          type: 'TEMPLATE_DELETED',
-          data: { templateId }
-        });
-      } else {
-        throw new Error('Cannot delete default template');
-      }
+      chrome.runtime.sendMessage({
+        type: 'TEMPLATE_DELETED',
+        data: { templateId }
+      });
     } catch (error) {
+      ErrorHandler.handle(error, 'PromptBoostBackground.handleDeleteTemplate');
       chrome.runtime.sendMessage({
         type: 'TEMPLATE_DELETE_ERROR',
         error: error.message
@@ -375,55 +524,95 @@ class PromptBoostBackground {
    * @async
    */
   async callLLMAPI(text, settings, retryCount = 0) {
-    const { provider, apiKey, apiEndpoint, model, promptTemplate } = settings;
+    const { provider, promptTemplate } = settings;
     const maxRetries = 3;
 
-    if (!apiKey) {
-      throw new Error('API key not configured');
-    }
-
-    if (!text || text.trim().length === 0) {
-      throw new Error('No text provided for optimization');
-    }
-
-    if (text.length > 10000) {
-      throw new Error('Text too long (maximum 10,000 characters)');
-    }
-
-    const prompt = promptTemplate.replace('{text}', text);
-
     try {
-      let result;
-      switch (provider) {
-        case 'openai':
-          result = await this.callOpenAI(prompt, apiKey, apiEndpoint, model);
-          break;
-        case 'anthropic':
-          result = await this.callAnthropic(prompt, apiKey, model);
-          break;
-        case 'openrouter':
-          result = await this.callOpenRouter(prompt, apiKey, model);
-          break;
-        case 'custom':
-          result = await this.callCustomAPI(prompt, apiKey, apiEndpoint, model);
-          break;
-        default:
-          throw new Error(`Unsupported provider: ${provider}`);
+      this.logger.startTiming(`callLLMAPI_${provider}`);
+
+      // Validate input
+      if (!text || text.trim().length === 0) {
+        throw ErrorHandler.createError('No text provided for optimization', ErrorCategory.VALIDATION);
       }
+
+      if (text.length > 10000) {
+        throw ErrorHandler.createError('Text too long (maximum 10,000 characters)', ErrorCategory.VALIDATION);
+      }
+
+      // Prepare prompt
+      const prompt = promptTemplate.replace('{text}', text);
+
+      // Use new provider system exclusively
+      const result = await this.callNewProviderAPI(provider, prompt, settings);
 
       if (!result || result.trim().length === 0) {
-        throw new Error('Empty response from API');
+        throw ErrorHandler.createError('Empty response from API', ErrorCategory.API);
       }
 
+      this.logger.endTiming(`callLLMAPI_${provider}`);
       return result;
+
     } catch (error) {
+      this.logger.endTiming(`callLLMAPI_${provider}`);
+
       // Retry logic for transient errors
       if (retryCount < maxRetries && this.isRetryableError(error)) {
-        console.log(`Retrying API call (attempt ${retryCount + 1}/${maxRetries}):`, error.message);
+        this.logger.warn(`Retrying API call (attempt ${retryCount + 1}/${maxRetries}):`, error.message);
         await this.delay(Math.pow(2, retryCount) * 1000); // Exponential backoff
         return this.callLLMAPI(text, settings, retryCount + 1);
       }
 
+      // Handle error with centralized error handler
+      throw ErrorHandler.handle(error, 'PromptBoostBackground.callLLMAPI', {
+        category: ErrorCategory.API,
+        metadata: { provider, retryCount }
+      });
+    }
+  }
+
+  /**
+   * Calls the new provider system API.
+   *
+   * @method callNewProviderAPI
+   * @param {string} providerName - Name of the provider
+   * @param {string} prompt - The prompt to send
+   * @param {Object} settings - Provider settings
+   * @returns {Promise<string>} Generated text
+   * @since 2.0.0
+   * @async
+   */
+  async callNewProviderAPI(providerName, prompt, settings) {
+    try {
+      // Get provider with fallback support
+      const provider = providerRegistry.getProviderWithFallback(providerName, settings);
+
+      if (!provider) {
+        throw ErrorHandler.createError(
+          `Provider '${providerName}' not available`,
+          ErrorCategory.PROVIDER,
+          { providerName, availableProviders: providerRegistry.getProviderNames() }
+        );
+      }
+
+      // Authenticate if not already authenticated
+      if (!provider.isAuthenticated) {
+        this.logger.debug(`Authenticating provider: ${providerName}`);
+        await provider.authenticate(settings);
+      }
+
+      // Call the provider API
+      this.logger.debug(`Calling API for provider: ${providerName}`);
+      const result = await provider.callAPI(prompt, {
+        model: settings.model,
+        maxTokens: settings.maxTokens || 1000,
+        temperature: settings.temperature || 0.7
+      });
+
+      this.logger.debug(`API call successful for provider: ${providerName}`);
+      return result;
+
+    } catch (error) {
+      this.logger.error(`Error calling provider API for ${providerName}:`, error);
       throw error;
     }
   }
@@ -445,6 +634,137 @@ class PromptBoostBackground {
 
   delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  /**
+   * Handles requests to get available providers.
+   *
+   * @method handleGetProviders
+   * @param {Object} message - The message object
+   * @param {Object} sender - Chrome extension sender object
+   * @since 2.0.0
+   * @async
+   */
+  async handleGetProviders(message, sender) {
+    try {
+      const providers = providerRegistry.getProvidersMetadata();
+
+      chrome.runtime.sendMessage({
+        type: 'PROVIDERS_RESULT',
+        data: providers
+      });
+    } catch (error) {
+      chrome.runtime.sendMessage({
+        type: 'PROVIDERS_ERROR',
+        error: error.message
+      });
+    }
+  }
+
+  /**
+   * Handles requests to get models for a specific provider.
+   *
+   * @method handleGetProviderModels
+   * @param {Object} message - The message object
+   * @param {string} message.provider - Provider name
+   * @param {Object} message.config - Provider configuration
+   * @param {Object} sender - Chrome extension sender object
+   * @since 2.0.0
+   * @async
+   */
+  async handleGetProviderModels(message, sender) {
+    try {
+      const { provider: providerName, config } = message;
+      const provider = providerRegistry.getProvider(providerName, config);
+
+      if (!provider) {
+        throw new Error(`Provider '${providerName}' not found`);
+      }
+
+      // Authenticate if needed
+      if (!provider.isAuthenticated && config) {
+        await provider.authenticate(config);
+      }
+
+      const models = await provider.getModels();
+
+      chrome.runtime.sendMessage({
+        type: 'PROVIDER_MODELS_RESULT',
+        data: { provider: providerName, models }
+      });
+    } catch (error) {
+      chrome.runtime.sendMessage({
+        type: 'PROVIDER_MODELS_ERROR',
+        error: error.message
+      });
+    }
+  }
+
+  /**
+   * Handles requests to test a provider connection.
+   *
+   * @method handleTestProvider
+   * @param {Object} message - The message object
+   * @param {string} message.provider - Provider name
+   * @param {Object} message.config - Provider configuration
+   * @param {Object} sender - Chrome extension sender object
+   * @since 2.0.0
+   * @async
+   */
+  async handleTestProvider(message, sender) {
+    try {
+      const { provider: providerName, config } = message;
+      const provider = providerRegistry.getProvider(providerName, config);
+
+      if (!provider) {
+        throw new Error(`Provider '${providerName}' not found`);
+      }
+
+      const result = await provider.testConnection(config);
+
+      chrome.runtime.sendMessage({
+        type: 'PROVIDER_TEST_RESULT',
+        data: { provider: providerName, ...result }
+      });
+    } catch (error) {
+      chrome.runtime.sendMessage({
+        type: 'PROVIDER_TEST_ERROR',
+        error: error.message
+      });
+    }
+  }
+
+  /**
+   * Handles requests to get provider configuration schema.
+   *
+   * @method handleGetProviderConfigSchema
+   * @param {Object} message - The message object
+   * @param {string} message.provider - Provider name
+   * @param {Object} sender - Chrome extension sender object
+   * @since 2.0.0
+   * @async
+   */
+  async handleGetProviderConfigSchema(message, sender) {
+    try {
+      const { provider: providerName } = message;
+      const provider = providerRegistry.getProvider(providerName);
+
+      if (!provider) {
+        throw new Error(`Provider '${providerName}' not found`);
+      }
+
+      const schema = provider.getConfigSchema ? provider.getConfigSchema() : {};
+
+      chrome.runtime.sendMessage({
+        type: 'PROVIDER_CONFIG_SCHEMA_RESULT',
+        data: { provider: providerName, schema }
+      });
+    } catch (error) {
+      chrome.runtime.sendMessage({
+        type: 'PROVIDER_CONFIG_SCHEMA_ERROR',
+        error: error.message
+      });
+    }
   }
 
   async handleOpenRouterAuth(message, sender) {
@@ -552,6 +872,117 @@ class PromptBoostBackground {
     }
   }
 
+  /**
+   * Handles configuration retrieval requests
+   *
+   * @method handleGetConfiguration
+   * @param {Object} message - Message object
+   * @param {Object} sender - Sender information
+   * @since 2.0.0
+   * @async
+   */
+  async handleGetConfiguration(message, sender) {
+    try {
+      const { domain } = message;
+      const config = this.configManager.getConfiguration(domain);
+
+      chrome.runtime.sendMessage({
+        type: 'CONFIGURATION_LOADED',
+        data: config
+      });
+    } catch (error) {
+      ErrorHandler.handle(error, 'PromptBoostBackground.handleGetConfiguration');
+      chrome.runtime.sendMessage({
+        type: 'CONFIGURATION_LOAD_ERROR',
+        error: error.message
+      });
+    }
+  }
+
+  /**
+   * Handles configuration update requests
+   *
+   * @method handleUpdateConfiguration
+   * @param {Object} message - Message object
+   * @param {Object} sender - Sender information
+   * @since 2.0.0
+   * @async
+   */
+  async handleUpdateConfiguration(message, sender) {
+    try {
+      const { updates, domain } = message;
+      const updatedConfig = await this.configManager.updateConfiguration(updates, domain);
+
+      chrome.runtime.sendMessage({
+        type: 'CONFIGURATION_UPDATED',
+        data: updatedConfig
+      });
+    } catch (error) {
+      ErrorHandler.handle(error, 'PromptBoostBackground.handleUpdateConfiguration');
+      chrome.runtime.sendMessage({
+        type: 'CONFIGURATION_UPDATE_ERROR',
+        error: error.message
+      });
+    }
+  }
+
+  /**
+   * Handles configuration reset requests
+   *
+   * @method handleResetConfiguration
+   * @param {Object} message - Message object
+   * @param {Object} sender - Sender information
+   * @since 2.0.0
+   * @async
+   */
+  async handleResetConfiguration(message, sender) {
+    try {
+      const { domain } = message;
+      const resetConfig = await this.configManager.resetConfiguration(domain);
+
+      chrome.runtime.sendMessage({
+        type: 'CONFIGURATION_RESET',
+        data: resetConfig
+      });
+    } catch (error) {
+      ErrorHandler.handle(error, 'PromptBoostBackground.handleResetConfiguration');
+      chrome.runtime.sendMessage({
+        type: 'CONFIGURATION_RESET_ERROR',
+        error: error.message
+      });
+    }
+  }
+
+  /**
+   * Handles template testing requests
+   *
+   * @method handleTestTemplate
+   * @param {Object} message - Message object
+   * @param {Object} sender - Sender information
+   * @since 2.0.0
+   * @async
+   */
+  async handleTestTemplate(message, sender) {
+    try {
+      const { template, testOptions } = message;
+      this.logger.debug('Testing template:', template.name);
+
+      const tester = new TemplateTester();
+      const testResults = await tester.runTests(template, testOptions);
+
+      chrome.runtime.sendMessage({
+        type: 'TEMPLATE_TEST_RESULT',
+        data: testResults
+      });
+    } catch (error) {
+      ErrorHandler.handle(error, 'PromptBoostBackground.handleTestTemplate');
+      chrome.runtime.sendMessage({
+        type: 'TEMPLATE_TEST_ERROR',
+        error: error.message
+      });
+    }
+  }
+
   generateCodeVerifier() {
     const array = new Uint8Array(32);
     crypto.getRandomValues(array);
@@ -571,137 +1002,7 @@ class PromptBoostBackground {
       .replace(/=/g, '');
   }
 
-  async callOpenAI(prompt, apiKey, endpoint, model) {
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
-        model: model,
-        messages: [
-          {
-            role: 'user',
-            content: prompt
-          }
-        ],
-        max_tokens: 1000,
-        temperature: 0.7
-      })
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.error?.message || `HTTP ${response.status}: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data.choices[0]?.message?.content || '';
-  }
-
-  async callAnthropic(prompt, apiKey, model) {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: model || 'claude-3-sonnet-20240229',
-        max_tokens: 1000,
-        messages: [
-          {
-            role: 'user',
-            content: prompt
-          }
-        ]
-      })
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.error?.message || `HTTP ${response.status}: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data.content[0]?.text || '';
-  }
-
-  async callOpenRouter(prompt, apiKey, model) {
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-        'HTTP-Referer': chrome.runtime.getURL(''),
-        'X-Title': 'PromptBoost'
-      },
-      body: JSON.stringify({
-        model: model || 'openai/gpt-3.5-turbo',
-        messages: [
-          {
-            role: 'user',
-            content: prompt
-          }
-        ],
-        max_tokens: 1000,
-        temperature: 0.7
-      })
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.error?.message || `HTTP ${response.status}: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data.choices[0]?.message?.content || '';
-  }
-
-  async callCustomAPI(prompt, apiKey, endpoint, model) {
-    // Generic implementation for custom APIs
-    // Assumes OpenAI-compatible format
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
-        model: model,
-        messages: [
-          {
-            role: 'user',
-            content: prompt
-          }
-        ],
-        max_tokens: 1000,
-        temperature: 0.7
-      })
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.error?.message || `HTTP ${response.status}: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    
-    // Try different response formats
-    if (data.choices && data.choices[0]?.message?.content) {
-      return data.choices[0].message.content;
-    } else if (data.content && data.content[0]?.text) {
-      return data.content[0].text;
-    } else if (data.response) {
-      return data.response;
-    } else if (data.text) {
-      return data.text;
-    } else {
-      throw new Error('Unexpected API response format');
-    }
-  }
+  // Legacy provider methods removed - now using unified provider system
 }
 
 // Initialize background script

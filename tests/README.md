@@ -1,15 +1,17 @@
 # PromptBoost Testing Suite
 
-This directory contains comprehensive unit and integration tests for the PromptBoost browser extension.
+This directory contains comprehensive unit and integration tests for the PromptBoost v2.0 browser extension.
 
 ## Overview
 
-The testing suite is built with Jest and Puppeteer to provide thorough coverage of all extension functionality, including:
+The testing suite is built with Jest to provide thorough coverage of all extension functionality, including:
 
 - **Unit Tests**: Test individual components and functions in isolation
-- **Integration Tests**: Test end-to-end functionality with browser automation
+- **Integration Tests**: Test service interactions and cross-component functionality
+- **Provider Tests**: Test AI provider implementations and authentication
+- **Service Tests**: Test centralized services (TemplateManager, ConfigurationManager)
 - **Chrome API Mocking**: Comprehensive mocks for Chrome extension APIs
-- **DOM Testing**: Utilities for testing DOM interactions and text manipulation
+- **Template Testing**: Automated template validation and quality assessment
 
 ## Directory Structure
 

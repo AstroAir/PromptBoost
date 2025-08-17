@@ -48,48 +48,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Context menu integration for right-click access
   - Multiple keyboard shortcuts for different actions
   - Visual feedback with loading indicators and notifications
-  - Optimization history tracking and review
-  - Advanced settings for timeouts and retry attempts
+  - Optimization history tracking and management
+  - Advanced settings for customization
 
 - **Management Features**
   - History tracking with search and export capabilities
-  - Usage statistics for templates and activity
-  - Backup & restore for settings and templates
-  - Optional debug logging for troubleshooting
-  - Settings synchronization across browser instances
-
-- **User Interface**
-  - Modern popup interface with extension toggle
-  - Comprehensive options page with tabbed interface
-  - Status indicators and provider information display
-  - API connection testing functionality
-  - Responsive design for various screen sizes
+  - Usage statistics and analytics
+  - Backup and restore functionality for settings and templates
+  - Debug logging for troubleshooting
+  - Per-page configuration support
+  - Configuration migration between versions
 
 - **Provider Support**
-  - **OpenAI**: GPT-3.5-turbo, GPT-4 models
-  - **Anthropic**: Claude-3 models with proper API integration
-  - **Custom APIs**: Configurable endpoints for self-hosted solutions
-  - API key management with secure storage
-  - Provider-specific model selection
+  - OpenAI GPT models (GPT-3.5, GPT-4)
+  - Anthropic Claude models (Claude 3 Opus, Sonnet, Haiku)
+  - Google Gemini Pro
+  - Cohere Command models
+  - Hugging Face Inference API
+  - OpenRouter unified API
+  - Local model support (Ollama, LM Studio)
+  - Custom API endpoint configuration
 
-- **Browser Compatibility**
-  - Chrome (Manifest V3) - primary target
-  - Microsoft Edge (Manifest V3) - full support
-  - Firefox compatibility (requires minor manifest modifications)
+- **User Interface**
+  - Modern, responsive popup interface
+  - Comprehensive options page with tabbed navigation
+  - Template editor with syntax highlighting
+  - Real-time API connection testing
+  - Import/export functionality for settings
+  - Keyboard shortcut customization
 
-### Technical Implementation
-- **Architecture**: Clean separation of concerns with background script, content script, popup, and options components
-- **Message Passing**: Robust inter-component communication using Chrome's message passing API
-- **Storage**: Secure settings persistence using Chrome's sync storage
-- **Error Handling**: Comprehensive error handling with user-friendly messages
-- **Performance**: Optimized for minimal resource usage and fast response times
+- **Technical Features**
+  - Manifest V3 compliance for modern browsers
+  - Secure API key storage in Chrome sync storage
+  - Cross-site compatibility with content security policies
+  - Error handling with user-friendly messages
+  - Rate limiting and retry logic for API calls
+  - Performance optimization for large text processing
 
-### Security Features
-- API keys stored securely in Chrome's encrypted storage
-- No data collection or external tracking
-- All processing happens client-side except for API calls
-- HTTPS-only communication with LLM providers
-- Input sanitization and validation
+### Browser Support
+- Chrome 88+ (full support)
+- Microsoft Edge 88+ (full support)
+- Chromium-based browsers (full support)
+- Firefox (requires manifest modifications)
 
 ### Documentation
 - Comprehensive README with installation and usage instructions
@@ -135,8 +135,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for information on how to contribute to this project.
+See [CONTRIBUTING.md](../development/contributing.md) for information on how to contribute to this project.
 
 ## Support
 
-For bug reports and feature requests, please use the [GitHub Issues](https://github.com/your-repo/promptboost/issues) page.
+- **Issues**: [GitHub Issues](https://github.com/your-repo/promptboost/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/your-repo/promptboost/discussions)
+- **Documentation**: [Documentation Site](../README.md)
+- **Email**: support@promptboost.dev
+
+---
+
+## Migration Notes
+
+### Upgrading from v0.x to v1.0
+
+1. **Settings Migration**: Settings are automatically migrated on first run
+2. **Template Format**: Old templates are converted to new format
+3. **API Configuration**: Provider settings may need to be reconfigured
+4. **Keyboard Shortcuts**: Default shortcuts may have changed
+
+### Breaking Changes in v1.0
+
+- **Template Structure**: New template format with versioning
+- **Provider Interface**: Unified provider system replaces individual implementations
+- **Settings Schema**: New configuration structure with validation
+- **Message Format**: Updated message passing between components
+
+### Compatibility
+
+- **Backward Compatibility**: v1.0 maintains compatibility with v0.x settings
+- **Forward Compatibility**: v0.x cannot use v1.0+ settings
+- **Data Migration**: Automatic migration preserves user data and preferences
+
+---
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](../../LICENSE) file for details.

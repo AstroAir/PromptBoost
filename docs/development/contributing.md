@@ -99,120 +99,92 @@ Examples:
 
 ### 2. Creating the Pull Request
 - Use a clear, descriptive title
-- Provide detailed description of changes
-- Reference related issues using `#issue-number`
-- Include screenshots for UI changes
-- Mark as draft if work is in progress
+- Fill out the PR template completely
+- Link related issues using keywords (fixes #123)
+- Add screenshots for UI changes
+- Request review from maintainers
 
-### 3. Pull Request Template
-```markdown
-## Description
-Brief description of changes
+### 3. Review Process
+- Address all review feedback
+- Keep discussions constructive and focused
+- Update your branch if requested
+- Ensure CI checks pass
 
-## Type of Change
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Documentation update
-- [ ] Performance improvement
-- [ ] Code refactoring
-
-## Testing
-- [ ] Unit tests pass
-- [ ] Integration tests pass
-- [ ] Manual testing completed
-- [ ] New tests added (if applicable)
-
-## Checklist
-- [ ] Code follows style guidelines
-- [ ] Self-review completed
-- [ ] Documentation updated
-- [ ] No breaking changes (or clearly documented)
-```
-
-### 4. Review Process
-- Maintainers will review your PR
-- Address feedback promptly
-- Keep discussions constructive
-- Be open to suggestions and changes
+### 4. Merging
+- Squash commits if requested
+- Ensure commit messages follow conventions
+- Delete feature branch after merge
 
 ## Testing Requirements
 
-### Unit Tests
-- Write unit tests for all new functions and methods
-- Maintain minimum 80% code coverage
-- Test both success and error scenarios
-- Use descriptive test names
+### Test Coverage
+- Maintain minimum 80% test coverage
+- Add unit tests for new functions/classes
+- Add integration tests for new features
+- Update existing tests when modifying code
 
-### Integration Tests
-- Add integration tests for new user workflows
-- Test cross-component communication
-- Verify end-to-end functionality
-
-### Manual Testing
-- Test in multiple browsers (Chrome, Edge, Firefox)
-- Verify functionality on different websites
-- Test with various text types and lengths
-- Validate error handling and edge cases
-
-### Running Tests
+### Test Types
 ```bash
 # Run all tests
 npm test
 
-# Run specific test types
+# Run unit tests only
 npm run test:unit
+
+# Run integration tests only
 npm run test:integration
 
-# Run with coverage
+# Run tests with coverage
 npm run test:coverage
 
-# Run in watch mode
+# Run tests in watch mode
 npm run test:watch
 ```
+
+### Writing Tests
+- Follow existing test patterns
+- Use descriptive test names
+- Test both success and error cases
+- Mock external dependencies
+- Keep tests focused and isolated
 
 ## Code Style Guidelines
 
 ### JavaScript Standards
-- Use ES6+ features where appropriate
-- Follow consistent naming conventions
+- Use ES6+ features consistently
+- Follow ESLint configuration
 - Use meaningful variable and function names
-- Keep functions small and focused
-- Add JSDoc comments for all public methods
+- Implement proper error handling
+- Add JSDoc comments for public APIs
 
-### Code Formatting
-- Use 2 spaces for indentation
-- Use semicolons consistently
-- Use single quotes for strings
-- Keep lines under 100 characters
-- Use trailing commas in objects and arrays
+### File Organization
+- Group related functionality
+- Use consistent naming conventions
+- Keep files under 500 lines
+- Implement proper imports/exports
 
-### ESLint Configuration
-The project uses ESLint for code quality:
-```bash
-# Check code style
-npm run lint
+### Commit Message Format
+```
+type(scope): description
 
-# Fix auto-fixable issues
-npm run lint:fix
+[optional body]
+
+[optional footer]
 ```
 
-### Example Code Style
-```javascript
-/**
- * Optimizes text using the specified template.
- * @param {string} text - The text to optimize
- * @param {string} templateId - The template ID to use
- * @returns {Promise<string>} The optimized text
- */
-async function optimizeWithTemplate(text, templateId) {
-  if (!text || !templateId) {
-    throw new Error('Text and template ID are required');
-  }
-  
-  const template = await getTemplate(templateId);
-  return await callLLMAPI(text, template);
-}
-```
+Types:
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation changes
+- `style`: Code style changes
+- `refactor`: Code refactoring
+- `test`: Test additions/modifications
+- `chore`: Maintenance tasks
+
+Examples:
+- `feat(providers): add Anthropic Claude support`
+- `fix(content): resolve spacebar detection timing issue`
+- `docs(api): update provider interface documentation`
 
 ## Documentation Standards
 
@@ -237,58 +209,53 @@ async function optimizeWithTemplate(text, templateId) {
 
 ## Specific Contribution Areas
 
-### Adding LLM Providers
-1. Update `background.js` with new provider logic
-2. Add provider-specific API call method
-3. Update options page with provider configuration
-4. Add comprehensive tests
-5. Update documentation
+### Adding New LLM Providers
+1. Create provider class extending base Provider
+2. Implement required interface methods
+3. Add provider to registry
+4. Update options UI
+5. Add comprehensive tests
+6. Update documentation
 
-### Creating New Templates
-1. Add template to default templates in `background.js`
-2. Update template management UI
-3. Add template validation
-4. Include usage examples
-5. Test with various text types
+### Template System Enhancements
+1. Extend TemplateManager functionality
+2. Add validation rules
+3. Update template editor UI
+4. Add testing capabilities
+5. Document new features
 
 ### UI/UX Improvements
 1. Follow existing design patterns
-2. Ensure accessibility compliance
-3. Test across different screen sizes
-4. Maintain browser compatibility
-5. Update relevant documentation
+2. Ensure responsive design
+3. Test across different browsers
+4. Add accessibility features
+5. Update CSS documentation
 
 ### Performance Optimizations
-1. Profile performance before and after changes
-2. Add performance tests if applicable
-3. Document performance improvements
-4. Consider memory usage impact
-5. Test with large text inputs
+1. Profile performance impact
+2. Add benchmarks for improvements
+3. Document optimization techniques
+4. Test memory usage
+5. Update performance guidelines
 
 ## Getting Help
-
-### Resources
-- **Documentation**: Check existing documentation first
-- **Issues**: Search existing issues for similar problems
-- **Discussions**: Use GitHub Discussions for questions
-- **Code Review**: Ask for feedback during development
 
 ### Communication Channels
 - **GitHub Issues**: Bug reports and feature requests
 - **GitHub Discussions**: General questions and ideas
 - **Pull Request Comments**: Code-specific discussions
-- **Email**: For security-related issues only
 
-## Recognition
+### Resources
+- [Development Setup](setup.md)
+- [Testing Guide](testing.md)
+- [Architecture Documentation](../architecture/overview.md)
+- [API Reference](../api/)
 
-Contributors are recognized in several ways:
-- Listed in CHANGELOG.md for their contributions
-- Mentioned in release notes for significant features
-- Added to contributors list in README.md
-- Invited to become maintainers for consistent contributors
+### Mentorship
+New contributors are welcome! Don't hesitate to:
+- Ask questions in issues or discussions
+- Request code reviews and feedback
+- Seek guidance on implementation approaches
+- Participate in community discussions
 
-## License
-
-By contributing to PromptBoost, you agree that your contributions will be licensed under the same MIT License that covers the project. See [LICENSE](LICENSE) for details.
-
-Thank you for contributing to PromptBoost! 🚀
+Thank you for contributing to PromptBoost! Your efforts help make this project better for everyone.

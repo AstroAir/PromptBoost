@@ -49,40 +49,52 @@ cd promptboost
 2. **Choose your LLM provider**:
    - OpenAI (recommended for beginners)
    - Anthropic Claude
-   - Custom API
+   - Google Gemini
+   - Custom API endpoint
 3. **Enter your API key**
-4. **Click "Save Settings"**
-5. **Click "Test API"** to verify it works
+4. **Test the connection** using the "Test API" button
+5. **Save settings**
 
 ## Getting API Keys
 
 ### OpenAI API Key
 
-1. Go to [OpenAI Platform](https://platform.openai.com/)
-2. Sign up or log in
-3. Navigate to [API Keys](https://platform.openai.com/api-keys)
-4. Click "Create new secret key"
-5. Copy the key and paste it into PromptBoost settings
+1. Visit [OpenAI API Keys](https://platform.openai.com/api-keys)
+2. Sign in or create an account
+3. Click "Create new secret key"
+4. Copy the key (starts with `sk-`)
+5. Paste into PromptBoost settings
 
-**Note**: You'll need to add billing information to use the API.
+**Cost**: Pay-per-use, typically $0.002 per 1K tokens
 
 ### Anthropic API Key
 
-1. Go to [Anthropic Console](https://console.anthropic.com/)
-2. Sign up or log in
-3. Navigate to API Keys section
+1. Visit [Anthropic Console](https://console.anthropic.com/)
+2. Sign in or create an account
+3. Go to "API Keys" section
 4. Generate a new API key
 5. Copy and paste into PromptBoost settings
 
-## Testing the Installation
+**Cost**: Pay-per-use, pricing varies by model
 
-1. **Open the test page**: Open `test.html` in your browser
-2. **Select some text** in any of the test fields
-3. **Press spacebar 3 times quickly**
-4. **Verify**:
-   - Loading indicator appears
-   - Text gets optimized
-   - Undo notification shows up
+### Google Gemini API Key
+
+1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Sign in with Google account
+3. Create a new API key
+4. Copy the key (starts with `AIza`)
+5. Paste into PromptBoost settings
+
+**Cost**: Free tier available, then pay-per-use
+
+### Custom API Setup
+
+For self-hosted or other providers:
+1. Select "Custom" as provider
+2. Enter your API endpoint URL
+3. Configure authentication (API key or bearer token)
+4. Set the model name
+5. Test the connection
 
 ## Troubleshooting
 
@@ -140,5 +152,22 @@ Your settings and API keys will be automatically deleted.
 ## Getting Help
 
 - **Issues**: Check the [GitHub Issues](https://github.com/your-repo/promptboost/issues)
-- **Documentation**: Read the main [README.md](README.md)
+- **Documentation**: Read the main [README.md](../README.md)
 - **Test Page**: Use `test.html` to verify functionality
+
+## Next Steps
+
+After installation:
+1. **Read the [User Manual](user-manual.md)** for detailed usage instructions
+2. **Explore [Template Management](templates.md)** to customize prompts
+3. **Check [Configuration Guide](configuration.md)** for advanced settings
+4. **Review [Troubleshooting](troubleshooting.md)** for common issues
+
+## Updates
+
+To update PromptBoost:
+1. Download the latest version
+2. Replace the old folder with the new one
+3. Go to `chrome://extensions/`
+4. Click the refresh icon for PromptBoost
+5. Your settings will be preserved automatically

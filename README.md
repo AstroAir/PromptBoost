@@ -2,287 +2,222 @@
 
 PromptBoost is a powerful browser extension that enhances your text with AI by simply pressing the spacebar three times. It supports multiple LLM providers including OpenAI, Anthropic Claude, and custom APIs.
 
-## Features
+## 🚀 Quick Start
+
+1. **[Install PromptBoost](docs/guides/installation.md)** - Get up and running in minutes
+2. **[Configure your API key](docs/guides/quick-start.md)** - Set up your preferred AI provider
+3. **[Start optimizing text](docs/guides/user-manual.md)** - Select text and press spacebar 3 times
+
+## 📚 Documentation
+
+### 🎯 For Users
+- **[Quick Start Guide](docs/guides/quick-start.md)** - Get started in 5 minutes
+- **[User Manual](docs/guides/user-manual.md)** - Complete usage guide
+- **[Installation Guide](docs/guides/installation.md)** - Step-by-step installation
+- **[Configuration Guide](docs/guides/configuration.md)** - Advanced settings and customization
+- **[Template Management](docs/guides/templates.md)** - Create and manage custom templates
+- **[Troubleshooting](docs/guides/troubleshooting.md)** - Common issues and solutions
+
+### 🔧 For Developers
+- **[Development Setup](docs/development/setup.md)** - Development environment setup
+- **[API Reference](docs/api/)** - Complete API documentation
+- **[Architecture Overview](docs/architecture/overview.md)** - System architecture and design
+- **[Contributing Guidelines](docs/development/contributing.md)** - How to contribute
+- **[Testing Guide](docs/development/testing.md)** - Testing documentation
+
+### 💡 Examples & References
+- **[Usage Examples](docs/examples/basic-usage.md)** - Practical usage examples
+- **[Template Examples](docs/examples/templates.md)** - Custom template creation
+- **[Provider Integration](docs/examples/providers.md)** - AI provider setup
+- **[Configuration Reference](docs/reference/configuration.md)** - Complete settings reference
+- **[Template Schema](docs/reference/templates.md)** - Template structure reference
+
+## ✨ Key Features
 
 ### Core Functionality
 - **Triple Spacebar Activation**: Press spacebar 3 times quickly to optimize selected text
-- **Multiple LLM Providers**: Support for OpenAI GPT, Anthropic Claude, and custom APIs
+- **Multiple LLM Providers**: Support for OpenAI GPT, Anthropic Claude, Google Gemini, Cohere, Hugging Face, OpenRouter, and local models
 - **Universal Compatibility**: Works on all websites and text input fields
 - **Smart Text Handling**: Supports both plain text and rich text selections
 - **Undo Functionality**: Easy undo with Ctrl+Z or click button
 
 ### Template System
-- **Multiple Prompt Templates**: 8 built-in templates for different use cases
+- **Multiple Prompt Templates**: Built-in templates for different use cases
 - **Custom Templates**: Create, edit, and organize your own templates
-- **Template Categories**: Organize templates by Business, Creative, Technical, etc.
+- **Template Categories**: Organize templates by purpose and context
+- **Template Versioning**: Full version control with history and rollback
+- **Template Testing**: Automated testing framework for quality assurance
 - **Quick Template Selection**: Choose templates during optimization
-- **Template Management**: Import/export templates, full CRUD operations
 
-### User Experience
-- **Context Menu Integration**: Right-click on selected text for quick access
-- **Keyboard Shortcuts**: Multiple shortcuts for different actions
-- **Visual Feedback**: Loading indicators, notifications, and status updates
-- **Optimization History**: Track and review all your optimizations
-- **Advanced Settings**: Customize timeouts, retry attempts, and more
-
-### Management Features
+### Advanced Features
+- **Per-Page Configuration**: Different settings for different websites
 - **History Tracking**: View, search, and export optimization history
-- **Usage Statistics**: See your most used templates and activity
+- **Usage Analytics**: See your most used templates and performance metrics
 - **Backup & Restore**: Export/import settings and templates
 - **Debug Logging**: Optional logging for troubleshooting
 
-## Installation
+## 🛠 Installation
 
-### From Source (Development)
+### Quick Installation
 
-1. Clone or download this repository
-2. Open Chrome/Edge and navigate to `chrome://extensions/`
-3. Enable "Developer mode" in the top right
-4. Click "Load unpacked" and select the extension directory
-5. The extension icon should appear in your browser toolbar
+1. **Download** the extension from GitHub or Chrome Web Store
+2. **Open Chrome** and navigate to `chrome://extensions/`
+3. **Enable "Developer mode"** in the top right
+4. **Click "Load unpacked"** and select the extension directory
+5. **The extension icon** should appear in your browser toolbar
+
+For detailed installation instructions, see the **[Installation Guide](docs/guides/installation.md)**.
 
 ### Browser Compatibility
 
-- ✅ Chrome (Manifest V3)
-- ✅ Microsoft Edge (Manifest V3)
-- ⚠️ Firefox (requires minor manifest modifications)
+- ✅ **Chrome** (Manifest V3) - Full support
+- ✅ **Microsoft Edge** (Manifest V3) - Full support
+- ⚠️ **Firefox** - Requires minor manifest modifications
 
-## Setup
-
-1. **Install the extension** following the instructions above
-2. **Click the extension icon** in your browser toolbar
-3. **Click "Settings"** to open the configuration page
-4. **Choose your LLM provider**:
-   - **OpenAI**: Enter your OpenAI API key
-   - **Anthropic**: Enter your Anthropic API key
-   - **Custom**: Configure your custom API endpoint
-
-### Getting API Keys
-
-#### OpenAI
-1. Visit [OpenAI API Keys](https://platform.openai.com/api-keys)
-2. Create a new API key
-3. Copy and paste it into PromptBoost settings
-
-#### Anthropic
-1. Visit [Anthropic Console](https://console.anthropic.com/)
-2. Generate an API key
-3. Copy and paste it into PromptBoost settings
-
-## Usage
-
-### Basic Usage
+## 🎯 Basic Usage
 
 1. **Select text** on any webpage or in any text field
-2. **Choose your activation method**:
-   - **Triple spacebar**: Press spacebar 3 times quickly (within 1 second by default)
-   - **Keyboard shortcut**: Ctrl+Shift+Space
-   - **Right-click menu**: Right-click on selected text for context menu
-3. **Choose optimization method**:
-   - **Quick optimize**: Use default template
-   - **Template selection**: Choose from available templates
-4. **Wait for optimization** - you'll see a loading indicator
-5. **Text is automatically replaced** with the AI-optimized version
+2. **Press spacebar 3 times quickly** (within 1 second)
+3. **Wait for AI optimization** - you'll see a loading indicator
+4. **Text is automatically replaced** with the optimized version
 
-### Keyboard Shortcuts
+### Alternative Activation Methods
 
-- **Ctrl+Shift+Space**: Quick optimization with default template
-- **Ctrl+Shift+T**: Open template selector
-- **Ctrl+Z**: Undo last optimization (within 30 seconds)
-- **Escape**: Close template selector or context menu
+- **Keyboard shortcut**: `Ctrl+Shift+Space` for quick optimization
+- **Template selector**: `Ctrl+Shift+T` to choose specific templates
+- **Right-click menu**: Right-click selected text for context menu
+- **Undo**: `Ctrl+Z` to undo last optimization (within 30 seconds)
 
-### Template System
+### Example Transformations
 
-#### Built-in Templates
-- **General Improvement**: Enhance text while maintaining tone
-- **Professional Tone**: Make text more formal and business-appropriate
-- **Casual & Friendly**: Make text more conversational
-- **Make Concise**: Shorten text while keeping key information
-- **Expand & Detail**: Add more detail and explanation
-- **Creative Writing**: Enhance creativity and engagement
-- **Technical Documentation**: Improve technical clarity
-- **Grammar & Style**: Fix grammar, spelling, and style issues
+**Email Enhancement**:
+- *Before*: "hey can u send me the report asap thx"
+- *After*: "Hello, could you please send me the report as soon as possible? Thank you."
 
-#### Using Templates
-1. **Quick selection**: Enable in settings for automatic template chooser
-2. **Context menu**: Right-click selected text to see template options
-3. **Keyboard shortcut**: Ctrl+Shift+T to open template selector
-4. **Default template**: Set a default template in settings
+**Professional Tone**:
+- *Before*: "the meeting went ok we talked about stuff"
+- *After*: "The meeting proceeded successfully and we discussed key agenda items."
 
-### Supported Elements
+**Grammar Check**:
+- *Before*: "there going to the store tommorow"
+- *After*: "They're going to the store tomorrow."
 
-- Text areas (`<textarea>`)
-- Input fields (`<input type="text">`)
-- Content-editable divs
-- Regular text selections on web pages
+## ⚙️ Configuration
 
-## Configuration
+### Quick Setup
 
-### General Settings
+1. **Click the extension icon** in your browser toolbar
+2. **Click "Settings"** to open configuration
+3. **Choose your AI provider** (OpenAI, Anthropic, Google Gemini, etc.)
+4. **Enter your API key** and test the connection
+5. **Save settings** and start optimizing!
 
-- **Enable/Disable**: Toggle the extension on/off
-- **Detection Window**: Time window for triple spacebar detection (500-3000ms)
-- **Keyboard Shortcut**: Alternative activation method
+### Supported AI Providers
 
-### LLM Provider Settings
+- **OpenAI** - GPT-3.5 Turbo, GPT-4, GPT-4 Turbo
+- **Anthropic** - Claude 3 Opus, Sonnet, Haiku
+- **Google Gemini** - Gemini Pro (free tier available)
+- **Cohere** - Command models
+- **Hugging Face** - Various open source models
+- **OpenRouter** - Unified access to multiple providers
+- **Local Models** - Ollama, LM Studio, and other local setups
+- **Custom APIs** - Any OpenAI-compatible endpoint
 
-- **Provider**: Choose between OpenAI, Anthropic, or Custom
-- **API Key**: Your provider's API key (stored securely)
-- **Model**: Specific model to use (e.g., gpt-3.5-turbo, claude-3-sonnet)
-- **API Endpoint**: Custom endpoint URL (for custom providers)
+For detailed configuration options, see the **[Configuration Guide](docs/guides/configuration.md)**.
 
-### Prompt Template
+## 🔧 Template System
 
-Customize the prompt sent to the AI. Use `{text}` as a placeholder for the selected text.
+PromptBoost includes powerful template management for different optimization needs:
 
-**Default prompt**:
+### Built-in Templates
+
+- **General Improvement** - Enhance text while maintaining tone and meaning
+- **Professional Tone** - Make text more formal and business-appropriate
+- **Casual Tone** - Make text more conversational and friendly
+- **Grammar Check** - Fix grammar and spelling errors only
+- **Email Enhancement** - Optimize for professional email communication
+- **Social Media** - Optimize for social media posts with engagement
+- **Academic Tone** - Enhance text for academic writing
+
+### Custom Templates
+
+Create your own templates for specific needs:
+
+1. **Open Settings** → Templates tab
+2. **Click "Create Template"**
+3. **Define your template** with `{text}` placeholder
+4. **Test and save** your custom template
+
+**Example Custom Template**:
 ```
-Please improve and optimize the following text while maintaining its original meaning and tone:
-
-{text}
-```
-
-## Troubleshooting
-
-### Common Issues
-
-**Extension not working**
-- Check if the extension is enabled in the popup
-- Verify your API key is configured correctly
-- Test the API connection in settings
-
-**Triple spacebar not detected**
-- Adjust the detection window in settings
-- Try the keyboard shortcut (Ctrl+Shift+Space) instead
-- Ensure text is selected before triggering
-
-**API errors**
-- Verify your API key is valid and has sufficient credits
-- Check your internet connection
-- Try testing the API in the settings page
-
-**Text not replacing**
-- Some websites may prevent text modification due to security policies
-- Try on a different website or text field
-- Check browser console for error messages
-
-### Error Messages
-
-- **"API key not configured"**: Add your API key in settings
-- **"Please select some text first"**: Select text before triggering
-- **"Text too long"**: Selected text exceeds 10,000 character limit
-- **"Optimization failed"**: API request failed, check connection and key
-
-## Privacy & Security
-
-- **API keys are stored locally** in your browser's secure storage
-- **Text is sent only to your configured LLM provider**
-- **No data is collected or stored** by the extension
-- **All processing happens client-side** except for the API calls
-
-## Development
-
-### Project Structure
-
-```
-PromptBoost/
-├── manifest.json          # Extension manifest
-├── background.js          # Background service worker
-├── content.js            # Content script for web pages
-├── content.css           # Styles for UI elements
-├── options/              # Settings page
-│   ├── options.html
-│   ├── options.js
-│   └── options.css
-├── popup/               # Extension popup
-│   ├── popup.html
-│   ├── popup.js
-│   └── popup.css
-├── icons/               # Extension icons
-└── README.md           # This file
+Name: Meeting Notes
+Template: Please convert these rough meeting notes into structured, professional meeting minutes: {text}
 ```
 
-### Building
+For detailed template management, see the **[Template Management Guide](docs/guides/templates.md)**.
 
-No build process required - this is a vanilla JavaScript extension.
+## 🛡️ Privacy & Security
 
-### Testing
+- **Local Storage**: API keys stored securely in your browser only
+- **No Data Collection**: Extension doesn't collect or store your data
+- **Direct API Calls**: Text sent only to your chosen AI provider
+- **Open Source**: Full transparency with open source code
+- **Minimal Permissions**: Only requests necessary browser permissions
 
-PromptBoost includes a comprehensive testing suite to ensure reliability and quality:
+## 🆘 Troubleshooting
 
-#### Running Tests
+### Quick Fixes
+
+- **Not working?** Check if extension is enabled in popup
+- **Triple spacebar not detected?** Adjust timing in settings or use `Ctrl+Shift+Space`
+- **API errors?** Verify API key and check internet connection
+- **Text not replacing?** Some sites prevent modification - try different site
+
+For comprehensive troubleshooting, see the **[Troubleshooting Guide](docs/guides/troubleshooting.md)**.
+
+## 🤝 Contributing
+
+We welcome contributions! Here's how to get started:
+
+1. **Read** the [Contributing Guidelines](docs/development/contributing.md)
+2. **Set up** your [Development Environment](docs/development/setup.md)
+3. **Check** the [Architecture Overview](docs/architecture/overview.md)
+4. **Submit** your pull request
+
+### Development Quick Start
 
 ```bash
+# Clone the repository
+git clone https://github.com/your-repo/promptboost.git
+cd promptboost
+
 # Install dependencies
 npm install
 
-# Run all tests
+# Run tests
 npm test
 
-# Run tests with coverage report
-npm run test:coverage
-
-# Run tests in watch mode (for development)
-npm run test:watch
-
-# Run only unit tests (fast)
-npm run test:unit
-
-# Run only integration tests (requires browser)
-npm run test:integration
+# Load extension in Chrome for testing
+# Go to chrome://extensions/ → Load unpacked → Select project folder
 ```
 
-#### Test Types
+## 📄 License
 
-- **Unit Tests**: Test individual components in isolation with comprehensive mocking
-- **Integration Tests**: End-to-end testing using Puppeteer for real browser automation
-- **Manual Tests**: Use the included `test.html` for manual verification
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-#### Test Coverage
+## 🙏 Acknowledgments
 
-The project maintains high test coverage standards:
-- Minimum 80% coverage for branches, functions, lines, and statements
-- Comprehensive Chrome extension API mocking
-- Real browser testing for integration scenarios
+- Thanks to all AI providers for their excellent APIs
+- Community contributors and testers
+- Open source libraries and tools used in this project
 
-For detailed testing information, see [TESTING.md](TESTING.md).
+## 📞 Support
 
-### Contributing
-
-We welcome contributions! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
-
-**Quick Start:**
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes with tests
-4. Run the test suite
-5. Submit a pull request
-
-**Development Resources:**
-- [CONTRIBUTING.md](CONTRIBUTING.md) - Contribution guidelines
-- [DEVELOPMENT.md](DEVELOPMENT.md) - Development setup and architecture
-- [TESTING.md](TESTING.md) - Testing guide and best practices
-
-## License
-
-MIT License - see LICENSE file for details.
-
-## Support
-
+- **Documentation**: [Complete Documentation](docs/)
 - **Issues**: [GitHub Issues](https://github.com/your-repo/promptboost/issues)
-- **Documentation**: This README
-- **Feature Requests**: [GitHub Discussions](https://github.com/your-repo/promptboost/discussions)
+- **Discussions**: [GitHub Discussions](https://github.com/your-repo/promptboost/discussions)
+- **Email**: support@promptboost.dev
 
-## Changelog
+---
 
-For detailed version history and release notes, see [CHANGELOG.md](CHANGELOG.md).
-
-### Latest Release (v1.0.0)
-- Initial release with comprehensive testing suite
-- Triple spacebar detection for text optimization
-- Multi-provider LLM support (OpenAI, Anthropic, Custom APIs)
-- Advanced template system with 8 built-in templates
-- Undo functionality and optimization history
-- Comprehensive settings page with import/export
-- Visual feedback and notifications
-- Full unit and integration test coverage
+**Made with ❤️ for better writing everywhere**

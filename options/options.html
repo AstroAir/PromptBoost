@@ -274,9 +274,16 @@
                 <select id="provider">
                   <option value="openai">OpenAI (GPT)</option>
                   <option value="anthropic">Anthropic (Claude)</option>
+                  <option value="gemini">Google Gemini</option>
+                  <option value="cohere">Cohere</option>
+                  <option value="huggingface">Hugging Face</option>
+                  <option value="local">Local Models</option>
                   <option value="openrouter">OpenRouter (Multiple Models)</option>
                   <option value="custom">Custom API</option>
                 </select>
+                <button type="button" id="refreshProviders" class="btn-secondary btn-small" title="Refresh provider list">
+                  🔄
+                </button>
               </div>
 
               <div class="setting-item" id="providerInfo">
@@ -284,15 +291,35 @@
                   <div class="provider-info-header">
                     <span class="provider-icon">🤖</span>
                     <span class="provider-name">OpenAI</span>
+                    <span class="provider-status" id="providerStatus">
+                      <span class="status-dot status-unknown"></span>
+                      <span class="status-text">Not tested</span>
+                    </span>
                   </div>
                   <div class="provider-info-content">
-                    <p>OpenAI provides state-of-the-art language models including GPT-3.5 and GPT-4.</p>
-                    <div class="provider-features">
+                    <p id="providerDescription">OpenAI provides state-of-the-art language models including GPT-3.5 and GPT-4.</p>
+                    <div class="provider-features" id="providerFeatures">
                       <span class="feature-tag">Fast Response</span>
                       <span class="feature-tag">High Quality</span>
                       <span class="feature-tag">Reliable</span>
                     </div>
+                    <div class="provider-actions">
+                      <button type="button" id="testProvider" class="btn-secondary btn-small">
+                        Test Connection
+                      </button>
+                      <button type="button" id="getModels" class="btn-secondary btn-small">
+                        Load Models
+                      </button>
+                    </div>
                   </div>
+                </div>
+              </div>
+
+              <!-- Dynamic provider configuration section -->
+              <div id="providerConfigSection" class="provider-config-section" style="display: none;">
+                <h4>Provider Configuration</h4>
+                <div id="providerConfigFields" class="provider-config-fields">
+                  <!-- Dynamic fields will be inserted here -->
                 </div>
               </div>
             </section>
@@ -348,9 +375,24 @@
 
               <div class="setting-item">
                 <label for="model">Model:</label>
-                <select id="model">
-                  <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
-                </select>
+                <div class="model-selection-container">
+                  <select id="model">
+                    <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                  </select>
+                  <button type="button" id="refreshModels" class="btn-secondary btn-small" title="Refresh model list">
+                    🔄
+                  </button>
+                </div>
+                <div id="modelInfo" class="model-info" style="display: none;">
+                  <div class="model-details">
+                    <span id="modelName" class="model-name"></span>
+                    <span id="modelDescription" class="model-description"></span>
+                    <div id="modelSpecs" class="model-specs">
+                      <span id="modelTokens" class="model-spec"></span>
+                      <span id="modelCost" class="model-spec"></span>
+                    </div>
+                  </div>
+                </div>
                 <p class="setting-description">Select the AI model to use for text optimization</p>
               </div>
             </section>
@@ -635,7 +677,10 @@
 
           <div class="setting-item">
             <label for="templatePrompt">Prompt Template:</label>
-            <textarea id="templatePrompt" rows="6" placeholder="Enter your prompt template. Use {text} as placeholder for the selected text."></textarea>
+            <div id="templateEditorContainer" class="template-editor-wrapper">
+              <!-- Enhanced template editor will be initialized here -->
+            </div>
+            <textarea id="templatePrompt" rows="6" placeholder="Enter your prompt template. Use {text} as placeholder for the selected text." style="display: none;"></textarea>
           </div>
         </div>
 
@@ -674,6 +719,22 @@
     </div>
 
     <input type="file" id="templateImportFile" accept=".json" style="display: none;">
+
+    <!-- Utilities and Services -->
+    <script src="../utils/ErrorHandler.js"></script>
+    <script src="../utils/Logger.js"></script>
+    <script src="../utils/ConfigValidator.js"></script>
+    <script src="../utils/ApiHelper.js"></script>
+    <script src="../services/TemplateManager.js"></script>
+    <script src="../services/ConfigurationManager.js"></script>
+
+    <!-- Enhanced Template System -->
+    <script src="../lib/codemirror-integration.js"></script>
+    <script src="../templates/TemplateValidator.js"></script>
+    <script src="../templates/TemplateEditor.js"></script>
+    <script src="../templates/TemplateVersioning.js"></script>
+    <script src="../templates/TemplateTester.js"></script>
+    <link rel="stylesheet" href="../templates/template-editor.css">
 
     <script src="options.js"></script>
   </body>

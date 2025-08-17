@@ -1,10 +1,18 @@
 // PromptBoost Options Page Script
 
+// Import utilities and services
+// Note: These are loaded via script tags in options.html
+
 class PromptBoostOptions {
   constructor() {
     this.elements = {};
     this.currentSection = 'overview';
     this.sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+
+    // Initialize services
+    this.logger = new Logger('PromptBoostOptions');
+    this.templateManager = TemplateManager.getInstance();
+    this.configManager = ConfigurationManager.getInstance();
 
     // Pagination state
     this.templatePagination = {
@@ -21,45 +29,69 @@ class PromptBoostOptions {
       filteredItems: []
     };
 
-    this.defaultSettings = {
-      enabled: true,
-      timeWindow: 1000,
-      provider: 'openai',
-      apiKey: '',
-      apiEndpoint: 'https://api.openai.com/v1/chat/completions',
-      model: 'gpt-3.5-turbo',
-      promptTemplate: 'Please improve and optimize the following text while maintaining its original meaning and tone:\n\n{text}',
-      keyboardShortcut: 'Ctrl+Shift+Space',
-      quickTemplateSelection: true,
-      selectedTemplate: 'general',
-      // Advanced settings
-      enableLogging: false,
-      autoSaveHistory: true,
-      maxHistoryItems: 100,
-      requestTimeout: 30,
-      retryAttempts: 3,
-      showNotifications: true,
-      notificationDuration: 4
-    };
+    // Template editor instance
+    this.templateEditor = null;
+    this.currentEditingTemplate = null;
+    this.history = [];
+    this.templates = {};
+    this.currentConfig = null;
 
     this.init();
   }
 
-  init() {
-    this.bindElements();
-    this.setupSidebar();
-    this.setupNavigation();
-    this.setupEventListeners();
-    this.loadSettings();
-    this.loadTemplates();
-    this.loadHistoryStats();
-    this.updateDashboard();
-    this.updateProviderFields();
-    this.setupSearch();
-    this.setupAccessibility();
+  async init() {
+    try {
+      this.logger.startTiming('init');
 
-    // Check for first-time users after everything is loaded
-    setTimeout(() => this.checkFirstTimeUser(), 500);
+      this.bindElements();
+      this.setupSidebar();
+      this.setupNavigation();
+      this.setupEventListeners();
+
+      // Initialize services
+      await this.initializeServices();
+
+      // Load data using new services
+      await this.loadSettings();
+      await this.loadTemplates();
+      this.loadHistoryStats();
+      this.updateDashboard();
+      this.initializeProviderSystem();
+      this.setupSearch();
+      this.setupAccessibility();
+
+      this.logger.endTiming('init');
+      this.logger.info('Options page initialized successfully');
+
+      // Check for first-time users after everything is loaded
+      setTimeout(() => this.checkFirstTimeUser(), 500);
+    } catch (error) {
+      ErrorHandler.handle(error, 'PromptBoostOptions.init');
+    }
+  }
+
+  /**
+   * Initializes services asynchronously
+   *
+   * @method initializeServices
+   * @since 2.0.0
+   * @async
+   */
+  async initializeServices() {
+    try {
+      this.logger.debug('Initializing services');
+
+      // Initialize template manager
+      await this.templateManager.initialize();
+
+      // Initialize configuration manager
+      await this.configManager.initialize();
+
+      this.logger.debug('Services initialized successfully');
+    } catch (error) {
+      ErrorHandler.handle(error, 'PromptBoostOptions.initializeServices');
+      throw error;
+    }
   }
 
   bindElements() {
@@ -270,39 +302,48 @@ class PromptBoostOptions {
 
   async loadSettings() {
     try {
-      const settings = await chrome.storage.sync.get(this.defaultSettings);
+      this.logger.debug('Loading settings');
 
-      this.elements.enabled.checked = settings.enabled;
-      this.elements.timeWindow.value = settings.timeWindow;
-      this.elements.provider.value = settings.provider;
-      this.elements.apiKey.value = settings.apiKey;
-      this.elements.apiEndpoint.value = settings.apiEndpoint;
-      this.elements.model.value = settings.model;
-      this.elements.promptTemplate.value = settings.promptTemplate;
-      this.elements.keyboardShortcut.value = settings.keyboardShortcut;
+      // Get configuration from ConfigurationManager
+      this.currentConfig = this.configManager.getConfiguration();
+
+      // Update UI elements with configuration
+      this.elements.enabled.checked = this.currentConfig.enabled;
+      this.elements.timeWindow.value = this.currentConfig.timeWindow;
+      this.elements.provider.value = this.currentConfig.provider;
+      this.elements.apiKey.value = this.currentConfig.apiKey;
+      this.elements.apiEndpoint.value = this.currentConfig.apiEndpoint;
+      this.elements.model.value = this.currentConfig.model;
+      this.elements.promptTemplate.value = this.currentConfig.promptTemplate;
+      this.elements.keyboardShortcut.value = this.currentConfig.keyboardShortcut;
 
       // Template settings
-      this.elements.quickTemplateSelection.checked = settings.quickTemplateSelection !== false;
-      this.elements.selectedTemplate.value = settings.selectedTemplate || 'general';
+      this.elements.quickTemplateSelection.checked = this.currentConfig.quickTemplateSelection !== false;
+      this.elements.selectedTemplate.value = this.currentConfig.selectedTemplate || 'general';
 
       // Advanced settings
-      this.elements.enableLogging.checked = settings.enableLogging || false;
-      this.elements.autoSaveHistory.checked = settings.autoSaveHistory !== false;
-      this.elements.maxHistoryItems.value = settings.maxHistoryItems || 100;
-      this.elements.requestTimeout.value = settings.requestTimeout || 30;
-      this.elements.retryAttempts.value = settings.retryAttempts || 3;
-      this.elements.showNotifications.checked = settings.showNotifications !== false;
-      this.elements.notificationDuration.value = settings.notificationDuration || 4;
+      const advanced = this.currentConfig.advanced || {};
+      this.elements.enableLogging.checked = advanced.enableLogging || false;
+      this.elements.autoSaveHistory.checked = advanced.autoSaveHistory !== false;
+      this.elements.maxHistoryItems.value = advanced.maxHistoryItems || 100;
+      this.elements.requestTimeout.value = advanced.requestTimeout || 30;
+      this.elements.retryAttempts.value = advanced.retryAttempts || 3;
+      this.elements.showNotifications.checked = advanced.showNotifications !== false;
+      this.elements.notificationDuration.value = advanced.notificationDuration || 4;
 
       this.updateProviderFields();
+      this.logger.debug('Settings loaded successfully');
     } catch (error) {
+      ErrorHandler.handle(error, 'PromptBoostOptions.loadSettings');
       this.showStatus('Failed to load settings', 'error');
     }
   }
 
   async saveSettings() {
     try {
-      const settings = {
+      this.logger.debug('Saving settings');
+
+      const updates = {
         enabled: this.elements.enabled.checked,
         timeWindow: parseInt(this.elements.timeWindow.value),
         provider: this.elements.provider.value,
@@ -314,25 +355,19 @@ class PromptBoostOptions {
         quickTemplateSelection: this.elements.quickTemplateSelection.checked,
         selectedTemplate: this.elements.selectedTemplate.value,
         // Advanced settings
-        enableLogging: this.elements.enableLogging.checked,
-        autoSaveHistory: this.elements.autoSaveHistory.checked,
-        maxHistoryItems: parseInt(this.elements.maxHistoryItems.value),
-        requestTimeout: parseInt(this.elements.requestTimeout.value),
-        retryAttempts: parseInt(this.elements.retryAttempts.value),
-        showNotifications: this.elements.showNotifications.checked,
-        notificationDuration: parseInt(this.elements.notificationDuration.value)
+        advanced: {
+          enableLogging: this.elements.enableLogging.checked,
+          autoSaveHistory: this.elements.autoSaveHistory.checked,
+          maxHistoryItems: parseInt(this.elements.maxHistoryItems.value),
+          requestTimeout: parseInt(this.elements.requestTimeout.value),
+          retryAttempts: parseInt(this.elements.retryAttempts.value),
+          showNotifications: this.elements.showNotifications.checked,
+          notificationDuration: parseInt(this.elements.notificationDuration.value)
+        }
       };
 
-      // Validation
-      if (settings.timeWindow < 500 || settings.timeWindow > 3000) {
-        throw new Error('Time window must be between 500 and 3000 milliseconds');
-      }
-
-      if (!settings.promptTemplate.includes('{text}')) {
-        throw new Error('Prompt template must include {text} placeholder');
-      }
-
-      await chrome.storage.sync.set(settings);
+      // Use ConfigurationManager to save settings (includes validation)
+      this.currentConfig = await this.configManager.updateConfiguration(updates);
 
       // Notify content scripts
       chrome.tabs.query({}, (tabs) => {
@@ -372,11 +407,14 @@ class PromptBoostOptions {
   updateProviderFields() {
     const provider = this.elements.provider.value;
 
-    // Update model options
+    // Update model options (legacy and new providers)
     this.updateModelOptions(provider);
 
     // Update provider info
     this.updateProviderInfo(provider);
+
+    // Reset provider status
+    this.updateProviderStatus('unknown', 'Not tested');
 
     // Update API endpoint based on provider
     switch (provider) {
@@ -390,6 +428,26 @@ class PromptBoostOptions {
         this.elements.apiEndpointGroup.style.display = 'none';
         this.elements.quickLoginSection.style.display = 'none';
         break;
+      case 'gemini':
+        this.elements.apiEndpoint.value = 'https://generativelanguage.googleapis.com/v1beta';
+        this.elements.apiEndpointGroup.style.display = 'none';
+        this.elements.quickLoginSection.style.display = 'none';
+        break;
+      case 'cohere':
+        this.elements.apiEndpoint.value = 'https://api.cohere.ai/v1';
+        this.elements.apiEndpointGroup.style.display = 'none';
+        this.elements.quickLoginSection.style.display = 'none';
+        break;
+      case 'huggingface':
+        this.elements.apiEndpoint.value = 'https://api-inference.huggingface.co/models';
+        this.elements.apiEndpointGroup.style.display = 'none';
+        this.elements.quickLoginSection.style.display = 'none';
+        break;
+      case 'local':
+        this.elements.apiEndpoint.value = 'http://localhost:11434';
+        this.elements.apiEndpointGroup.style.display = 'block';
+        this.elements.quickLoginSection.style.display = 'none';
+        break;
       case 'openrouter':
         this.elements.apiEndpoint.value = 'https://openrouter.ai/api/v1/chat/completions';
         this.elements.apiEndpointGroup.style.display = 'none';
@@ -399,6 +457,130 @@ class PromptBoostOptions {
         this.elements.apiEndpointGroup.style.display = 'block';
         this.elements.quickLoginSection.style.display = 'none';
         break;
+    }
+
+    // Load provider-specific configuration if available
+    this.loadProviderConfig(provider);
+  }
+
+  /**
+   * Loads provider-specific configuration.
+   *
+   * @method loadProviderConfig
+   * @param {string} provider - Provider name
+   * @since 2.0.0
+   * @async
+   */
+  async loadProviderConfig(provider) {
+    try {
+      // For new providers, try to get dynamic configuration schema
+      if (['gemini', 'cohere', 'huggingface', 'local'].includes(provider)) {
+        chrome.runtime.sendMessage({
+          type: 'GET_PROVIDER_CONFIG_SCHEMA',
+          provider: provider
+        });
+
+        // Listen for response
+        const response = await new Promise((resolve) => {
+          const listener = (message) => {
+            if (message.type === 'PROVIDER_CONFIG_SCHEMA_RESULT') {
+              chrome.runtime.onMessage.removeListener(listener);
+              resolve(message.data);
+            } else if (message.type === 'PROVIDER_CONFIG_SCHEMA_ERROR') {
+              chrome.runtime.onMessage.removeListener(listener);
+              resolve(null);
+            }
+          };
+          chrome.runtime.onMessage.addListener(listener);
+
+          // Timeout after 5 seconds
+          setTimeout(() => {
+            chrome.runtime.onMessage.removeListener(listener);
+            resolve(null);
+          }, 5000);
+        });
+
+        if (response && response.schema) {
+          this.renderProviderConfigFields(response.schema);
+        } else {
+          this.hideProviderConfigFields();
+        }
+      } else {
+        this.hideProviderConfigFields();
+      }
+    } catch (error) {
+      console.error('Failed to load provider config:', error);
+      this.hideProviderConfigFields();
+    }
+  }
+
+  /**
+   * Renders provider-specific configuration fields.
+   *
+   * @method renderProviderConfigFields
+   * @param {Object} schema - Configuration schema
+   * @since 2.0.0
+   */
+  renderProviderConfigFields(schema) {
+    const configSection = document.getElementById('providerConfigSection');
+    const configFields = document.getElementById('providerConfigFields');
+
+    if (!configSection || !configFields) return;
+
+    configFields.innerHTML = '';
+
+    Object.entries(schema).forEach(([key, field]) => {
+      const fieldDiv = document.createElement('div');
+      fieldDiv.className = 'config-field';
+
+      const label = document.createElement('label');
+      label.textContent = field.label || key;
+      label.setAttribute('for', `config-${key}`);
+
+      let input;
+      if (field.type === 'select') {
+        input = document.createElement('select');
+        field.options?.forEach(option => {
+          const optionElement = document.createElement('option');
+          optionElement.value = option.value;
+          optionElement.textContent = option.label;
+          input.appendChild(optionElement);
+        });
+      } else {
+        input = document.createElement('input');
+        input.type = field.sensitive ? 'password' : 'text';
+        input.placeholder = field.placeholder || '';
+      }
+
+      input.id = `config-${key}`;
+      input.value = field.default || '';
+
+      fieldDiv.appendChild(label);
+      fieldDiv.appendChild(input);
+
+      if (field.description) {
+        const desc = document.createElement('div');
+        desc.className = 'field-description';
+        desc.textContent = field.description;
+        fieldDiv.appendChild(desc);
+      }
+
+      configFields.appendChild(fieldDiv);
+    });
+
+    configSection.style.display = 'block';
+  }
+
+  /**
+   * Hides provider-specific configuration fields.
+   *
+   * @method hideProviderConfigFields
+   * @since 2.0.0
+   */
+  hideProviderConfigFields() {
+    const configSection = document.getElementById('providerConfigSection');
+    if (configSection) {
+      configSection.style.display = 'none';
     }
   }
 
@@ -417,6 +599,27 @@ class PromptBoostOptions {
         { value: 'claude-3-haiku-20240307', label: 'Claude 3 Haiku' },
         { value: 'claude-3-sonnet-20240229', label: 'Claude 3 Sonnet' },
         { value: 'claude-3-opus-20240229', label: 'Claude 3 Opus' }
+      ],
+      gemini: [
+        { value: 'gemini-1.5-pro', label: 'Gemini 1.5 Pro' },
+        { value: 'gemini-1.5-flash', label: 'Gemini 1.5 Flash' },
+        { value: 'gemini-pro', label: 'Gemini Pro' }
+      ],
+      cohere: [
+        { value: 'command-r-plus', label: 'Command R+' },
+        { value: 'command-r', label: 'Command R' },
+        { value: 'command', label: 'Command' },
+        { value: 'command-light', label: 'Command Light' }
+      ],
+      huggingface: [
+        { value: 'gpt2', label: 'GPT-2' },
+        { value: 'microsoft/DialoGPT-large', label: 'DialoGPT Large' },
+        { value: 'google/flan-t5-large', label: 'FLAN-T5 Large' }
+      ],
+      local: [
+        { value: 'llama2', label: 'Llama 2' },
+        { value: 'codellama', label: 'Code Llama' },
+        { value: 'mistral', label: 'Mistral' }
       ],
       openrouter: [
         { value: 'openai/gpt-3.5-turbo', label: 'OpenAI GPT-3.5 Turbo' },
@@ -443,6 +646,9 @@ class PromptBoostOptions {
     if (options.length > 0) {
       modelSelect.value = options[0].value;
     }
+
+    // Update model info
+    this.updateModelInfo();
   }
 
   updateProviderInfo(provider) {
@@ -458,6 +664,30 @@ class PromptBoostOptions {
         name: 'Anthropic',
         description: 'Anthropic\'s Claude models are designed to be helpful, harmless, and honest.',
         features: ['Safety Focused', 'Long Context', 'Thoughtful']
+      },
+      gemini: {
+        icon: '🔮',
+        name: 'Google Gemini',
+        description: 'Google\'s advanced AI model with multimodal capabilities and strong reasoning.',
+        features: ['Multimodal', 'Fast', 'Advanced Reasoning']
+      },
+      cohere: {
+        icon: '🚀',
+        name: 'Cohere',
+        description: 'Cohere\'s powerful language models optimized for enterprise applications.',
+        features: ['Enterprise Ready', 'Multilingual', 'Customizable']
+      },
+      huggingface: {
+        icon: '🤗',
+        name: 'Hugging Face',
+        description: 'Access thousands of open-source models from the Hugging Face community.',
+        features: ['Open Source', 'Free Models', 'Community Driven']
+      },
+      local: {
+        icon: '🏠',
+        name: 'Local Models',
+        description: 'Connect to local model servers like Ollama, LM Studio, or custom APIs.',
+        features: ['Privacy', 'No API Costs', 'Full Control']
       },
       openrouter: {
         icon: '🌐',
@@ -480,15 +710,354 @@ class PromptBoostOptions {
           <div class="provider-info-header">
             <span class="provider-icon">${info.icon}</span>
             <span class="provider-name">${info.name}</span>
+            <span class="provider-status" id="providerStatus">
+              <span class="status-dot status-unknown"></span>
+              <span class="status-text">Not tested</span>
+            </span>
           </div>
           <div class="provider-info-content">
-            <p>${info.description}</p>
-            <div class="provider-features">
+            <p id="providerDescription">${info.description}</p>
+            <div class="provider-features" id="providerFeatures">
               ${info.features.map(feature => `<span class="feature-tag">${feature}</span>`).join('')}
+            </div>
+            <div class="provider-actions">
+              <button type="button" id="testProvider" class="btn-secondary btn-small">
+                Test Connection
+              </button>
+              <button type="button" id="getModels" class="btn-secondary btn-small">
+                Load Models
+              </button>
             </div>
           </div>
         </div>
       `;
+
+      // Re-setup event listeners for the new buttons
+      this.setupProviderEventListeners();
+    }
+  }
+
+  /**
+   * Initializes the enhanced provider system.
+   *
+   * @method initializeProviderSystem
+   * @since 2.0.0
+   * @async
+   */
+  async initializeProviderSystem() {
+    try {
+      // Load available providers
+      await this.loadProviders();
+
+      // Update provider fields with enhanced functionality
+      this.updateProviderFields();
+
+      // Setup enhanced event listeners
+      this.setupProviderEventListeners();
+
+      console.log('Provider system initialized successfully');
+    } catch (error) {
+      console.error('Failed to initialize provider system:', error);
+      this.showStatus('Failed to initialize provider system', 'error');
+    }
+  }
+
+  /**
+   * Sets up event listeners for the enhanced provider system.
+   *
+   * @method setupProviderEventListeners
+   * @since 2.0.0
+   */
+  setupProviderEventListeners() {
+    // Provider refresh button
+    const refreshProvidersBtn = document.getElementById('refreshProviders');
+    if (refreshProvidersBtn) {
+      refreshProvidersBtn.addEventListener('click', () => this.loadProviders());
+    }
+
+    // Provider test button
+    const testProviderBtn = document.getElementById('testProvider');
+    if (testProviderBtn) {
+      testProviderBtn.addEventListener('click', () => this.testProvider());
+    }
+
+    // Get models button
+    const getModelsBtn = document.getElementById('getModels');
+    if (getModelsBtn) {
+      getModelsBtn.addEventListener('click', () => this.loadProviderModels());
+    }
+
+    // Model refresh button
+    const refreshModelsBtn = document.getElementById('refreshModels');
+    if (refreshModelsBtn) {
+      refreshModelsBtn.addEventListener('click', () => this.loadProviderModels());
+    }
+
+    // Model selection change
+    const modelSelect = document.getElementById('model');
+    if (modelSelect) {
+      modelSelect.addEventListener('change', () => this.updateModelInfo());
+    }
+  }
+
+  /**
+   * Loads available providers from the background script.
+   *
+   * @method loadProviders
+   * @since 2.0.0
+   * @async
+   */
+  async loadProviders() {
+    try {
+      chrome.runtime.sendMessage({ type: 'GET_PROVIDERS' });
+
+      // Listen for response
+      const response = await new Promise((resolve) => {
+        const listener = (message) => {
+          if (message.type === 'PROVIDERS_RESULT') {
+            chrome.runtime.onMessage.removeListener(listener);
+            resolve(message.data);
+          } else if (message.type === 'PROVIDERS_ERROR') {
+            chrome.runtime.onMessage.removeListener(listener);
+            throw new Error(message.error);
+          }
+        };
+        chrome.runtime.onMessage.addListener(listener);
+      });
+
+      this.updateProviderSelect(response);
+    } catch (error) {
+      console.error('Failed to load providers:', error);
+      this.showStatus('Failed to load providers', 'error');
+    }
+  }
+
+  /**
+   * Updates the provider select dropdown with available providers.
+   *
+   * @method updateProviderSelect
+   * @param {Array} providers - Array of provider metadata
+   * @since 2.0.0
+   */
+  updateProviderSelect(providers) {
+    const providerSelect = this.elements.provider;
+    const currentValue = providerSelect.value;
+
+    // Keep existing options and add new ones
+    const existingOptions = Array.from(providerSelect.options).map(opt => opt.value);
+
+    providers.forEach(provider => {
+      if (!existingOptions.includes(provider.name)) {
+        const option = document.createElement('option');
+        option.value = provider.name;
+        option.textContent = provider.displayName || provider.name;
+        providerSelect.appendChild(option);
+      }
+    });
+
+    // Restore selection
+    if (currentValue && existingOptions.includes(currentValue)) {
+      providerSelect.value = currentValue;
+    }
+  }
+
+  /**
+   * Tests the currently selected provider.
+   *
+   * @method testProvider
+   * @since 2.0.0
+   * @async
+   */
+  async testProvider() {
+    const provider = this.elements.provider.value;
+    const config = this.getProviderConfig();
+
+    this.updateProviderStatus('loading', 'Testing...');
+
+    try {
+      chrome.runtime.sendMessage({
+        type: 'TEST_PROVIDER',
+        provider: provider,
+        config: config
+      });
+
+      // Listen for response
+      const response = await new Promise((resolve) => {
+        const listener = (message) => {
+          if (message.type === 'PROVIDER_TEST_RESULT') {
+            chrome.runtime.onMessage.removeListener(listener);
+            resolve(message.data);
+          } else if (message.type === 'PROVIDER_TEST_ERROR') {
+            chrome.runtime.onMessage.removeListener(listener);
+            throw new Error(message.error);
+          }
+        };
+        chrome.runtime.onMessage.addListener(listener);
+      });
+
+      if (response.success) {
+        this.updateProviderStatus('success', 'Connected');
+        this.showStatus('Provider test successful', 'success');
+      } else {
+        this.updateProviderStatus('error', 'Failed');
+        this.showStatus(`Provider test failed: ${response.error}`, 'error');
+      }
+    } catch (error) {
+      this.updateProviderStatus('error', 'Error');
+      this.showStatus(`Provider test error: ${error.message}`, 'error');
+    }
+  }
+
+  /**
+   * Gets the current provider configuration.
+   *
+   * @method getProviderConfig
+   * @returns {Object} Provider configuration
+   * @since 2.0.0
+   */
+  getProviderConfig() {
+    return {
+      apiKey: this.elements.apiKey.value.trim(),
+      apiEndpoint: this.elements.apiEndpoint.value.trim(),
+      model: this.elements.model.value.trim(),
+      // Add any additional provider-specific config here
+    };
+  }
+
+  /**
+   * Updates the provider status indicator.
+   *
+   * @method updateProviderStatus
+   * @param {string} status - Status type (loading, success, error, unknown)
+   * @param {string} text - Status text
+   * @since 2.0.0
+   */
+  updateProviderStatus(status, text) {
+    const statusElement = document.getElementById('providerStatus');
+    if (statusElement) {
+      const statusDot = statusElement.querySelector('.status-dot');
+      const statusText = statusElement.querySelector('.status-text');
+
+      if (statusDot) {
+        statusDot.className = `status-dot status-${status}`;
+      }
+
+      if (statusText) {
+        statusText.textContent = text;
+      }
+    }
+  }
+
+  /**
+   * Loads models for the currently selected provider.
+   *
+   * @method loadProviderModels
+   * @since 2.0.0
+   * @async
+   */
+  async loadProviderModels() {
+    const provider = this.elements.provider.value;
+    const config = this.getProviderConfig();
+
+    try {
+      chrome.runtime.sendMessage({
+        type: 'GET_PROVIDER_MODELS',
+        provider: provider,
+        config: config
+      });
+
+      // Listen for response
+      const response = await new Promise((resolve) => {
+        const listener = (message) => {
+          if (message.type === 'PROVIDER_MODELS_RESULT') {
+            chrome.runtime.onMessage.removeListener(listener);
+            resolve(message.data);
+          } else if (message.type === 'PROVIDER_MODELS_ERROR') {
+            chrome.runtime.onMessage.removeListener(listener);
+            throw new Error(message.error);
+          }
+        };
+        chrome.runtime.onMessage.addListener(listener);
+      });
+
+      this.updateModelSelect(response.models);
+      this.showStatus(`Loaded ${response.models.length} models for ${provider}`, 'success');
+    } catch (error) {
+      console.error('Failed to load provider models:', error);
+      this.showStatus(`Failed to load models: ${error.message}`, 'error');
+    }
+  }
+
+  /**
+   * Updates the model select dropdown with available models.
+   *
+   * @method updateModelSelect
+   * @param {Array} models - Array of model objects
+   * @since 2.0.0
+   */
+  updateModelSelect(models) {
+    const modelSelect = this.elements.model;
+    const currentValue = modelSelect.value;
+
+    // Clear existing options
+    modelSelect.innerHTML = '';
+
+    // Add new options
+    models.forEach(model => {
+      const option = document.createElement('option');
+      option.value = model.id;
+      option.textContent = model.name || model.id;
+      option.dataset.description = model.description || '';
+      option.dataset.maxTokens = model.maxTokens || '';
+      option.dataset.cost = model.inputCost || '';
+      modelSelect.appendChild(option);
+    });
+
+    // Restore selection if possible
+    if (currentValue && models.find(m => m.id === currentValue)) {
+      modelSelect.value = currentValue;
+    } else if (models.length > 0) {
+      modelSelect.value = models[0].id;
+    }
+
+    // Update model info
+    this.updateModelInfo();
+  }
+
+  /**
+   * Updates the model information display.
+   *
+   * @method updateModelInfo
+   * @since 2.0.0
+   */
+  updateModelInfo() {
+    const modelSelect = this.elements.model;
+    const selectedOption = modelSelect.selectedOptions[0];
+    const modelInfoElement = document.getElementById('modelInfo');
+
+    if (!selectedOption || !modelInfoElement) {
+      return;
+    }
+
+    const modelName = selectedOption.textContent;
+    const description = selectedOption.dataset.description;
+    const maxTokens = selectedOption.dataset.maxTokens;
+    const cost = selectedOption.dataset.cost;
+
+    if (description || maxTokens || cost) {
+      modelInfoElement.style.display = 'block';
+
+      const nameElement = document.getElementById('modelName');
+      const descElement = document.getElementById('modelDescription');
+      const tokensElement = document.getElementById('modelTokens');
+      const costElement = document.getElementById('modelCost');
+
+      if (nameElement) nameElement.textContent = modelName;
+      if (descElement) descElement.textContent = description || '';
+      if (tokensElement) tokensElement.textContent = maxTokens ? `Max tokens: ${maxTokens}` : '';
+      if (costElement) costElement.textContent = cost ? `Cost: $${cost}/1K tokens` : '';
+    } else {
+      modelInfoElement.style.display = 'none';
     }
   }
 
@@ -641,17 +1210,27 @@ class PromptBoostOptions {
   // Template Management Methods
   async loadTemplates() {
     try {
-      const result = await chrome.storage.sync.get(['templates']);
-      this.templates = result.templates || {};
+      this.logger.debug('Loading templates');
+
+      // Get templates from TemplateManager
+      const templates = this.templateManager.getAllTemplates();
+
+      // Convert array to object for backward compatibility
+      this.templates = {};
+      templates.forEach(template => {
+        this.templates[template.id] = template;
+      });
 
       // Initialize template pagination
-      this.templatePagination.filteredItems = Object.values(this.templates);
-      this.templatePagination.totalItems = this.templatePagination.filteredItems.length;
+      this.templatePagination.filteredItems = templates;
+      this.templatePagination.totalItems = templates.length;
       this.templatePagination.currentPage = 1;
 
       this.renderTemplateList();
       this.updateTemplateSelector();
+      this.logger.debug(`Loaded ${templates.length} templates`);
     } catch (error) {
+      ErrorHandler.handle(error, 'PromptBoostOptions.loadTemplates');
       this.showStatus('Failed to load templates', 'error');
     }
   }
@@ -724,34 +1303,153 @@ class PromptBoostOptions {
   openTemplateModal(templateId = null) {
     this.currentEditingTemplate = templateId;
 
+    // Initialize enhanced template editor if not already done
+    this.initializeTemplateEditor();
+
     if (templateId && this.templates[templateId]) {
       const template = this.templates[templateId];
       this.elements.modalTitle.textContent = 'Edit Template';
       this.elements.templateName.value = template.name;
       this.elements.templateCategory.value = template.category;
       this.elements.templateDescription.value = template.description;
-      this.elements.templatePrompt.value = template.template;
+
+      // Set content in enhanced editor
+      if (this.templateEditor) {
+        this.templateEditor.setValue(template.template);
+      } else {
+        this.elements.templatePrompt.value = template.template;
+      }
     } else {
       this.elements.modalTitle.textContent = 'Create New Template';
       this.elements.templateName.value = '';
       this.elements.templateCategory.value = 'General';
       this.elements.templateDescription.value = '';
-      this.elements.templatePrompt.value = '';
+
+      // Clear enhanced editor
+      if (this.templateEditor) {
+        this.templateEditor.setValue('');
+      } else {
+        this.elements.templatePrompt.value = '';
+      }
     }
 
     this.elements.templateModal.style.display = 'flex';
+
+    // Focus the editor after modal is shown
+    setTimeout(() => {
+      if (this.templateEditor) {
+        this.templateEditor.focus();
+      }
+    }, 100);
+  }
+
+  /**
+   * Initializes the enhanced template editor.
+   *
+   * @method initializeTemplateEditor
+   * @since 2.0.0
+   */
+  initializeTemplateEditor() {
+    if (this.templateEditor || !window.TemplateEditor) {
+      return; // Already initialized or TemplateEditor not available
+    }
+
+    const container = document.getElementById('templateEditorContainer');
+    if (!container) {
+      console.warn('Template editor container not found');
+      return;
+    }
+
+    try {
+      this.templateEditor = new TemplateEditor({
+        container: container,
+        options: {
+          placeholder: 'Enter your prompt template here...\n\nUse {text} as a placeholder for the selected text.\nExample: Please improve the following text:\n\n{text}',
+          lineNumbers: true,
+          lineWrapping: true,
+          theme: 'default'
+        },
+        onChange: (content) => {
+          // Sync with hidden textarea for backward compatibility
+          if (this.elements.templatePrompt) {
+            this.elements.templatePrompt.value = content;
+          }
+        },
+        onValidate: (errors) => {
+          // Handle validation results
+          this.handleTemplateValidation(errors);
+        }
+      });
+
+      console.log('Enhanced template editor initialized successfully');
+    } catch (error) {
+      console.error('Failed to initialize enhanced template editor:', error);
+      // Fall back to regular textarea
+      this.showTemplateTextarea();
+    }
+  }
+
+  /**
+   * Handles template validation results.
+   *
+   * @method handleTemplateValidation
+   * @param {Array} errors - Validation errors
+   * @since 2.0.0
+   */
+  handleTemplateValidation(errors) {
+    // Update save button state based on validation
+    const saveButton = document.getElementById('saveTemplate');
+    if (saveButton) {
+      const hasErrors = errors.some(error => error.type === 'error');
+      saveButton.disabled = hasErrors;
+
+      if (hasErrors) {
+        saveButton.title = 'Please fix validation errors before saving';
+      } else {
+        saveButton.title = '';
+      }
+    }
+  }
+
+  /**
+   * Shows the regular textarea as fallback.
+   *
+   * @method showTemplateTextarea
+   * @since 2.0.0
+   */
+  showTemplateTextarea() {
+    const container = document.getElementById('templateEditorContainer');
+    const textarea = this.elements.templatePrompt;
+
+    if (container) {
+      container.style.display = 'none';
+    }
+
+    if (textarea) {
+      textarea.style.display = 'block';
+      textarea.classList.add('template-editor');
+    }
   }
 
   closeTemplateModal() {
     this.elements.templateModal.style.display = 'none';
     this.currentEditingTemplate = null;
+
+    // Clear the enhanced editor content
+    if (this.templateEditor) {
+      this.templateEditor.setValue('');
+    }
   }
 
   async saveTemplateFromModal() {
     const name = this.elements.templateName.value.trim();
     const category = this.elements.templateCategory.value;
     const description = this.elements.templateDescription.value.trim();
-    const template = this.elements.templatePrompt.value.trim();
+
+    // Get template content from enhanced editor or fallback textarea
+    const template = this.templateEditor
+      ? this.templateEditor.getValue().trim()
+      : this.elements.templatePrompt.value.trim();
 
     if (!name || !description || !template) {
       this.showStatus('Please fill in all required fields', 'error');

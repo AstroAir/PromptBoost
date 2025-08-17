@@ -1,0 +1,9 @@
+# Architecture Directory
+
+This directory contains architectural documentation and design decisions for PromptBoost.
+
+## Contents
+- System architecture overview
+- Design patterns
+- Component relationships
+- Performance considerations

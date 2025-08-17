@@ -149,8 +149,8 @@ callAnthropic(prompt, apiKey, model)     // Anthropic-specific API calls
 - Triple spacebar detection
 - Text selection and replacement
 - Undo functionality
-- UI overlay management
-- History tracking
+- History management
+- UI overlays and notifications
 
 **Main Classes**:
 - `PromptBoostContent`: Main content script controller
@@ -159,18 +159,18 @@ callAnthropic(prompt, apiKey, model)     // Anthropic-specific API calls
 ```javascript
 handleKeyDown(event)                     // Keyboard event handling
 recordSpacebarPress()                    // Spacebar detection logic
-triggerOptimization(templateId)          // Initiate text optimization
-replaceSelectedText(newText)             // Text replacement logic
-showLoadingOverlay()                     // UI feedback
+optimizeText(templateId)                 // Text optimization trigger
+replaceSelectedText(newText)             // Text replacement
+showLoadingOverlay()                     # Loading UI management
 ```
 
 ### Popup Interface (`popup/popup.js`)
-**Purpose**: Quick access interface for extension control
+**Purpose**: Extension popup for quick access and status display
 
 **Key Responsibilities**:
-- Extension enable/disable toggle
+- Extension toggle functionality
 - Status display and updates
-- Settings access
+- Quick settings access
 - API connection testing
 
 **Main Classes**:
@@ -181,242 +181,207 @@ showLoadingOverlay()                     // UI feedback
 
 **Key Responsibilities**:
 - Settings management and persistence
-- Template CRUD operations
 - Provider configuration
+- Template CRUD operations
 - Import/export functionality
+- Form validation and error handling
 
 **Main Classes**:
 - `PromptBoostOptions`: Options page controller
 
 ## Development Workflow
 
-### Feature Development Process
-1. **Planning**: Create GitHub issue with detailed requirements
-2. **Branch**: Create feature branch from main
-3. **Development**: Implement feature with tests
-4. **Testing**: Run unit and integration tests
-5. **Documentation**: Update relevant documentation
-6. **Review**: Submit pull request for code review
-7. **Deployment**: Merge to main after approval
+### 1. Feature Development
+```bash
+# Create feature branch
+git checkout -b feature/new-feature
 
-### Code Organization Patterns
-```javascript
-// Class-based organization
-class ComponentName {
-  constructor() {
-    this.init();
-  }
-  
-  async init() {
-    await this.loadSettings();
-    this.setupEventListeners();
-    this.setupMessageListener();
-  }
-  
-  // Private methods prefixed with underscore
-  _privateMethod() {
-    // Implementation
-  }
-  
-  // Public API methods
-  publicMethod() {
-    // Implementation
-  }
-}
+# Make changes
+# ... code changes ...
+
+# Run tests
+npm test
+
+# Commit changes
+git add .
+git commit -m "feat: add new feature"
+
+# Push and create PR
+git push origin feature/new-feature
 ```
 
-### Message Passing Patterns
-```javascript
-// Sending messages
-chrome.runtime.sendMessage({
-  type: 'MESSAGE_TYPE',
-  data: { /* payload */ }
-});
+### 2. Testing Workflow
+```bash
+# Run unit tests during development
+npm run test:watch
 
-// Receiving messages
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  switch (message.type) {
-    case 'MESSAGE_TYPE':
-      this.handleMessage(message.data);
-      break;
-  }
-});
+# Run full test suite before commit
+npm test
+
+# Check coverage
+npm run test:coverage
+
+# Manual testing
+# Load extension in browser and test manually
+```
+
+### 3. Code Quality
+```bash
+# Lint code
+npm run lint
+
+# Fix linting issues
+npm run lint:fix
+
+# Format code (if using Prettier)
+npm run format
 ```
 
 ## API Integration
 
-### Supported Providers
-- **OpenAI**: GPT-3.5, GPT-4 models
-- **Anthropic**: Claude models
-- **OpenRouter**: Multiple model access
-- **Custom**: User-defined API endpoints
+### Adding New LLM Providers
 
-### Adding New Providers
-1. **Background Script**: Add provider case in `callLLMAPI()`
-2. **API Method**: Implement provider-specific API call method
-3. **Options UI**: Add provider to options page
-4. **Validation**: Add API key and endpoint validation
-5. **Tests**: Write comprehensive tests for new provider
-6. **Documentation**: Update provider documentation
-
-### API Call Pattern
+1. **Create Provider Class**:
 ```javascript
-async callNewProvider(prompt, apiKey, model) {
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`
-    },
-    body: JSON.stringify({
-      model: model,
-      messages: [{ role: 'user', content: prompt }]
-    })
-  });
-  
-  if (!response.ok) {
-    throw new Error(`API request failed: ${response.status}`);
+// providers/newprovider/NewProvider.js
+class NewProvider extends Provider {
+  constructor(config) {
+    super(config);
+    this.name = 'newprovider';
   }
-  
-  const data = await response.json();
-  return this.extractResponseText(data);
+
+  async authenticate(credentials) {
+    // Implement authentication
+  }
+
+  async callAPI(prompt, options) {
+    // Implement API calling
+  }
 }
 ```
 
+2. **Register Provider**:
+```javascript
+// In background.js
+providerRegistry.register('newprovider', NewProvider);
+```
+
+3. **Update UI**:
+- Add provider to options page dropdown
+- Add configuration fields
+- Update validation logic
+
+### Provider Interface Requirements
+All providers must implement:
+- `authenticate(credentials)`: Authentication with API
+- `callAPI(prompt, options)`: Text generation
+- `validateConfig(config)`: Configuration validation
+- `getDefaultModel()`: Default model selection
+- `getAvailableModels()`: Available models list
+
 ## Testing Strategy
 
-### Test Pyramid
-```
-    ┌─────────────────┐
-    │  Integration    │  ← End-to-end workflows
-    │     Tests       │
-    ├─────────────────┤
-    │   Unit Tests    │  ← Component isolation
-    │                 │
-    └─────────────────┘
-```
+### Unit Testing
+- **Framework**: Jest with Chrome extension mocks
+- **Coverage**: Minimum 80% for all components
+- **Scope**: Individual functions and classes in isolation
 
-### Unit Testing Approach
-- **Isolation**: Test components in isolation with mocks
-- **Coverage**: Maintain 80%+ code coverage
-- **Fast Execution**: Unit tests should run quickly
-- **Deterministic**: Tests should produce consistent results
+### Integration Testing
+- **Framework**: Puppeteer for browser automation
+- **Scope**: End-to-end user workflows
+- **Environment**: Real browser with loaded extension
 
-### Integration Testing Approach
-- **Real Browser**: Test in actual Chrome environment
-- **User Workflows**: Test complete user scenarios
-- **Cross-Component**: Verify component communication
-- **Performance**: Include timing and performance assertions
+### Manual Testing
+- **Test Page**: Use `test.html` for controlled testing
+- **Real World**: Test on various websites
+- **Edge Cases**: Test with different text types and lengths
 
 ## Debugging Guide
 
 ### Chrome DevTools
 ```javascript
 // Background script debugging
-// Open chrome://extensions/ → PromptBoost → "service worker"
+chrome://extensions/ → PromptBoost → "service worker" link
 
 // Content script debugging
-// Right-click page → Inspect → Console
-// Content script logs appear in page console
+F12 → Console (on any webpage)
 
 // Popup debugging
-// Right-click extension icon → Inspect popup
+Right-click extension icon → "Inspect popup"
+
+// Options page debugging
+Right-click on options page → "Inspect"
 ```
 
-### Logging Patterns
+### Logging
 ```javascript
-// Structured logging
-console.log('[PromptBoost]', 'Component:', 'Action:', data);
+// Use built-in logger
+const logger = new Logger('ComponentName');
+logger.info('Debug message');
+logger.error('Error occurred', error);
 
-// Error logging with context
-console.error('[PromptBoost] Error in component:', error, { context });
-
-// Debug logging (removable in production)
-if (DEBUG) {
-  console.debug('[PromptBoost] Debug info:', debugData);
-}
+// Enable debug logging
+chrome.storage.sync.set({ debugLogging: true });
 ```
 
-### Common Issues and Solutions
-
-**Extension Not Loading**
-- Check manifest.json syntax
-- Verify file permissions
-- Check browser console for errors
-
-**Message Passing Failures**
-- Verify message listener setup
-- Check sender/receiver component state
-- Validate message format
-
-**API Call Issues**
-- Verify API key configuration
-- Check network connectivity
-- Validate request format
-- Review API provider documentation
+### Common Issues
+1. **Message passing failures**: Check sender/receiver setup
+2. **API errors**: Verify API keys and endpoints
+3. **Content script not loading**: Check manifest permissions
+4. **Storage issues**: Verify Chrome storage permissions
 
 ## Performance Considerations
 
-### Optimization Strategies
-- **Lazy Loading**: Load components only when needed
-- **Debouncing**: Prevent excessive API calls
-- **Caching**: Cache frequently used data
-- **Memory Management**: Clean up event listeners and timers
+### Memory Management
+- Use weak references for DOM elements
+- Clean up event listeners on component destruction
+- Implement proper garbage collection for large objects
 
-### Performance Monitoring
-```javascript
-// Measure operation timing
-const startTime = performance.now();
-await performOperation();
-const duration = performance.now() - startTime;
-console.log(`Operation took ${duration}ms`);
+### Network Optimization
+- Batch API requests when possible
+- Implement request caching for repeated calls
+- Use connection pooling for multiple requests
 
-// Memory usage monitoring
-console.log('Memory usage:', performance.memory);
-```
-
-### Best Practices
-- Minimize DOM manipulation in content scripts
-- Use efficient event delegation
-- Implement proper cleanup in component destructors
-- Optimize API request batching where possible
+### UI Responsiveness
+- Use `requestAnimationFrame` for smooth animations
+- Debounce user input to prevent excessive API calls
+- Implement progressive loading for large datasets
 
 ## Security Guidelines
 
-### Data Protection
-- **API Keys**: Store securely in Chrome's encrypted storage
-- **User Data**: Never log or transmit user text unnecessarily
-- **HTTPS Only**: All API communications over HTTPS
-- **Input Sanitization**: Sanitize all user inputs
+### API Key Protection
+- Never log API keys or include them in error messages
+- Store keys in Chrome's secure storage only
+- Validate and sanitize all user inputs
 
-### Chrome Extension Security
-- **Content Security Policy**: Follow strict CSP guidelines
-- **Permissions**: Request minimal necessary permissions
-- **Cross-Origin**: Validate all cross-origin requests
-- **Code Injection**: Prevent XSS and code injection attacks
+### Content Security Policy
+- Follow strict CSP guidelines
+- Avoid inline scripts and styles
+- Use nonce-based CSP where necessary
 
-### Security Checklist
-- [ ] API keys stored in `chrome.storage.sync` (encrypted)
-- [ ] No hardcoded credentials in source code
-- [ ] All external requests use HTTPS
-- [ ] User input properly sanitized
-- [ ] CSP headers properly configured
-- [ ] Minimal permission set in manifest
+### Permission Management
+- Request minimal necessary permissions
+- Explain permission usage to users
+- Regularly audit and remove unused permissions
 
-## Code Style and Standards
+### Data Handling
+- Encrypt sensitive data before storage
+- Implement proper input validation
+- Use HTTPS for all external communications
+
+## Code Style Guidelines
 
 ### JavaScript Standards
-- ES6+ features preferred
-- Async/await over Promises where possible
-- Consistent naming conventions (camelCase)
-- JSDoc comments for all public methods
-- Error handling for all async operations
+- Use ES6+ features consistently
+- Follow JSDoc documentation standards
+- Implement proper error handling
+- Use async/await over Promises where possible
 
 ### File Organization
-- One class per file where possible
-- Logical grouping of related functions
-- Clear separation of concerns
-- Consistent file naming conventions
+- Group related functionality in modules
+- Use consistent naming conventions
+- Keep files under 500 lines when possible
+- Implement proper import/export patterns
 
 ### Documentation Standards
 - JSDoc for all public APIs
@@ -425,6 +390,6 @@ console.log('Memory usage:', performance.memory);
 - Keep documentation up-to-date with code changes
 
 For more information, see:
-- [CONTRIBUTING.md](CONTRIBUTING.md) - Contribution guidelines
-- [TESTING.md](TESTING.md) - Testing documentation
-- [README.md](README.md) - User documentation
+- [CONTRIBUTING.md](contributing.md) - Contribution guidelines
+- [TESTING.md](testing.md) - Testing documentation
+- [README.md](../README.md) - User documentation

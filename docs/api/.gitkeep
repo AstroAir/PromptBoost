@@ -1,0 +1,10 @@
+# API Reference Directory
+
+This directory contains comprehensive API documentation for all PromptBoost components.
+
+## Contents
+- Background script API
+- Content script API
+- Services API
+- Providers API
+- Utilities API

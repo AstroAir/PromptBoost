@@ -1,0 +1,9 @@
+# Reference Directory
+
+This directory contains reference documentation and schemas for PromptBoost.
+
+## Contents
+- Configuration schemas
+- Template schemas
+- Error codes and messages
+- Version history and changelog
