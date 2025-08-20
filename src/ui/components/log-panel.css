@@ -1,0 +1,468 @@
+/**
+ * Log Panel Styles for PromptBoost
+ * Real-time log display component styling
+ */
+
+/* Log Panel Container */
+.log-panel {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 600px;
+  max-width: calc(100vw - 40px);
+  z-index: 1000;
+  background: hsl(0 0% 100%);
+  border: 1px solid hsl(214.3 31.8% 91.4%);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 13px;
+  transition: all 0.3s ease;
+  pointer-events: auto;
+  resize: both;
+  overflow: hidden;
+  min-width: 400px;
+  min-height: 200px;
+}
+
+.log-panel.expanded {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.log-panel.minimized {
+  height: auto !important;
+  resize: none;
+}
+
+.log-panel.minimized .log-panel-content {
+  display: none !important;
+}
+
+/* Log Panel Header */
+.log-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  background: hsl(210 40% 98%);
+  border-bottom: 1px solid hsl(214.3 31.8% 91.4%);
+  border-radius: 8px 8px 0 0;
+  cursor: move;
+  user-select: none;
+}
+
+.log-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: hsl(215.4 16.3% 46.9%);
+}
+
+.log-panel-icon {
+  font-size: 16px;
+}
+
+.log-count {
+  background: hsl(221.2 83.2% 53.3%);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 500;
+  min-width: 20px;
+  text-align: center;
+}
+
+.log-panel-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.log-panel-btn {
+  background: none;
+  border: 1px solid hsl(214.3 31.8% 91.4%);
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 12px;
+  color: hsl(215.4 16.3% 46.9%);
+  transition: all 0.2s ease;
+}
+
+.log-panel-btn:hover {
+  background: hsl(210 40% 98%);
+  border-color: hsl(221.2 83.2% 53.3%);
+}
+
+.log-panel-btn.active {
+  background: hsl(221.2 83.2% 53.3%);
+  color: white;
+  border-color: hsl(221.2 83.2% 53.3%);
+}
+
+.log-panel-toggle {
+  padding: 4px 6px;
+  min-width: 24px;
+}
+
+.toggle-icon {
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+/* Log Panel Content */
+.log-panel-content {
+  display: none;
+  max-height: 400px;
+  background: hsl(0 0% 100%);
+}
+
+.log-panel.expanded .log-panel-content {
+  display: block;
+}
+
+/* Log Panel Toolbar */
+.log-panel-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  background: hsl(210 40% 98%);
+  border-bottom: 1px solid hsl(214.3 31.8% 91.4%);
+  gap: 16px;
+}
+
+.log-filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.log-filter-select {
+  padding: 4px 8px;
+  border: 1px solid hsl(214.3 31.8% 91.4%);
+  border-radius: 4px;
+  font-size: 12px;
+  background: white;
+  color: hsl(215.4 16.3% 46.9%);
+  min-width: 100px;
+}
+
+.log-search-input {
+  padding: 4px 8px;
+  border: 1px solid hsl(214.3 31.8% 91.4%);
+  border-radius: 4px;
+  font-size: 12px;
+  background: white;
+  color: hsl(215.4 16.3% 46.9%);
+  min-width: 150px;
+  flex: 1;
+  max-width: 200px;
+}
+
+.log-search-input::placeholder {
+  color: hsl(215.4 16.3% 66.9%);
+}
+
+.log-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Log Display */
+.log-display {
+  height: 300px;
+  overflow-y: auto;
+  background: hsl(0 0% 100%);
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  pointer-events: auto;
+}
+
+.log-entries {
+  padding: 8px;
+}
+
+/* Log Entry */
+.log-entry {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 4px 0;
+  border-bottom: 1px solid hsl(214.3 31.8% 95%);
+  word-wrap: break-word;
+}
+
+.log-entry:hover {
+  background: hsl(210 40% 98%);
+}
+
+.log-entry:last-child {
+  border-bottom: none;
+}
+
+.log-timestamp {
+  color: hsl(215.4 16.3% 66.9%);
+  font-size: 11px;
+  white-space: nowrap;
+  min-width: 70px;
+}
+
+.log-level {
+  font-weight: 600;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  text-align: center;
+  min-width: 50px;
+  white-space: nowrap;
+}
+
+.log-level-debug {
+  background: hsl(200 100% 90%);
+  color: hsl(200 100% 30%);
+}
+
+.log-level-info {
+  background: hsl(120 100% 90%);
+  color: hsl(120 100% 25%);
+}
+
+.log-level-warn {
+  background: hsl(45 100% 90%);
+  color: hsl(45 100% 25%);
+}
+
+.log-level-error {
+  background: hsl(0 100% 90%);
+  color: hsl(0 100% 35%);
+}
+
+.log-context {
+  background: hsl(270 100% 95%);
+  color: hsl(270 100% 35%);
+  font-size: 10px;
+  padding: 2px 4px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  font-weight: 500;
+  min-width: 60px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.log-module {
+  color: hsl(221.2 83.2% 53.3%);
+  font-weight: 500;
+  min-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.log-message {
+  flex: 1;
+  color: hsl(215.4 16.3% 26.9%);
+  word-break: break-word;
+}
+
+/* Log Entry Variants */
+.log-entry.log-error {
+  background: hsl(0 100% 97%);
+  border-left: 3px solid hsl(0 100% 50%);
+  padding-left: 8px;
+}
+
+.log-entry.log-warn {
+  background: hsl(45 100% 97%);
+  border-left: 3px solid hsl(45 100% 50%);
+  padding-left: 8px;
+}
+
+.log-entry.log-debug {
+  opacity: 0.8;
+}
+
+/* Log Panel Footer */
+.log-panel-footer {
+  padding: 6px 16px;
+  background: hsl(210 40% 98%);
+  border-top: 1px solid hsl(214.3 31.8% 91.4%);
+  border-radius: 0 0 8px 8px;
+  font-size: 11px;
+  color: hsl(215.4 16.3% 66.9%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.log-stats {
+  display: flex;
+  gap: 16px;
+}
+
+.log-stats span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Pagination Controls */
+.log-pagination {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+}
+
+.log-pagination-info {
+  color: hsl(215.4 16.3% 66.9%);
+  margin-right: 8px;
+}
+
+.log-pagination-btn {
+  background: none;
+  border: 1px solid hsl(214.3 31.8% 91.4%);
+  border-radius: 3px;
+  padding: 2px 6px;
+  cursor: pointer;
+  font-size: 10px;
+  color: hsl(215.4 16.3% 46.9%);
+  transition: all 0.2s ease;
+  min-width: 24px;
+  text-align: center;
+}
+
+.log-pagination-btn:hover:not(:disabled) {
+  background: hsl(210 40% 98%);
+  border-color: hsl(221.2 83.2% 53.3%);
+}
+
+.log-pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.log-pagination-btn.active {
+  background: hsl(221.2 83.2% 53.3%);
+  color: white;
+  border-color: hsl(221.2 83.2% 53.3%);
+}
+
+/* Scrollbar Styling */
+.log-display::-webkit-scrollbar {
+  width: 8px;
+}
+
+.log-display::-webkit-scrollbar-track {
+  background: hsl(210 40% 98%);
+}
+
+.log-display::-webkit-scrollbar-thumb {
+  background: hsl(214.3 31.8% 91.4%);
+  border-radius: 4px;
+}
+
+.log-display::-webkit-scrollbar-thumb:hover {
+  background: hsl(215.4 16.3% 66.9%);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .log-panel-toolbar {
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+  }
+  
+  .log-filters {
+    flex-wrap: wrap;
+  }
+  
+  .log-filter-select,
+  .log-search-input {
+    min-width: auto;
+    flex: 1;
+  }
+  
+  .log-entry {
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .log-timestamp,
+  .log-level,
+  .log-context,
+  .log-module {
+    min-width: auto;
+  }
+  
+  .log-display {
+    height: 250px;
+  }
+}
+
+/* Animation for new log entries */
+@keyframes logEntryAppear {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.log-entry {
+  animation: logEntryAppear 0.2s ease-out;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .log-panel {
+    background: hsl(220 13% 18%);
+    border-bottom-color: hsl(215 28% 17%);
+    color: hsl(210 40% 98%);
+  }
+  
+  .log-panel-header,
+  .log-panel-toolbar,
+  .log-panel-footer {
+    background: hsl(220 13% 15%);
+    border-color: hsl(215 28% 17%);
+  }
+  
+  .log-panel-btn {
+    border-color: hsl(215 28% 17%);
+    color: hsl(210 40% 98%);
+  }
+  
+  .log-panel-btn:hover {
+    background: hsl(220 13% 22%);
+  }
+  
+  .log-filter-select,
+  .log-search-input {
+    background: hsl(220 13% 18%);
+    border-color: hsl(215 28% 17%);
+    color: hsl(210 40% 98%);
+  }
+  
+  .log-display {
+    background: hsl(220 13% 18%);
+  }
+  
+  .log-entry:hover {
+    background: hsl(220 13% 22%);
+  }
+  
+  .log-message {
+    color: hsl(210 40% 88%);
+  }
+}

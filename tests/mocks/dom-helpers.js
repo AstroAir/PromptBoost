@@ -210,7 +210,7 @@ global.domTestUtils = {
 };
 
 // Mock document.execCommand
-document.execCommand = jest.fn((command, showUI, value) => {
+document.execCommand = jest.fn((_command, _showUI, _value) => {
   // Simulate successful execution
   return true;
 });

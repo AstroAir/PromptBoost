@@ -279,7 +279,7 @@ describe('PromptBoostOptions', () => {
 
     // Mock FileReader
     global.FileReader = jest.fn(() => ({
-      readAsText: jest.fn(function (file) {
+      readAsText: jest.fn(function (_file) {
         // Simulate successful file read
         setTimeout(() => {
           this.onload({ target: { result: JSON.stringify(sampleSettings.default) } });
@@ -468,7 +468,7 @@ describe('PromptBoostOptions', () => {
 
       // Mock FileReader to return invalid JSON
       global.FileReader = jest.fn(() => ({
-        readAsText: jest.fn(function (file) {
+        readAsText: jest.fn(function (_file) {
           setTimeout(() => {
             this.onload({ target: { result: 'invalid json' } });
           }, 0);

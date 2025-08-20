@@ -10,7 +10,7 @@
 
 describe('OpenRouter Integration Tests', () => {
   let page;
-  let extensionId;
+  let _extensionId;
 
   beforeAll(async () => {
     // These tests require a real browser environment with the extension loaded
@@ -20,7 +20,7 @@ describe('OpenRouter Integration Tests', () => {
       return;
     }
 
-    extensionId = await global.integrationTestUtils.getExtensionId();
+    _extensionId = await global.integrationTestUtils.getExtensionId();
     page = await global.integrationTestUtils.getOptionsPage();
   });
 
@@ -114,7 +114,7 @@ describe('OpenRouter Integration Tests', () => {
       if (!page) return;
 
       // Get initial model count
-      const initialOptions = await page.$$eval('#model option', options => options.length);
+      const _initialOptions = await page.$$eval('#model option', options => options.length);
 
       // Click refresh models button
       await page.click('#refreshModels');

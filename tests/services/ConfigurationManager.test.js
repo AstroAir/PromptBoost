@@ -29,7 +29,7 @@ global.Logger = jest.fn().mockImplementation(() => ({
 
 global.ErrorHandler = {
   handle: jest.fn(),
-  createError: jest.fn((message, category, metadata) => new Error(message))
+  createError: jest.fn((message, _category, _metadata) => new Error(message))
 };
 
 global.ConfigValidator = {

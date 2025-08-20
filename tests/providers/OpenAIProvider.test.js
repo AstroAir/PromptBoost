@@ -54,7 +54,7 @@ global.Provider = class Provider {
     // Mock implementation
   }
 
-  handleError(error, context) {
+  handleError(error, _context) {
     return error;
   }
 };

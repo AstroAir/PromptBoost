@@ -10,13 +10,13 @@ module.exports = {
 
   // Only run unit tests
   testMatch: [
-    '<rootDir>/tests/unit/**/*.test.js'
+    '<rootDir>/../../tests/unit/**/*.test.js'
   ],
 
   // Unit test specific setup
   setupFilesAfterEnv: [
-    '<rootDir>/tests/setup/test-setup.js',
-    '<rootDir>/tests/setup/unit-test-setup.js'
+    '<rootDir>/test-setup.js',
+    '<rootDir>/unit-test-setup.js'
   ],
 
   // Faster for unit tests

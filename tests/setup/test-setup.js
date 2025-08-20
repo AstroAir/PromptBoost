@@ -30,7 +30,7 @@ global.testUtils = {
   createSelection: (text) => ({
     toString: () => text,
     rangeCount: text ? 1 : 0,
-    getRangeAt: (index) => ({
+    getRangeAt: (_index) => ({
       startContainer: { nodeType: 3, textContent: text },
       endContainer: { nodeType: 3, textContent: text },
       startOffset: 0,

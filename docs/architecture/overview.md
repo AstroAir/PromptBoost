@@ -28,6 +28,10 @@ PromptBoost v2.0 features a completely refactored architecture with improved mod
 
 ```
 PromptBoost/
+├── config/                   # Centralized configuration system
+│   ├── Constants.js         # All hard-coded values and constants
+│   ├── ConfigSchema.js      # Configuration schema and validation
+│   └── README.md            # Configuration system documentation
 ├── utils/                    # Shared utility modules
 │   ├── ErrorHandler.js      # Centralized error handling
 │   ├── Logger.js            # Unified logging system
@@ -375,5 +379,56 @@ Testing Framework → Validation → Analytics → Event Emission
 - Built-in performance monitoring
 - Usage analytics framework
 - Error reporting system
+
+## Recent Architectural Improvements (v2.0)
+
+### Configuration System Refactoring
+
+**Problem Solved**: Eliminated code duplication and hard-coded values scattered throughout the codebase.
+
+**Implementation**:
+- **Centralized Constants**: All hard-coded values moved to `src/config/Constants.js`
+- **Configuration Schema**: Complete schema definition in `src/config/ConfigSchema.js`
+- **Single Source of Truth**: Default configurations defined once and reused
+- **Validation Framework**: Schema-based configuration validation
+
+**Benefits**:
+- Reduced maintenance overhead
+- Improved consistency across components
+- Easier to add new configuration options
+- Better type safety and documentation
+
+### Provider System Standardization
+
+**Problem Solved**: Inconsistent error handling, authentication patterns, and response processing across providers.
+
+**Implementation**:
+- **Enhanced Error Handling**: Standardized error categorization with user-friendly messages
+- **Unified Authentication**: Consistent authentication interface with provider-specific implementations
+- **Response Processing Pipeline**: Standardized response handling with automatic rate limit updates
+- **Rate Limiting Enhancement**: Centralized rate limits with header-based updates
+
+**Benefits**:
+- Consistent user experience across all providers
+- Easier to add new providers
+- Better error handling and debugging
+- Improved security through standardized authentication
+
+### Architectural Decision Records (ADRs)
+
+The project now includes comprehensive ADRs documenting major architectural decisions:
+- **ADR-001**: Configuration Management Consolidation
+- **ADR-002**: Provider System Standardization
+- **ADR-003**: Background Script Decomposition
+
+These ADRs provide context for future development and ensure architectural consistency.
+
+## Future Architecture Goals
+
+### Planned Improvements
+- **Background Script Decomposition**: Break down monolithic background script into focused modules
+- **Enhanced Error Handling**: Implement consistent error patterns across all components
+- **OAuth PKCE Integration**: Enhanced authentication flows for supported providers
+- **Provider Health Monitoring**: Real-time monitoring of provider availability and performance
 
 This architecture provides a solid foundation for future development while maintaining backward compatibility and ensuring excellent user experience.

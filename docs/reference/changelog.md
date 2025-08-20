@@ -9,25 +9,62 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Comprehensive unit test suite with Jest
-- Integration tests using Puppeteer for end-to-end testing
-- Chrome extension API mocks for reliable testing
-- JSDoc documentation for all major classes and methods
-- Directory-specific README files for better code organization
-- Development and contribution guidelines
-- Testing documentation and best practices
-- Performance monitoring and optimization guidelines
-- Security guidelines for extension development
+- **Configuration System Refactoring**
+  - Centralized constants file (`src/config/Constants.js`) for all hard-coded values
+  - Configuration schema definition (`src/config/ConfigSchema.js`) with validation rules
+  - Single source of truth for default configurations
+  - Schema-based configuration validation framework
+
+- **Provider System Standardization**
+  - Enhanced error handling with standardized error categorization
+  - Unified authentication interface with provider-specific implementations
+  - Standardized response processing pipeline with automatic rate limit updates
+  - Centralized rate limiting with header-based updates
+
+- **Architectural Decision Records (ADRs)**
+  - ADR-001: Configuration Management Consolidation
+  - ADR-002: Provider System Standardization
+  - ADR-003: Background Script Decomposition
+
+- **Testing Infrastructure**
+  - Comprehensive unit test suite with Jest
+  - Integration tests using Puppeteer for end-to-end testing
+  - Chrome extension API mocks for reliable testing
+  - JSDoc documentation for all major classes and methods
+
+- **Documentation Improvements**
+  - Directory-specific README files for better code organization
+  - Development and contribution guidelines
+  - Testing documentation and best practices
+  - Performance monitoring and optimization guidelines
+  - Security guidelines for extension development
 
 ### Changed
 
-- Enhanced code documentation with comprehensive JSDoc comments
-- Improved project structure with dedicated testing infrastructure
-- Updated main README with testing information
+- **Architecture Improvements**
+  - Eliminated code duplication across configuration management
+  - Standardized error handling patterns across all providers
+  - Improved consistency in authentication mechanisms
+  - Enhanced rate limiting with provider-specific configurations
+
+- **Code Quality**
+  - Enhanced code documentation with comprehensive JSDoc comments
+  - Improved project structure with dedicated testing infrastructure
+  - Updated main README with testing information
+  - Consistent naming conventions and file organization
 
 ### Fixed
 
-- Code quality improvements based on ESLint recommendations
+- **Technical Debt Reduction**
+  - Removed duplicated default configurations
+  - Eliminated scattered hard-coded values
+  - Standardized provider error handling inconsistencies
+  - Improved separation of concerns in configuration management
+
+- **Code Quality**
+  - Code quality improvements based on ESLint recommendations
+  - Consistent error message formatting across providers
+  - Better type safety through schema validation
 
 ## [1.0.0] - 2024-01-XX
 
